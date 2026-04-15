@@ -1,787 +1,439 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog | John Doe — Design, SEO & Digital Strategy Insights</title>
-    <meta name="description" content="Read John Doe's blog on SEO optimization, design strategy, and building high-performance digital experiences that rank and convert.">
-    <meta name="keywords" content="SEO optimization, web design blog, UX design, digital strategy, designer blog, search engine optimization tips">
-    <meta name="author" content="John Doe">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://johndoe.com/blog.html">
-
-    <!-- Open Graph / Social -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Blog | John Doe — Design, SEO & Digital Strategy Insights">
-    <meta property="og:description" content="Insights on SEO optimization, design thinking, and building digital products that perform.">
-    <meta property="og:url" content="https://johndoe.com/blog.html">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2670&auto=format&fit=crop">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Blog | John Doe — Design, SEO & Digital Strategy Insights">
-    <meta name="twitter:description" content="Insights on SEO optimization, design thinking, and building digital products that perform.">
-
-    <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Blog",
-        "name": "John Doe's Design & SEO Blog",
-        "url": "https://johndoe.com/blog.html",
-        "description": "Insights on SEO optimization, design thinking, and building digital products that perform.",
-        "author": {
-            "@type": "Person",
-            "name": "John Doe",
-            "url": "https://johndoe.com"
-        },
-        "blogPost": [
-            {
-                "@type": "BlogPosting",
-                "headline": "The Designer's Guide to SEO: Why Aesthetics and Rankings Go Hand in Hand",
-                "datePublished": "2024-12-10",
-                "author": { "@type": "Person", "name": "John Doe" },
-                "description": "How design decisions directly impact search rankings and why every designer needs to understand Core Web Vitals."
-            },
-            {
-                "@type": "BlogPosting",
-                "headline": "Core Web Vitals Decoded: A Visual Approach to Performance",
-                "datePublished": "2024-11-22",
-                "author": { "@type": "Person", "name": "John Doe" },
-                "description": "Breaking down LCP, FID, and CLS with visual examples and actionable design patterns."
-            },
-            {
-                "@type": "BlogPosting",
-                "headline": "Semantic HTML: The Hidden SEO Superpower Designers Ignore",
-                "datePublished": "2024-10-15",
-                "author": { "@type": "Person", "name": "John Doe" },
-                "description": "Why proper heading hierarchy, landmark roles, and semantic elements matter more than keyword density."
-            }
-        ]
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jitesh — UI Art Gallery</title>
+  <meta name="description" content="A visual exploration of UI/UX design, prototypes, and high-fidelity product mockups." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  
+  <style>
+    :root {
+      --white: #FFFFFF;
+      --off-white: #F8FAFC;
+      --light-gray: #F1F5F9;
+      --mid-gray: #E2E8F0;
+      --text-secondary: #64748B;
+      --text-primary: #0F172A;
+      --accent: #4F46E5;
+      --accent-dark: #3730A3;
+      --accent-light: #EEF2FF;
+      --accent-glow: rgba(79, 70, 229, 0.15);
+      --radius: 16px;
+      --radius-sm: 8px;
+      --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 12px 36px rgba(15, 23, 42, 0.08);
+      --shadow-lg: 0 24px 64px rgba(15, 23, 42, 0.12);
+      --shadow-hover: 0 32px 72px rgba(79, 70, 229, 0.16);
     }
-    </script>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    <style>
-        :root {
-            --bg-base: #0a0a0c;
-            --bg-elevated: #151518;
-            --bg-card: #111114;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a5;
-            --text-muted: #6b6b70;
-            --accent: #8b5cf6;
-            --accent-glow: rgba(139, 92, 246, 0.4);
-            --accent-soft: rgba(139, 92, 246, 0.12);
-            --gradient-1: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
-            --gradient-2: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            --gradient-3: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%);
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --nav-height: 80px;
-            --content-max: 780px;
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            cursor: none;
-        }
+    body {
+      background-color: var(--off-white);
+      color: var(--text-primary);
+      font-family: 'Inter', 'Space Grotesk', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    /* ==========================================
+       FIXED NAVBAR (Copied from index.html)
+    ========================================== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 16px 24px;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-base);
-            color: var(--text-primary);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
+    .navbar.hidden {
+      transform: translateY(-100%);
+    }
 
-        /* ===== Background Effects ===== */
-        .bg-glow {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(140px);
-            z-index: -1;
-            opacity: 0.4;
-            animation: float 25s infinite alternate ease-in-out;
-        }
-        .glow-1 { width: 450px; height: 450px; background: rgba(139,92,246,0.15); top: -10%; left: -5%; }
-        .glow-2 { width: 400px; height: 400px; background: rgba(236,72,153,0.12); bottom: -15%; right: -8%; animation-delay: -12s; }
-        .glow-3 { width: 350px; height: 350px; background: rgba(59,130,246,0.1); top: 40%; right: 10%; animation-delay: -6s; }
+    .navbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(15, 23, 42, 0.05);
+      border-radius: 60px;
+      padding: 12px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 32px rgba(15, 23, 42, 0.06);
+    }
 
-        @keyframes float {
-            0% { transform: translate(0,0) scale(1); }
-            50% { transform: translate(80px,40px) scale(1.08); }
-            100% { transform: translate(-40px,120px) scale(0.92); }
-        }
+    .nav-logo {
+      font-family: 'Instrument Serif', serif;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+      transition: opacity 0.2s;
+    }
 
-        /* ===== Custom Cursor ===== */
-        .cursor-dot, .cursor-outline {
-            position: fixed;
-            top: 0; left: 0;
-            transform: translate(-50%,-50%);
-            border-radius: 50%;
-            z-index: 9999;
-            pointer-events: none;
-        }
-        .cursor-dot { width: 8px; height: 8px; background-color: var(--text-primary); }
-        .cursor-outline {
-            width: 40px; height: 40px;
-            border: 1px solid var(--glass-border);
-            transition: width 0.2s, height 0.2s, border-color 0.2s, background-color 0.2s;
-        }
-        .cursor-outline.hover {
-            width: 60px; height: 60px;
-            background-color: var(--glass-bg);
-            border-color: var(--accent);
-            backdrop-filter: blur(2px);
-        }
+    .nav-logo:hover { opacity: 0.7; }
 
-        /* ===== Typography ===== */
-        h1, h2, h3, h4 { font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; }
-        h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); margin-bottom: 1.5rem; }
-        h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2rem; position: relative; display: inline-block; }
-        h2::after { content:''; position: absolute; bottom: -8px; left: 0; width: 50px; height: 4px; background: var(--gradient-1); border-radius: 2px; }
-        h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.75rem; }
-        p, li { font-family: 'Inter', sans-serif; font-weight: 300; font-size: 1.1rem; color: var(--text-secondary); }
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
 
-        .text-gradient { background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-links a {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 40px;
+      transition: color 0.2s, background 0.2s;
+    }
 
-        /* ===== Layout ===== */
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 5%; }
-        .narrow { max-width: var(--content-max); margin: 0 auto; }
+    .nav-links a:hover {
+      color: var(--text-primary);
+      background: var(--light-gray);
+    }
 
-        /* ===== Navigation ===== */
-        nav {
-            position: fixed; top: 0; left: 0; width: 100%; height: var(--nav-height);
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 5%; z-index: 100;
-            background: rgba(10,10,12,0.75);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            transition: transform 0.3s ease;
-        }
-        nav.scrolled-down { transform: translateY(-100%); }
+    .nav-links a.active {
+      color: var(--text-primary);
+      background: var(--light-gray);
+    }
 
-        .logo { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); text-decoration: none; display: flex; align-items: center; gap: 10px; }
-        .logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gradient-1); display: inline-block; }
+    .nav-links a.nav-cta {
+      background: var(--text-primary);
+      color: #fff;
+      padding: 8px 22px;
+      margin-left: 8px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+    }
 
-        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-        .nav-links a {
-            color: var(--text-secondary); text-decoration: none; font-size: 1rem; font-weight: 500;
-            transition: color 0.3s ease; position: relative;
-        }
-        .nav-links a::after { content:''; position: absolute; left:0; bottom:-4px; width:0; height:2px; background:var(--gradient-1); transition:width 0.3s ease; }
-        .nav-links a:hover { color: var(--text-primary); }
-        .nav-links a:hover::after { width: 100%; }
-        .nav-links a.active { color: var(--text-primary); }
-        .nav-links a.active::after { width: 100%; }
+    .nav-links a.nav-cta:hover {
+      background: var(--accent);
+      color: #fff;
+    }
 
-        /* ===== Blog Hero ===== */
-        .blog-hero {
-            padding-top: calc(var(--nav-height) + 5rem);
-            padding-bottom: 5rem;
-            text-align: center;
-        }
-        .blog-hero .hero-subtitle {
-            font-family: 'Inter', sans-serif;
-            color: var(--accent);
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 1.5rem;
-            display: block;
-            font-size: 0.9rem;
-        }
-        .blog-hero p {
-            font-size: 1.25rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 28px;
+      height: 20px;
+      position: relative;
+      z-index: 1001;
+    }
 
-        /* ===== Featured Post ===== */
-        .featured-post {
-            margin-bottom: 5rem;
-        }
-        .featured-card {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 0;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            position: relative;
-        }
-        .featured-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(255,255,255,0.15);
-            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.5);
-        }
-        .featured-card-image {
-            overflow: hidden;
-            position: relative;
-            min-height: 380px;
-        }
-        .featured-card-image img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.7s cubic-bezier(0.16,1,0.3,1);
-        }
-        .featured-card:hover .featured-card-image img { transform: scale(1.04); }
-        .featured-card-image .overlay-badge {
-            position: absolute; top: 1.5rem; left: 1.5rem;
-            background: var(--gradient-1);
-            color: white; font-weight: 600; font-size: 0.8rem;
-            padding: 0.4rem 1rem; border-radius: 50px;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
+    .nav-toggle span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      position: absolute;
+      left: 0;
+      transition: transform 0.3s, opacity 0.3s, background 0.3s;
+    }
 
-        .featured-card-body {
-            padding: 3rem;
-            display: flex; flex-direction: column; justify-content: center;
-        }
-        .featured-card-body .post-meta {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            display: flex; align-items: center; gap: 1rem;
-        }
-        .featured-card-body .post-meta .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-muted); display: inline-block;}
-        .featured-card-body h3 {
-            font-size: 1.85rem;
-            margin-bottom: 1rem;
-            line-height: 1.25;
-            transition: color 0.3s;
-        }
-        .featured-card:hover .featured-card-body h3 { color: var(--accent); }
-        .featured-card-body p { font-size: 1rem; margin-bottom: 1.5rem; }
-        .read-more {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            color: var(--accent); text-decoration: none;
-            font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 1rem;
-            transition: gap 0.3s ease;
-        }
-        .read-more:hover { gap: 1rem; }
-        .read-more .arrow { transition: transform 0.3s ease; font-size: 1.25rem; }
-        .read-more:hover .arrow { transform: translateX(4px); }
-        .featured-link { position: absolute; inset: 0; z-index: 5; }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.active span:nth-child(1) { transform: rotate(45deg); top: 9px; }
+    .nav-toggle.active span:nth-child(2) { opacity: 0; }
+    .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg); top: 9px; }
 
-        /* ===== Blog Grid ===== */
-        .blog-grid-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;
-        }
-        .filter-tags { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-        .filter-tag {
-            padding: 0.5rem 1.25rem;
-            border-radius: 50px;
-            border: 1px solid var(--glass-border);
-            background: transparent;
-            color: var(--text-secondary);
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.9rem; font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        .filter-tag:hover, .filter-tag.active {
-            background: var(--accent-soft);
-            border-color: var(--accent);
-            color: var(--text-primary);
-        }
+    @media (max-width: 1024px) {
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        z-index: 999;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { font-size: 1.25rem; padding: 12px 24px; }
+      .nav-toggle { display: block; z-index: 1001; }
+    }
 
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 2.5rem;
-            margin-bottom: 5rem;
-        }
+    /* ==========================================
+       GALLERY HEADER
+    ========================================== */
+    .gallery-header {
+      padding: 160px 4rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+    }
 
-        .blog-card {
-            background: var(--bg-card);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            position: relative;
-        }
-        .blog-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255,255,255,0.15);
-            box-shadow: 0 20px 50px -10px rgba(0,0,0,0.4);
-        }
-        .blog-card-image {
-            height: 220px; overflow: hidden;
-        }
-        .blog-card-image img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
-        }
-        .blog-card:hover .blog-card-image img { transform: scale(1.05); }
+    .gallery-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.08), transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
 
-        .blog-card-body { padding: 2rem; }
-        .blog-card-body .post-category {
-            display: inline-block;
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.2px;
-            color: var(--accent); font-weight: 600; margin-bottom: 0.75rem;
-        }
-        .blog-card-body h3 {
-            font-size: 1.35rem; line-height: 1.3; margin-bottom: 0.75rem;
-            transition: color 0.3s;
-        }
-        .blog-card:hover .blog-card-body h3 { color: var(--accent); }
-        .blog-card-body .post-excerpt { font-size: 0.95rem; margin-bottom: 1.25rem; line-height: 1.6; }
-        .blog-card-body .post-footer {
-            display: flex; justify-content: space-between; align-items: center;
-            font-family: 'Inter', sans-serif; font-size: 0.8rem; color: var(--text-muted);
-        }
-        .blog-card-link { position: absolute; inset: 0; z-index: 5; }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
 
-        /* ===== Newsletter CTA ===== */
-        .newsletter {
-            padding: 5rem 0;
-            text-align: center;
-        }
-        .newsletter-box {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 4rem 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .newsletter-box::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(from 0deg, transparent 0deg, rgba(139,92,246,0.06) 60deg, transparent 120deg);
-            animation: rotate-bg 20s linear infinite;
-        }
-        @keyframes rotate-bg { 100% { transform: rotate(360deg); } }
+    .gallery-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(3rem, 6vw, 4.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+    }
 
-        .newsletter-box h2 { position: relative; z-index: 2; }
-        .newsletter-box h2::after { left: 50%; transform: translateX(-50%); }
-        .newsletter-box p { position: relative; z-index: 2; max-width: 500px; margin: 0 auto 2.5rem; }
+    .gallery-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
 
-        .newsletter-form {
-            position: relative; z-index: 2;
-            display: flex; gap: 1rem; max-width: 500px; margin: 0 auto;
-        }
-        .newsletter-form input[type="email"] {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border-radius: 50px;
-            border: 1px solid var(--glass-border);
-            background: var(--bg-base);
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-        .newsletter-form input[type="email"]::placeholder { color: var(--text-muted); }
-        .newsletter-form input[type="email"]:focus { border-color: var(--accent); }
+    /* ==========================================
+       MASONRY GRID
+    ========================================== */
+    .gallery-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 4rem 8rem;
+    }
 
-        .btn-subscribe {
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            border: none;
-            background: var(--gradient-1);
-            color: white;
-            font-family: 'Outfit', sans-serif;
-            font-size: 1rem; font-weight: 600;
-            box-shadow: 0 10px 25px -8px var(--accent-glow);
-            transition: all 0.3s ease;
-        }
-        .btn-subscribe:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px -8px var(--accent-glow);
-        }
+    .masonry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      grid-auto-rows: 20px;
+      gap: 24px;
+    }
 
-        /* ===== SEO Tips Sidebar Section ===== */
-        .seo-tips {
-            padding: 5rem 0;
-        }
-        .tips-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        .tip-card {
-            background: var(--bg-elevated);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 2.5rem 2rem;
-            transition: all 0.4s ease;
-            position: relative;
-        }
-        .tip-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255,255,255,0.12);
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.4);
-        }
-        .tip-number {
-            font-size: 3rem; font-weight: 800;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1;
-            margin-bottom: 1rem;
-        }
-        .tip-card h3 { font-size: 1.2rem; margin-bottom: 0.75rem; }
-        .tip-card p { font-size: 0.95rem; }
+    .gallery-item {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--light-gray);
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s;
+      position: relative;
+    }
 
-        /* ===== Footer ===== */
-        .footer {
-            padding: 4rem 0 2rem;
-            text-align: center;
-            border-top: 1px solid var(--glass-border);
-        }
-        .footer-links {
-            display: flex; justify-content: center; gap: 2.5rem;
-            margin-bottom: 2rem; list-style: none;
-        }
-        .footer-links a { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.3s; }
-        .footer-links a:hover { color: var(--text-primary); }
-        .copyright { color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 0.85rem; }
+    .gallery-item:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+      z-index: 2;
+    }
 
-        /* ===== Animations ===== */
-        .fade-up {
-            opacity: 0; transform: translateY(40px);
-            transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
-        }
-        .fade-up.visible { opacity: 1; transform: translateY(0); }
-        .delay-1 { transition-delay: 0.1s; }
-        .delay-2 { transition-delay: 0.2s; }
-        .delay-3 { transition-delay: 0.3s; }
-        .delay-4 { transition-delay: 0.4s; }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-        /* ===== Responsive ===== */
-        @media (max-width: 992px) {
-            .featured-card { grid-template-columns: 1fr; }
-            .featured-card-image { min-height: 260px; }
-        }
-        @media (max-width: 768px) {
-            .blog-grid { grid-template-columns: 1fr; }
-            .tips-grid { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
-            .cursor-dot, .cursor-outline { display: none; }
-            * { cursor: auto; }
-            .newsletter-form { flex-direction: column; }
-        }
-    </style>
+    .gallery-item:hover img {
+      transform: scale(1.03);
+    }
+
+    .gallery-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 24px 20px;
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.8) 0%, transparent 100%);
+      color: white;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+    }
+
+    .gallery-item:hover .gallery-caption {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .caption-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+
+    .caption-tag {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-header { padding: 120px 2rem 3rem; }
+      .gallery-container { padding: 0 2rem 5rem; }
+      .masonry-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
+
 <body>
+  <!-- FIXED NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" class="nav-logo">Jitesh.</a>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html#work">Work</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#process">Process</a>
+        <a href="blog.html" class="active">UI Gallery</a>
+        <a href="index.html#contact" class="nav-cta">Contact</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
 
-    <!-- Background Effects -->
-    <div class="bg-glow glow-1"></div>
-    <div class="bg-glow glow-2"></div>
-    <div class="bg-glow glow-3"></div>
+  <!-- HEADER -->
+  <header class="gallery-header">
+    <div class="section-label">Playground</div>
+    <h1 class="gallery-title">Visual Explorations</h1>
+    <p class="gallery-subtitle">A collection of UI snippets, high-fidelity mockups, and micro-interactions. Feel free to replace these placeholder images with your actual design files.</p>
+  </header>
 
-    <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
-
-    <!-- Navigation -->
-    <nav id="navbar">
-        <a href="index.html" class="logo">
-            <span class="logo-dot"></span> JOHN
-        </a>
-        <ul class="nav-links">
-            <li><a href="index.html">Portfolio</a></li>
-            <li><a href="blog.html" class="active">Blog</a></li>
-            <li><a href="index.html#about">About</a></li>
-            <li><a href="index.html#contact">Contact</a></li>
-        </ul>
-    </nav>
-
-    <!-- Blog Hero -->
-    <header class="blog-hero container" id="blog-top">
-        <span class="hero-subtitle fade-up">The Design × SEO Journal</span>
-        <h1 class="fade-up delay-1">Thoughts on <span class="text-gradient">design, performance &amp; search</span></h1>
-        <p class="fade-up delay-2">Where aesthetics meet algorithms. Exploring how intentional design fuels organic growth.</p>
-    </header>
-
-    <!-- Featured Post -->
-    <section class="featured-post container" aria-label="Featured blog post">
-        <div class="featured-card fade-up">
-            <a href="#" class="featured-link" aria-label="Read: The Designer's Guide to SEO"></a>
-            <div class="featured-card-image">
-                <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2670&auto=format&fit=crop" alt="Laptop on a clean desk with search analytics dashboard">
-                <span class="overlay-badge">Featured</span>
-            </div>
-            <div class="featured-card-body">
-                <div class="post-meta">
-                    <span>Dec 10, 2024</span>
-                    <span class="dot"></span>
-                    <span>8 min read</span>
-                </div>
-                <h3>The Designer's Guide to SEO: Why Aesthetics and Rankings Go Hand in Hand</h3>
-                <p>How design decisions directly impact search rankings and why every designer needs to understand Core Web Vitals, semantic structure, and user intent.</p>
-                <span class="read-more">Read Article <span class="arrow">→</span></span>
-            </div>
+  <!-- GALLERY GRID -->
+  <main class="gallery-container">
+    <div class="masonry-grid" id="masonryGrid">
+      
+      <!-- ITEM 1 -->
+      <div class="gallery-item" style="grid-row-end: span 22;">
+        <img src="assets/supplier-crm-1.png" alt="Levition Supplier Management Portal">
+        <div class="gallery-caption">
+          <div class="caption-title">Supplier Management Portal</div>
+          <div class="caption-tag">CRM / B2B Profiles</div>
         </div>
-    </section>
+      </div>
 
-    <!-- Blog Grid -->
-    <section class="container" aria-label="Blog articles">
-        <div class="blog-grid-header fade-up">
-            <h2>All Articles</h2>
-            <div class="filter-tags">
-                <button class="filter-tag active" id="filter-all">All</button>
-                <button class="filter-tag" id="filter-seo">SEO</button>
-                <button class="filter-tag" id="filter-design">Design</button>
-                <button class="filter-tag" id="filter-performance">Performance</button>
-                <button class="filter-tag" id="filter-strategy">Strategy</button>
-            </div>
+      <!-- ITEM 2 -->
+      <div class="gallery-item" style="grid-row-end: span 22;">
+        <img src="assets/supplier-crm-2.png" alt="Supplier Portal Edit Flow">
+        <div class="gallery-caption">
+          <div class="caption-title">Entity Editing Flow</div>
+          <div class="caption-tag">Interaction States</div>
         </div>
+      </div>
 
-        <div class="blog-grid">
-            <!-- Post 1 -->
-            <article class="blog-card fade-up" data-category="performance">
-                <a href="#" class="blog-card-link" aria-label="Read: Core Web Vitals Decoded"></a>
-                <div class="blog-card-image">
-                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop" alt="Analytics dashboard showing performance metrics">
-                </div>
-                <div class="blog-card-body">
-                    <span class="post-category">Performance</span>
-                    <h3>Core Web Vitals Decoded: A Visual Approach to Performance</h3>
-                    <p class="post-excerpt">Breaking down LCP, FID, and CLS with visual examples and actionable design patterns that boost page speed scores.</p>
-                    <div class="post-footer">
-                        <span>Nov 22, 2024</span>
-                        <span>6 min read</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Post 2 -->
-            <article class="blog-card fade-up delay-1" data-category="seo">
-                <a href="#" class="blog-card-link" aria-label="Read: Semantic HTML for SEO"></a>
-                <div class="blog-card-image">
-                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2670&auto=format&fit=crop" alt="Code editor showing clean HTML structure">
-                </div>
-                <div class="blog-card-body">
-                    <span class="post-category">SEO</span>
-                    <h3>Semantic HTML: The Hidden SEO Superpower Designers Ignore</h3>
-                    <p class="post-excerpt">Why proper heading hierarchy, landmark roles, and semantic elements matter more than keyword density.</p>
-                    <div class="post-footer">
-                        <span>Oct 15, 2024</span>
-                        <span>5 min read</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Post 3 -->
-            <article class="blog-card fade-up delay-2" data-category="design">
-                <a href="#" class="blog-card-link" aria-label="Read: Typography Systems That Scale"></a>
-                <div class="blog-card-image">
-                    <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2564&auto=format&fit=crop" alt="Typography specimen layout on dark background">
-                </div>
-                <div class="blog-card-body">
-                    <span class="post-category">Design</span>
-                    <h3>Typography Systems That Scale: From Figma to Production</h3>
-                    <p class="post-excerpt">Building a typographic scale that maintains visual rhythm across devices while staying accessible and SEO-friendly.</p>
-                    <div class="post-footer">
-                        <span>Sep 28, 2024</span>
-                        <span>7 min read</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Post 4 -->
-            <article class="blog-card fade-up" data-category="seo">
-                <a href="#" class="blog-card-link" aria-label="Read: Image Optimization Masterclass"></a>
-                <div class="blog-card-image">
-                    <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?q=80&w=2574&auto=format&fit=crop" alt="Image compression visualization with colorful pixels">
-                </div>
-                <div class="blog-card-body">
-                    <span class="post-category">SEO</span>
-                    <h3>Image Optimization Masterclass: WebP, AVIF &amp; Beyond</h3>
-                    <p class="post-excerpt">Reduce page weight by 60% without sacrificing visual quality. A complete guide to modern image formats and lazy loading.</p>
-                    <div class="post-footer">
-                        <span>Sep 05, 2024</span>
-                        <span>9 min read</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Post 5 -->
-            <article class="blog-card fade-up delay-1" data-category="strategy">
-                <a href="#" class="blog-card-link" aria-label="Read: Content Strategy for Designers"></a>
-                <div class="blog-card-image">
-                    <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?q=80&w=2674&auto=format&fit=crop" alt="Sticky notes and wireframes on a whiteboard">
-                </div>
-                <div class="blog-card-body">
-                    <span class="post-category">Strategy</span>
-                    <h3>Content Strategy for Designers: Writing Copy That Ranks</h3>
-                    <p class="post-excerpt">Why designers should care about content hierarchy, keyword intent, and how layout choices shape readability and dwell time.</p>
-                    <div class="post-footer">
-                        <span>Aug 18, 2024</span>
-                        <span>6 min read</span>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Post 6 -->
-            <article class="blog-card fade-up delay-2" data-category="performance">
-                <a href="#" class="blog-card-link" aria-label="Read: The Art of Loading States"></a>
-                <div class="blog-card-image">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2670&auto=format&fit=crop" alt="Skeleton loading screen design">
-                </div>
-                <div class="blog-card-body">
-                    <span class="post-category">Performance</span>
-                    <h3>The Art of Loading States: Perceived Performance in Design</h3>
-                    <p class="post-excerpt">Skeleton screens, progressive rendering, and psychological tricks that make pages feel lightning-fast before they actually are.</p>
-                    <div class="post-footer">
-                        <span>Jul 30, 2024</span>
-                        <span>5 min read</span>
-                    </div>
-                </div>
-            </article>
+      <!-- ITEM 3 -->
+      <div class="gallery-item" style="grid-row-end: span 20;">
+        <img src="assets/golden-sku.png" alt="Golden SKU Product Data Table">
+        <div class="gallery-caption">
+          <div class="caption-title">Golden SKU Database</div>
+          <div class="caption-tag">Dense Data Table</div>
         </div>
-    </section>
+      </div>
 
-    <!-- SEO Quick Tips -->
-    <section class="seo-tips container" aria-label="Quick SEO tips">
-        <h2 class="fade-up" style="margin-bottom: 3rem;">Quick SEO Wins</h2>
-        <div class="tips-grid">
-            <div class="tip-card fade-up">
-                <div class="tip-number">01</div>
-                <h3>Structured Data Markup</h3>
-                <p>Add JSON-LD schema to every page. Rich snippets increase CTR by up to 30% in search results.</p>
-            </div>
-            <div class="tip-card fade-up delay-1">
-                <div class="tip-number">02</div>
-                <h3>Optimize Meta Tags</h3>
-                <p>Craft unique title tags (50–60 chars) and meta descriptions (150–160 chars) for every single page.</p>
-            </div>
-            <div class="tip-card fade-up delay-2">
-                <div class="tip-number">03</div>
-                <h3>Internal Linking Architecture</h3>
-                <p>Link related content together with descriptive anchor text to help crawlers understand your site's hierarchy.</p>
-            </div>
-            <div class="tip-card fade-up delay-3">
-                <div class="tip-number">04</div>
-                <h3>Compress &amp; Lazy Load</h3>
-                <p>Use next-gen formats (WebP, AVIF), proper sizing, and native lazy loading to slash load times dramatically.</p>
-            </div>
+      <!-- ITEM 4 -->
+      <div class="gallery-item" style="grid-row-end: span 24;">
+        <img src="assets/batch-queue.png" alt="Batch Processing Queue">
+        <div class="gallery-caption">
+          <div class="caption-title">Batch Operations</div>
+          <div class="caption-tag">Workflow & Approvals</div>
         </div>
-    </section>
+      </div>
 
-    <!-- Newsletter CTA -->
-    <section class="newsletter container" aria-label="Newsletter signup">
-        <div class="newsletter-box fade-up">
-            <h2>Stay Ahead of the Curve</h2>
-            <p>Get weekly insights on design-driven SEO, performance tips, and creative strategy — delivered straight to your inbox.</p>
-            <form class="newsletter-form" id="newsletter-form" aria-label="Subscribe to newsletter">
-                <input type="email" id="email-input" placeholder="you@example.com" aria-label="Email address" required>
-                <button type="submit" class="btn-subscribe" id="subscribe-btn">Subscribe</button>
-            </form>
+      <!-- ITEM 5 -->
+      <div class="gallery-item" style="grid-row-end: span 24;">
+        <img src="assets/batch-progress.png" alt="Batch Progress Status">
+        <div class="gallery-caption">
+          <div class="caption-title">Live Batch Progress</div>
+          <div class="caption-tag">Monitoring Dashboard</div>
         </div>
-    </section>
+      </div>
 
-    <!-- Footer -->
-    <footer class="footer container">
-        <ul class="footer-links fade-up">
-            <li><a href="index.html">Portfolio</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="index.html#about">About</a></li>
-            <li><a href="index.html#contact">Contact</a></li>
-        </ul>
-        <p class="copyright fade-up delay-1">© 2024 John Doe. Designed &amp; coded with passion.</p>
-    </footer>
+    </div>
+  </main>
 
-    <!-- Scripts -->
-    <script>
-        // Custom Cursor
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
-        const isHoverSupported = matchMedia('(hover: hover)').matches;
+  <script>
+    // NAVBAR LOGIC
+    const navbar = document.getElementById('navbar');
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > lastScroll && currentScroll > 120) {
+        navbar.classList.add('hidden');
+      } else {
+        navbar.classList.remove('hidden');
+      }
+      lastScroll = currentScroll;
+    });
 
-        if (isHoverSupported) {
-            window.addEventListener('mousemove', (e) => {
-                cursorDot.style.left = `${e.clientX}px`;
-                cursorDot.style.top = `${e.clientY}px`;
-                cursorOutline.animate(
-                    { left: `${e.clientX}px`, top: `${e.clientY}px` },
-                    { duration: 500, fill: "forwards" }
-                );
-            });
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('active');
+      navLinks.classList.toggle('open');
+    });
 
-            document.querySelectorAll('a, button, .blog-card, .featured-card, .tip-card, .filter-tag, input').forEach(el => {
-                el.addEventListener('mouseenter', () => cursorOutline.classList.add('hover'));
-                el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hover'));
-            });
+    // MASONRY GRID LAYOUT FIXER
+    // Since images load asynchronously, we adjust grid-row-end based on image height
+    function resizeGridItem(item) {
+        const grid = document.getElementById('masonryGrid');
+        const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+        const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-row-gap'));
+        const rowSpan = Math.ceil((item.querySelector('.gallery-item img').getBoundingClientRect().height + rowGap) / (rowHeight + rowGap));
+        item.style.gridRowEnd = 'span ' + rowSpan;
+    }
+
+    function resizeAllGridItems() {
+        const allItems = document.getElementsByClassName('gallery-item');
+        for (let x = 0; x < allItems.length; x++) {
+            resizeGridItem(allItems[x]);
         }
+    }
 
-        // Scroll Animation (Intersection Observer)
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
-        }, { threshold: 0.12 });
-
-        document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-        // Smart Navbar
-        let lastScrollY = window.scrollY;
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > lastScrollY && window.scrollY > 100) {
-                navbar.classList.add('scrolled-down');
-            } else {
-                navbar.classList.remove('scrolled-down');
-            }
-            lastScrollY = window.scrollY;
-        });
-
-        // Category Filter
-        const filterBtns = document.querySelectorAll('.filter-tag');
-        const blogCards = document.querySelectorAll('.blog-card');
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const category = btn.textContent.trim().toLowerCase();
-
-                blogCards.forEach(card => {
-                    if (category === 'all' || card.dataset.category === category) {
-                        card.style.display = '';
-                        // Re-trigger animation
-                        card.classList.remove('visible');
-                        setTimeout(() => card.classList.add('visible'), 50);
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-        // Newsletter submit (demo)
-        document.getElementById('newsletter-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('subscribe-btn');
-            const input = document.getElementById('email-input');
-            btn.textContent = '✓ Subscribed!';
-            btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-            input.value = '';
-            setTimeout(() => {
-                btn.textContent = 'Subscribe';
-                btn.style.background = '';
-            }, 3000);
-        });
-    </script>
+    window.onload = resizeAllGridItems;
+    window.addEventListener('resize', resizeAllGridItems);
+  </script>
 </body>
 </html>
