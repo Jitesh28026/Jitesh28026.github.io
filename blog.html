@@ -10,6 +10,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   
+  <!-- Add AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  
   <style>
     :root {
       --white: #FFFFFF;
@@ -347,7 +350,7 @@
     <div class="masonry-grid" id="masonryGrid">
       
       <!-- ITEM 1 -->
-      <div class="gallery-item" style="grid-row-end: span 22;">
+      <div class="gallery-item" style="grid-row-end: span 22;" data-aos="fade-up" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
         <img src="assets/supplier-crm-1.png" alt="Levition Supplier Management Portal">
         <div class="gallery-caption">
           <div class="caption-title">Supplier Management Portal</div>
@@ -356,7 +359,7 @@
       </div>
 
       <!-- ITEM 2 -->
-      <div class="gallery-item" style="grid-row-end: span 22;">
+      <div class="gallery-item" style="grid-row-end: span 22;" data-aos="fade-up" data-aos-delay="100" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
         <img src="assets/supplier-crm-2.png" alt="Supplier Portal Edit Flow">
         <div class="gallery-caption">
           <div class="caption-title">Entity Editing Flow</div>
@@ -365,7 +368,7 @@
       </div>
 
       <!-- ITEM 3 -->
-      <div class="gallery-item" style="grid-row-end: span 20;">
+      <div class="gallery-item" style="grid-row-end: span 20;" data-aos="fade-up" data-aos-delay="200" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
         <img src="assets/golden-sku.png" alt="Golden SKU Product Data Table">
         <div class="gallery-caption">
           <div class="caption-title">Golden SKU Database</div>
@@ -374,7 +377,7 @@
       </div>
 
       <!-- ITEM 4 -->
-      <div class="gallery-item" style="grid-row-end: span 24;">
+      <div class="gallery-item" style="grid-row-end: span 24;" data-aos="fade-up" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
         <img src="assets/batch-queue.png" alt="Batch Processing Queue">
         <div class="gallery-caption">
           <div class="caption-title">Batch Operations</div>
@@ -383,7 +386,7 @@
       </div>
 
       <!-- ITEM 5 -->
-      <div class="gallery-item" style="grid-row-end: span 24;">
+      <div class="gallery-item" style="grid-row-end: span 24;" data-aos="fade-up" data-aos-delay="100" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
         <img src="assets/batch-progress.png" alt="Batch Progress Status">
         <div class="gallery-caption">
           <div class="caption-title">Live Batch Progress</div>
@@ -434,6 +437,18 @@
 
     window.onload = resizeAllGridItems;
     window.addEventListener('resize', resizeAllGridItems);
+  </script>
+  
+  <!-- Add Animation Libraries Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+  <script>
+    // Initialize Scroll Animations
+    AOS.init({
+      duration: 1000,
+      once: true,
+      easing: 'ease-out-cubic',
+    });
   </script>
 </body>
 </html>
