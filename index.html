@@ -357,6 +357,7 @@
       position: relative;
       z-index: 2;
       box-shadow: var(--shadow-lg);
+      transform-style: preserve-3d;
     }
 
     .hero-card-main::before {
@@ -376,6 +377,7 @@
       align-items: center;
       gap: 12px;
       margin-bottom: 24px;
+      transform: translateZ(30px);
     }
 
     .card-avatar {
@@ -412,6 +414,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 16px;
       margin-bottom: 24px;
+      transform: translateZ(40px);
     }
 
     .stat-box {
@@ -440,6 +443,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
+      transform: translateZ(50px);
     }
 
     .card-skill {
@@ -1257,7 +1261,7 @@
         <div class="floating-shape shape-1"></div>
         <div class="floating-shape shape-2"></div>
         <div class="floating-shape shape-3"></div>
-        <div class="hero-card-main">
+        <div class="hero-card-main" data-tilt data-tilt-glare data-tilt-max-glare="0.5" data-tilt-speed="400" data-tilt-perspective="1000" data-tilt-max="10">
           <div class="card-header">
             <div class="card-avatar">J</div>
             <div class="card-meta">
@@ -1578,6 +1582,7 @@
     window.addEventListener('scroll', updateActiveNav);
     updateActiveNav();
   </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
 </body>
 
 </html>
