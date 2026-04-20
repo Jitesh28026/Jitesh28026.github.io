@@ -247,23 +247,53 @@
     }
 
     /* ==========================================
-       MASONRY GRID
+       ANIMATED CAROUSEL
     ========================================== */
     .gallery-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 4rem 8rem;
+      width: 100%;
+      overflow: hidden;
+      padding: 0 0 8rem;
     }
 
-    .masonry-grid {
-      column-count: 3;
-      column-gap: 32px;
+    .carousel-track-container {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
       width: 100%;
     }
 
+    .carousel-track {
+      display: flex;
+      gap: 32px;
+      width: max-content;
+    }
+
+    .carousel-track.left {
+      animation: scrollLeft 40s linear infinite;
+    }
+
+    .carousel-track.right {
+      animation: scrollRight 40s linear infinite;
+    }
+
+    .carousel-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes scrollLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(-50% - 16px)); }
+    }
+
+    @keyframes scrollRight {
+      0% { transform: translateX(calc(-50% - 16px)); }
+      100% { transform: translateX(0); }
+    }
+
     .gallery-item {
-      break-inside: avoid;
-      margin-bottom: 32px;
+      width: 460px;
+      height: 340px;
+      flex-shrink: 0;
       background: var(--white);
       border-radius: var(--radius);
       overflow: hidden;
@@ -274,15 +304,16 @@
     }
 
     .gallery-item:hover {
-      transform: translateY(-6px);
+      transform: translateY(-8px) scale(1.02);
       box-shadow: var(--shadow-hover);
       z-index: 2;
     }
 
     .gallery-item img {
       width: 100%;
-      height: auto;
+      height: 100%;
       object-fit: contain;
+      padding: 12px;
       display: block;
       transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -324,14 +355,33 @@
     }
 
     @media (max-width: 1024px) {
-      .masonry-grid { column-count: 2; column-gap: 24px; }
-      .gallery-item { margin-bottom: 24px; }
+      .gallery-item { width: 360px; height: 260px; }
+      .carousel-track { gap: 24px; }
+      .carousel-track-container { gap: 24px; }
+      @keyframes scrollLeft {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(calc(-50% - 12px)); }
+      }
+      @keyframes scrollRight {
+        0% { transform: translateX(calc(-50% - 12px)); }
+        100% { transform: translateX(0); }
+      }
     }
 
     @media (max-width: 768px) {
       .gallery-header { padding: 120px 2rem 3rem; }
-      .gallery-container { padding: 0 2rem 5rem; }
-      .masonry-grid { column-count: 1; column-gap: 0; }
+      .gallery-container { padding: 0 0 5rem; }
+      .gallery-item { width: 280px; height: 210px; }
+      .carousel-track { gap: 16px; }
+      .carousel-track-container { gap: 16px; }
+      @keyframes scrollLeft {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(calc(-50% - 8px)); }
+      }
+      @keyframes scrollRight {
+        0% { transform: translateX(calc(-50% - 8px)); }
+        100% { transform: translateX(0); }
+      }
     }
   </style>
 </head>
@@ -363,50 +413,127 @@
 
   <!-- GALLERY GRID -->
   <main class="gallery-container">
-    <div class="masonry-grid" id="masonryGrid">
+    <div class="carousel-track-container" id="masonryGrid">
       
-      <!-- ITEM 1 -->
-      <div class="gallery-item" data-aos="fade-up" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
-        <img src="assets/supplier-crm-1.png" alt="Levition Supplier Management Portal">
-        <div class="gallery-caption">
-          <div class="caption-title">Supplier Management Portal</div>
-          <div class="caption-tag">CRM / B2B Profiles</div>
+      <!-- TRACK 1 -->
+      <div class="carousel-track left">
+        <div class="gallery-item">
+          <img src="assets/Golden SKUs.png" alt="Golden SKU Product Data Table">
+          <div class="gallery-caption">
+            <div class="caption-title">Golden SKU Database</div>
+            <div class="caption-tag">Dense Data Table</div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/Dashboard.png" alt="Analytics Dashboard">
+          <div class="gallery-caption">
+            <div class="caption-title">Analytics Dashboard</div>
+            <div class="caption-tag">Data Visualization</div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/Products Table view.png" alt="Products Table View">
+          <div class="gallery-caption">
+            <div class="caption-title">Product Catalog Tabular View</div>
+            <div class="caption-tag">B2B Interfaces</div>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="assets/MacBook Air - 19.png" alt="Full Desktop Layout">
+          <div class="gallery-caption">
+            <div class="caption-title">Desktop Management Layout</div>
+            <div class="caption-tag">UI/UX Layouts</div>
+          </div>
+        </div>
+        <!-- Duplicates for scrolling loop -->
+        <div class="gallery-item" aria-hidden="true">
+          <img src="assets/Golden SKUs.png" alt="">
+          <div class="gallery-caption">
+            <div class="caption-title">Golden SKU Database</div>
+            <div class="caption-tag">Dense Data Table</div>
+          </div>
+        </div>
+        <div class="gallery-item" aria-hidden="true">
+          <img src="assets/Dashboard.png" alt="">
+          <div class="gallery-caption">
+            <div class="caption-title">Analytics Dashboard</div>
+            <div class="caption-tag">Data Visualization</div>
+          </div>
+        </div>
+        <div class="gallery-item" aria-hidden="true">
+          <img src="assets/Products Table view.png" alt="">
+          <div class="gallery-caption">
+            <div class="caption-title">Product Catalog Tabular View</div>
+            <div class="caption-tag">B2B Interfaces</div>
+          </div>
+        </div>
+        <div class="gallery-item" aria-hidden="true">
+          <img src="assets/MacBook Air - 19.png" alt="">
+          <div class="gallery-caption">
+            <div class="caption-title">Desktop Management Layout</div>
+            <div class="caption-tag">UI/UX Layouts</div>
+          </div>
         </div>
       </div>
 
-      <!-- ITEM 2 -->
-      <div class="gallery-item" data-aos="fade-up" data-aos-delay="100" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
-        <img src="assets/supplier-crm-2.png" alt="Supplier Portal Edit Flow">
-        <div class="gallery-caption">
-          <div class="caption-title">Entity Editing Flow</div>
-          <div class="caption-tag">Interaction States</div>
+      <!-- TRACK 2 -->
+      <div class="carousel-track right">
+        <div class="gallery-item">
+          <img src="assets/Screen config _ PDP.png" alt="Screen config PDP">
+          <div class="gallery-caption">
+            <div class="caption-title">Product Detail Configuration</div>
+            <div class="caption-tag">B2B Workflows</div>
+          </div>
         </div>
-      </div>
-
-      <!-- ITEM 3 -->
-      <div class="gallery-item" data-aos="fade-up" data-aos-delay="200" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
-        <img src="assets/golden-sku.png" alt="Golden SKU Product Data Table">
-        <div class="gallery-caption">
-          <div class="caption-title">Golden SKU Database</div>
-          <div class="caption-tag">Dense Data Table</div>
+        <div class="gallery-item">
+          <img src="assets/03. HomePage (View All Products).png" alt="HomePage Catalog">
+          <div class="gallery-caption">
+            <div class="caption-title">Global Catalog Overview</div>
+            <div class="caption-tag">Navigation</div>
+          </div>
         </div>
-      </div>
-
-      <!-- ITEM 4 -->
-      <div class="gallery-item" data-aos="fade-up" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
-        <img src="assets/batch-queue.png" alt="Batch Processing Queue">
-        <div class="gallery-caption">
-          <div class="caption-title">Batch Operations</div>
-          <div class="caption-tag">Workflow & Approvals</div>
+        <div class="gallery-item">
+          <img src="assets/Upload entires.png" alt="Bulk Upload Flow">
+          <div class="gallery-caption">
+            <div class="caption-title">Bulk Upload Flow</div>
+            <div class="caption-tag">UX Patterns</div>
+          </div>
         </div>
-      </div>
-
-      <!-- ITEM 5 -->
-      <div class="gallery-item" data-aos="fade-up" data-aos-delay="100" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
-        <img src="assets/batch-progress.png" alt="Batch Progress Status">
-        <div class="gallery-caption">
-          <div class="caption-title">Live Batch Progress</div>
-          <div class="caption-tag">Monitoring Dashboard</div>
+        <div class="gallery-item">
+          <img src="assets/Final Landing page.png" alt="Final Landing page">
+          <div class="gallery-caption">
+            <div class="caption-title">Marketing Landing Page</div>
+            <div class="caption-tag">Web Design</div>
+          </div>
+        </div>
+        <!-- Duplicates for scrolling loop -->
+        <div class="gallery-item" aria-hidden="true">
+          <img src="assets/Screen config _ PDP.png" alt="">
+          <div class="gallery-caption">
+            <div class="caption-title">Product Detail Configuration</div>
+            <div class="caption-tag">B2B Workflows</div>
+          </div>
+        </div>
+        <div class="gallery-item" aria-hidden="true">
+          <img src="assets/03. HomePage (View All Products).png" alt="">
+          <div class="gallery-caption">
+            <div class="caption-title">Global Catalog Overview</div>
+            <div class="caption-tag">Navigation</div>
+          </div>
+        </div>
+        <div class="gallery-item" aria-hidden="true">
+          <img src="assets/Upload entires.png" alt="">
+          <div class="gallery-caption">
+            <div class="caption-title">Bulk Upload Flow</div>
+            <div class="caption-tag">UX Patterns</div>
+          </div>
+        </div>
+        <div class="gallery-item" aria-hidden="true">
+          <img src="assets/Final Landing page.png" alt="">
+          <div class="gallery-caption">
+            <div class="caption-title">Marketing Landing Page</div>
+            <div class="caption-tag">Web Design</div>
+          </div>
         </div>
       </div>
 
