@@ -181,14 +181,22 @@
     ========================================== */
     .hero {
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .hero-inner {
+      width: 100%;
+      max-width: 1300px;
+      margin: 0 auto;
       padding: 140px 4rem 6rem;
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
       align-items: center;
       gap: 4rem;
-      max-width: 1300px;
-      margin: 0 auto;
-      position: relative;
     }
 
     .hero::before {
@@ -998,12 +1006,18 @@
        FOOTER
     ========================================== */
     footer {
+      width: 100%;
       background: var(--off-white);
-      padding: 2.5rem 4rem;
+      border-top: 1px solid var(--light-gray);
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid var(--light-gray);
     }
 
     .footer-logo {
@@ -1078,7 +1092,7 @@
        RESPONSIVE
     ========================================== */
     @media (max-width: 1024px) {
-      .hero {
+      .hero-inner {
         grid-template-columns: 1fr;
         padding: 120px 2.5rem 4rem;
         gap: 3rem;
@@ -1154,7 +1168,7 @@
         padding: 12px 20px;
       }
 
-      .hero {
+      .hero-inner {
         padding: 120px 1.5rem 3rem;
         min-height: auto;
       }
@@ -1195,6 +1209,12 @@
         gap: 1.5rem;
         text-align: center;
         padding: 2rem 1.5rem;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 2rem;
+        text-align: center;
       }
     }
 
@@ -1238,52 +1258,54 @@
 
   <!-- HERO -->
   <section class="hero" id="home">
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="dot"></span>
-        Product Designer &middot; Bengaluru
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Product Designer &middot; Bengaluru
+        </div>
+        <h1 class="hero-title">
+          Designing<br>
+          <span class="highlight">systems</span> that<br>
+          actually work.
+        </h1>
+        <p class="hero-desc">
+          I craft B2B product experiences &mdash; turning complex workflows into intuitive, scalable interfaces. 2 years in, still obsessed with the details.
+        </p>
+        <div class="hero-actions">
+          <a href="#work" class="btn-solid" id="hero-cta-work">View Work &darr;</a>
+          <a href="#contact" class="btn-outline" id="hero-cta-contact">Say Hello</a>
+        </div>
       </div>
-      <h1 class="hero-title">
-        Designing<br>
-        <span class="highlight">systems</span> that<br>
-        actually work.
-      </h1>
-      <p class="hero-desc">
-        I craft B2B product experiences &mdash; turning complex workflows into intuitive, scalable interfaces. 2 years in, still obsessed with the details.
-      </p>
-      <div class="hero-actions">
-        <a href="#work" class="btn-solid" id="hero-cta-work">View Work &darr;</a>
-        <a href="#contact" class="btn-outline" id="hero-cta-contact">Say Hello</a>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="hero-card-stack">
-        <div class="floating-shape shape-1"></div>
-        <div class="floating-shape shape-2"></div>
-        <div class="floating-shape shape-3"></div>
-        <div class="hero-card-main" data-tilt data-tilt-glare data-tilt-max-glare="0.5" data-tilt-speed="400" data-tilt-perspective="1000" data-tilt-max="10">
-          <div class="card-header">
-            <div class="card-avatar">J</div>
-            <div class="card-meta">
-              <div class="card-name">Jitesh</div>
-              <div class="card-role">Product Designer</div>
+      <div class="hero-visual">
+        <div class="hero-card-stack">
+          <div class="floating-shape shape-1"></div>
+          <div class="floating-shape shape-2"></div>
+          <div class="floating-shape shape-3"></div>
+          <div class="hero-card-main" data-tilt data-tilt-glare data-tilt-max-glare="0.5" data-tilt-speed="400" data-tilt-perspective="1000" data-tilt-max="10">
+            <div class="card-header">
+              <div class="card-avatar">J</div>
+              <div class="card-meta">
+                <div class="card-name">Jitesh</div>
+                <div class="card-role">Product Designer</div>
+              </div>
             </div>
-          </div>
-          <div class="card-stats">
-            <div class="stat-box">
-              <div class="stat-number">2+</div>
-              <div class="stat-label">Years</div>
+            <div class="card-stats">
+              <div class="stat-box">
+                <div class="stat-number">2+</div>
+                <div class="stat-label">Years</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-number">B2B</div>
+                <div class="stat-label">Focus</div>
+              </div>
             </div>
-            <div class="stat-box">
-              <div class="stat-number">B2B</div>
-              <div class="stat-label">Focus</div>
+            <div class="card-skills">
+              <span class="card-skill">UX Design</span>
+              <span class="card-skill">Prototyping</span>
+              <span class="card-skill">Systems</span>
+              <span class="card-skill">AI-Augmented UX</span>
             </div>
-          </div>
-          <div class="card-skills">
-            <span class="card-skill">UX Design</span>
-            <span class="card-skill">Prototyping</span>
-            <span class="card-skill">Systems</span>
-            <span class="card-skill">AI-Augmented UX</span>
           </div>
         </div>
       </div>
@@ -1327,7 +1349,8 @@
         <a href="#contact" class="btn-outline" id="all-case-studies">All case studies &rarr;</a>
       </div>
       <div class="work-grid">
-        <a href="#" class="project-card reveal" id="project-1">
+        <!-- PROJECT 01: dataX.ai - Safe Consolidation -->
+        <div class="project-card reveal" id="project-1" style="cursor: default;">
           <div class="project-thumb">
             <div class="project-thumb-inner thumb-1">
               <span class="thumb-number">01</span>
@@ -1336,34 +1359,19 @@
           <div class="project-body">
             <div class="project-tags">
               <span class="project-tag">B2B</span>
-              <span class="project-tag">Navigation</span>
-              <span class="project-tag">Catalogue</span>
+              <span class="project-tag">ENTERPRISE</span>
+              <span class="project-tag">DATA MANAGEMENT</span>
             </div>
-            <div class="project-name">Deep Category Navigation</div>
-            <p class="project-desc">A persistent global nav supporting 10+ hierarchy levels with a right-side flyout panel. Built for power users who move fast.</p>
+            <div class="project-name">Making Data Consolidation Feel Safe (dataX.ai)</div>
+            <p class="project-desc">Designing the Supplier Details, Merge & Split flows for an AI-powered supplier master data platform.</p>
           </div>
-          <div class="project-arrow">&nearr;</div>
-        </a>
-        <a href="#" class="project-card reveal" id="project-2">
+          <div class="project-arrow" style="opacity: 0.3;">&nearr;</div>
+        </div>
+
+        <!-- PROJECT 02: Vasitum -->
+        <a href="https://medium.com/@thakker.jitesh04/offer-rollout-at-vasitum-342539f4c8f1" target="_blank" class="project-card reveal" id="project-2">
           <div class="project-thumb">
-            <div class="project-thumb-inner thumb-2">
-              <span class="thumb-number">02</span>
-            </div>
-          </div>
-          <div class="project-body">
-            <div class="project-tags">
-              <span class="project-tag">B2B</span>
-              <span class="project-tag">Filters</span>
-              <span class="project-tag">Sidebar</span>
-            </div>
-            <div class="project-name">Compact Sidebar Filter</div>
-            <p class="project-desc">An accordion tree structure coexisting with multiple filters. Search input and clear visual selection hierarchy.</p>
-          </div>
-          <div class="project-arrow">&nearr;</div>
-        </a>
-        <a href="https://medium.com/@thakker.jitesh04/offer-rollout-at-vasitum-342539f4c8f1" target="_blank" class="project-card reveal" id="project-3">
-          <div class="project-thumb">
-            <div class="project-thumb-inner thumb-3" style="background: none;">
+            <div class="project-thumb-inner thumb-2" style="background: none;">
               <img src="assets/offer rollout.png" alt="Vasitum Offer Rollout Design" style="width: 100%; height: 100%; object-fit: cover; object-position: left center;">
             </div>
           </div>
@@ -1378,9 +1386,11 @@
           </div>
           <div class="project-arrow">&nearr;</div>
         </a>
-        <a href="https://www.behance.net/gallery/184744245/ART-X-The-Artist-bio-app" target="_blank" class="project-card reveal" id="project-4">
+
+        <!-- PROJECT 03: ArtX -->
+        <a href="https://www.behance.net/gallery/184744245/ART-X-The-Artist-bio-app" target="_blank" class="project-card reveal" id="project-3">
           <div class="project-thumb">
-            <div class="project-thumb-inner thumb-4" style="background: none;">
+            <div class="project-thumb-inner thumb-3" style="background: none;">
               <img src="assets/Hero (3).png" alt="ArtX Artist Bio App Design" style="width: 100%; height: 100%; object-fit: cover; object-position: left center;">
             </div>
           </div>
@@ -1395,6 +1405,25 @@
           </div>
           <div class="project-arrow">&nearr;</div>
         </a>
+
+        <!-- PROJECT 04: dataX.ai - Read-Only UX -->
+        <div class="project-card reveal" id="project-4" style="cursor: default;">
+          <div class="project-thumb">
+            <div class="project-thumb-inner" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+              <span style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.8rem; letter-spacing: 0.05em; color: var(--text-secondary); text-transform: uppercase;">Coming Soon</span>
+            </div>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="project-tag">B2B</span>
+              <span class="project-tag">CATALOGUE</span>
+              <span class="project-tag">UX PROBLEM</span>
+            </div>
+            <div class="project-name">When Read-Only Wasn't Good Enough(dataX.ai)</div>
+            <p class="project-desc">Identified and resolved a permission asymmetry in the B2B catalogue that was blocking data quality and AI enrichment.</p>
+          </div>
+          <div class="project-arrow" style="opacity: 0.3;">&nearr;</div>
+        </div>
       </div>
     </div>
   </section>
@@ -1495,12 +1524,14 @@
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-logo">Jitesh.</div>
-    <div class="footer-copy">&copy; 2024 &mdash; Bengaluru, India</div>
-    <div class="footer-links">
-      <a href="mailto:thakker.jitesh04@gmail.com">Email</a>
-      <a href="https://www.linkedin.com/in/jitesh-thakker/" target="_blank">LinkedIn</a>
-      <a href="https://www.behance.net/jiteshthakker" target="_blank">Behance</a>
+    <div class="footer-inner">
+      <div class="footer-logo">Jitesh.</div>
+      <div class="footer-copy">&copy; 2024 &mdash; Bengaluru, India</div>
+      <div class="footer-links">
+        <a href="mailto:thakker.jitesh04@gmail.com">Email</a>
+        <a href="https://www.linkedin.com/in/jitesh-thakker/" target="_blank">LinkedIn</a>
+        <a href="https://www.behance.net/jiteshthakker" target="_blank">Behance</a>
+      </div>
     </div>
   </footer>
 
