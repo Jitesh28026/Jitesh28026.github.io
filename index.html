@@ -2350,6 +2350,9 @@
       updateProcess();
     });
 
+    // Also run on load in case section is already in view
+    updateProcess();
+
     // Animation Loop
     const clock = new THREE.Clock();
     const animate = () => {
