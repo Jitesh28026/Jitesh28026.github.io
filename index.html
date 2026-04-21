@@ -1299,19 +1299,44 @@
       }
     }
 
-    /* Three.js Canvas Styling */
-    #hero-three-canvas {
-      position: absolute;
+    /* Global Three.js Canvas Styling */
+    #global-three-canvas {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 0;
+      z-index: -1;
       pointer-events: none;
-      opacity: 0.6;
+      opacity: 0.45;
+      transition: opacity 0.5s ease;
     }
 
-    .hero-inner {
+    @media (max-width: 768px) {
+      #global-three-canvas {
+        opacity: 0.25; /* Further subdued for mobile readability */
+      }
+    }
+
+    /* Process Step Interaction Styling */
+    .process-step {
+      transition: transform 0.4s ease, border-color 0.4s ease, background 0.4s ease;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .process-step.active {
+      background: var(--white);
+      border-color: var(--accent);
+      box-shadow: var(--shadow-md);
+      transform: scale(1.02);
+    }
+    
+    .process-step.active .step-num {
+      color: var(--accent);
+    }
+
+    .hero-inner, .section-container, .marquee-strip, footer {
       position: relative;
       z-index: 1;
     }
@@ -1341,60 +1366,10 @@
 
   <!-- HERO -->
   <section class="hero" id="home">
-    <canvas id="hero-three-canvas"></canvas>
-    <div class="hero-inner">
-      <div class="hero-content">
-        <div class="hero-badge">
-          <span class="dot"></span>
-          Product Designer &middot; Bengaluru
-        </div>
-        <h1 class="hero-title">
-          Designing<br>
-          <span class="highlight">systems</span> that<br>
-          actually work.
-        </h1>
-        <p class="hero-desc">
-          I craft B2B product experiences &mdash; turning complex workflows into intuitive, scalable interfaces. 2 years in, still obsessed with the details.
-        </p>
-        <div class="hero-actions">
-          <a href="#work" class="btn-solid" id="hero-cta-work">View Work &darr;</a>
-          <a href="#contact" class="btn-outline" id="hero-cta-contact">Say Hello</a>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="hero-card-stack">
-          <div class="floating-shape shape-1"></div>
-          <div class="floating-shape shape-2"></div>
-          <div class="floating-shape shape-3"></div>
-          <div class="hero-card-main" data-tilt data-tilt-glare data-tilt-max-glare="0.5" data-tilt-speed="400" data-tilt-perspective="1000" data-tilt-max="10">
-            <div class="card-header">
-              <div class="card-avatar">J</div>
-              <div class="card-meta">
-                <div class="card-name">Jitesh</div>
-                <div class="card-role">Product Designer</div>
-              </div>
-            </div>
-            <div class="card-stats">
-              <div class="stat-box">
-                <div class="stat-number">2+</div>
-                <div class="stat-label">Years</div>
-              </div>
-              <div class="stat-box">
-                <div class="stat-number">B2B</div>
-                <div class="stat-label">Focus</div>
-              </div>
-            </div>
-            <div class="card-skills">
-              <span class="card-skill">UX Design</span>
-              <span class="card-skill">Prototyping</span>
-              <span class="card-skill">Systems</span>
-              <span class="card-skill">AI-Augmented UX</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- GLOBAL BACKGROUND -->
+  <canvas id="global-three-canvas"></canvas>
+
+  <!-- FIXED NAVBAR -->
 
   <!-- MARQUEE -->
   <div class="marquee-strip" aria-hidden="true">
@@ -1800,13 +1775,13 @@
     });
   </script>
 
-  <!-- THREE.JS IMPLEMENTATION -->
+  <!-- THREE.JS GLOBAL IMPLEMENTATION -->
   <script type="module">
     import * as THREE from 'https://cdn.skypack.dev/three@0.136.0';
 
-    const canvas = document.querySelector('#hero-three-canvas');
-    const section = document.querySelector('#home');
+    const canvas = document.querySelector('#global-three-canvas');
     
+    // Scene Setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({
@@ -1818,57 +1793,88 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Objects: Abstract Floating Geometry
-    const geometry = new THREE.IcosahedronGeometry(1.5, 1);
-    const material = new THREE.MeshPhongMaterial({
-      color: 0x4F46E5,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.3,
-    });
-    const mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
-
-    // Particles
+    // GLOBAL ATMOSPHERE: Floating Particles
     const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 200;
+    const particlesCount = 400;
     const posArray = new Float32Array(particlesCount * 3);
 
     for(let i = 0; i < particlesCount * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 8;
+      posArray[i] = (Math.random() - 0.5) * 15;
     }
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const particlesMaterial = new THREE.PointsMaterial({
       size: 0.015,
       color: 0x4F46E5,
       transparent: true,
-      opacity: 0.5
+      opacity: 0.4
     });
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
 
+    // KINETIC SCULPTURE (Processes)
+    const isMobile = window.innerWidth <= 768;
+    const sculptureGeo = new THREE.IcosahedronGeometry(isMobile ? 1.2 : 2, 2);
+    const sculptureMat = new THREE.MeshPhongMaterial({
+      color: 0x4F46E5,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.15,
+    });
+    const sculpture = new THREE.Mesh(sculptureGeo, sculptureMat);
+    sculpture.position.set(isMobile ? 0 : 4, 0, -5);
+    scene.add(sculpture);
+
     // Lights
-    const pointLight = new THREE.PointLight(0xffffff, 1);
-    pointLight.position.set(2, 3, 4);
-    scene.add(pointLight);
+    const mainLight = new THREE.PointLight(0xffffff, 1);
+    mainLight.position.set(5, 5, 5);
+    scene.add(mainLight);
 
-    camera.position.z = 5;
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
 
-    // Mouse Movement Tracking
+    camera.position.z = 6;
+
+    // INTERACTION TRACKING
     let mouseX = 0;
     let mouseY = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let currentScroll = 0;
 
     window.addEventListener('mousemove', (event) => {
-      mouseX = (event.clientX / window.innerWidth) - 0.5;
-      mouseY = (event.clientY / window.innerHeight) - 0.5;
+      targetX = (event.clientX / window.innerWidth) - 0.5;
+      targetY = (event.clientY / window.innerHeight) - 0.5;
     });
 
-    // Resize Handler
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+    window.addEventListener('scroll', () => {
+      currentScroll = window.scrollY / (document.body.scrollHeight - window.innerHeight);
     });
+
+    // PROCESS SECTION OBSERVER
+    const processSteps = document.querySelectorAll('.process-step');
+    const observerOptions = {
+      root: null,
+      threshold: 0.6
+    };
+
+    let activeStepIndex = -1;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            processSteps.forEach((step, index) => {
+                if (step === entry.target) {
+                    step.classList.add('active');
+                    activeStepIndex = index;
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+      });
+    }, observerOptions);
+
+    processSteps.forEach(step => observer.observe(step));
 
     // Animation Loop
     const clock = new THREE.Clock();
@@ -1876,21 +1882,51 @@
     const animate = () => {
       const elapsedTime = clock.getElapsedTime();
 
-      // Update mesh: floating and rotating
-      mesh.rotation.y = elapsedTime * 0.1;
-      mesh.rotation.z = elapsedTime * 0.05;
-      
-      mesh.position.y = Math.sin(elapsedTime * 0.5) * 0.1;
-      
-      // React to mouse
-      mesh.rotation.x += mouseY * 0.05;
-      mesh.rotation.y += mouseX * 0.05;
-      
-      particlesMesh.rotation.y = elapsedTime * 0.02;
+      // Smooth mouse movement
+      mouseX += (targetX - mouseX) * 0.05;
+      mouseY += (targetY - mouseY) * 0.05;
+
+      // Update background atmosphere
+      particlesMesh.rotation.y = elapsedTime * 0.03;
+      particlesMesh.rotation.x = currentScroll * 0.5;
+      particlesMesh.position.y = -currentScroll * 2;
+
+      // Update Kinetic Sculpture
+      if (activeStepIndex !== -1) {
+          // Morphing/Rotating based on active step
+          sculpture.rotation.y += 0.01;
+          sculpture.rotation.x += 0.012;
+          sculpture.scale.setScalar(1 + Math.sin(elapsedTime * 2) * 0.05);
+          
+          // Move sculpture towards the active section area
+          sculpture.position.y = THREE.MathUtils.lerp(sculpture.position.y, (1 - currentScroll * 10) + activeStepIndex * 0.5, 0.05);
+          sculpture.material.opacity = THREE.MathUtils.lerp(sculpture.material.opacity, 0.4, 0.1);
+      } else {
+          sculpture.material.opacity = THREE.MathUtils.lerp(sculpture.material.opacity, 0.1, 0.05);
+      }
+
+      // Interaction reactivity
+      scene.rotation.x = mouseY * 0.1;
+      scene.rotation.y = mouseX * 0.1;
 
       renderer.render(scene, camera);
       window.requestAnimationFrame(animate);
     };
+
+    // Resize Handler
+    window.addEventListener('resize', () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const mobile = width <= 768;
+
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+      
+      // Update object scales on resize
+      sculpture.scale.setScalar(mobile ? 0.6 : 1);
+      sculpture.position.x = mobile ? 0 : 4;
+    });
 
     animate();
   </script>
