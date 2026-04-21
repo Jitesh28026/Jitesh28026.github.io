@@ -1298,6 +1298,23 @@
         align-items: flex-start;
       }
     }
+
+    /* Three.js Canvas Styling */
+    #hero-three-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
   </style>
 </head>
 
@@ -1324,6 +1341,7 @@
 
   <!-- HERO -->
   <section class="hero" id="home">
+    <canvas id="hero-three-canvas"></canvas>
     <div class="hero-inner">
       <div class="hero-content">
         <div class="hero-badge">
@@ -1780,6 +1798,101 @@
       once: true,
       easing: 'ease-out-cubic',
     });
+  </script>
+
+  <!-- THREE.JS IMPLEMENTATION -->
+  <script type="module">
+    import * as THREE from 'https://cdn.skypack.dev/three@0.136.0';
+
+    const canvas = document.querySelector('#hero-three-canvas');
+    const section = document.querySelector('#home');
+    
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      alpha: true,
+      antialias: true
+    });
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Objects: Abstract Floating Geometry
+    const geometry = new THREE.IcosahedronGeometry(1.5, 1);
+    const material = new THREE.MeshPhongMaterial({
+      color: 0x4F46E5,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.3,
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    // Particles
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 200;
+    const posArray = new Float32Array(particlesCount * 3);
+
+    for(let i = 0; i < particlesCount * 3; i++) {
+      posArray[i] = (Math.random() - 0.5) * 8;
+    }
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 0.015,
+      color: 0x4F46E5,
+      transparent: true,
+      opacity: 0.5
+    });
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+
+    // Lights
+    const pointLight = new THREE.PointLight(0xffffff, 1);
+    pointLight.position.set(2, 3, 4);
+    scene.add(pointLight);
+
+    camera.position.z = 5;
+
+    // Mouse Movement Tracking
+    let mouseX = 0;
+    let mouseY = 0;
+
+    window.addEventListener('mousemove', (event) => {
+      mouseX = (event.clientX / window.innerWidth) - 0.5;
+      mouseY = (event.clientY / window.innerHeight) - 0.5;
+    });
+
+    // Resize Handler
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Animation Loop
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      const elapsedTime = clock.getElapsedTime();
+
+      // Update mesh: floating and rotating
+      mesh.rotation.y = elapsedTime * 0.1;
+      mesh.rotation.z = elapsedTime * 0.05;
+      
+      mesh.position.y = Math.sin(elapsedTime * 0.5) * 0.1;
+      
+      // React to mouse
+      mesh.rotation.x += mouseY * 0.05;
+      mesh.rotation.y += mouseX * 0.05;
+      
+      particlesMesh.rotation.y = elapsedTime * 0.02;
+
+      renderer.render(scene, camera);
+      window.requestAnimationFrame(animate);
+    };
+
+    animate();
   </script>
 </body>
 
