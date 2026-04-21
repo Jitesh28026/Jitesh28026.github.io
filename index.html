@@ -1532,7 +1532,7 @@
 
     /* Process Step Sequential Reveal Styling */
     .process-section {
-      height: 450vh; /* Extra scroll room for sequential reveal */
+      height: 500vh; /* Increased scroll height for better separation */
       position: relative;
     }
 
@@ -1544,6 +1544,43 @@
       flex-direction: column;
       justify-content: center;
       overflow: hidden;
+      background: linear-gradient(to bottom, transparent, rgba(79, 70, 229, 0.02), transparent);
+    }
+
+    /* Parallax Background Numbers */
+    .process-parallax-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      font-family: 'Instrument Serif', serif;
+      font-size: 40rem;
+      color: rgba(79, 70, 229, 0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .process-progress-track {
+      position: absolute;
+      left: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2px;
+      height: 200px;
+      background: var(--light-gray);
+      z-index: 5;
+    }
+
+    .process-progress-fill {
+      width: 100%;
+      height: 0%;
+      background: var(--accent);
+      transition: height 0.3s ease;
     }
 
     .process-grid {
@@ -1554,26 +1591,36 @@
       justify-items: center;
       margin-top: 4rem;
       position: relative;
-      height: 400px;
+      height: 450px;
     }
 
     .process-step {
       grid-area: 1 / 1;
       width: 100%;
       max-width: 600px;
-      opacity: 0; /* Hidden by default, controlled by JS */
-      transform: translateY(30px);
-      transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+      opacity: 0;
+      transform: translateY(50px) scale(0.95);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
       pointer-events: none;
       text-align: center;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.85);
+      padding: 3rem;
+      border-radius: 32px;
+      border: 1px solid rgba(79, 70, 229, 0.1);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.03);
     }
 
     .process-step.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
       pointer-events: auto;
+    }
+
+    /* Outgoing step parallax */
+    .process-step.outgoing {
+      opacity: 0;
+      transform: translateY(-50px) scale(1.05);
     }
 
     @media (max-width: 768px) {
@@ -1921,6 +1968,10 @@
 
   <!-- PROCESS -->
   <section class="process-section" id="process">
+    <div class="process-parallax-bg" id="process-bg-num">01</div>
+    <div class="process-progress-track">
+      <div class="process-progress-fill" id="process-bar"></div>
+    </div>
     <div class="section-container">
       <div class="reveal">
         <div class="section-label">How I work</div>
@@ -2146,15 +2197,17 @@
     // Sequential Step Logic
     const processSection = document.querySelector('#process');
     const processSteps = document.querySelectorAll('.process-step');
+    const processBgNum = document.querySelector('#process-bg-num');
+    const progressBar = document.querySelector('#process-bar');
     
     const updateSequentialReveal = () => {
-      if(window.innerWidth <= 768) return; // Skip on mobile
+      if(window.innerWidth <= 768) return;
 
       const rect = processSection.getBoundingClientRect();
       const sectionHeight = processSection.offsetHeight;
       const viewHeight = window.innerHeight;
       
-      // Calculate progress (0 to 1) through the sticky section
+      // Improve progress mapping
       let progress = -rect.top / (sectionHeight - viewHeight);
       progress = Math.max(0, Math.min(1, progress));
 
@@ -2162,21 +2215,32 @@
       const activeIndex = Math.min(stepCount - 1, Math.floor(progress * stepCount));
       
       processSteps.forEach((step, idx) => {
+        // Remove old classes
+        step.classList.remove('visible', 'outgoing');
+        
         if (idx === activeIndex && progress >= 0 && progress < 1) {
           step.classList.add('visible');
         } else if (progress >= 1 && idx === stepCount - 1) {
           step.classList.add('visible');
-        } else {
-          step.classList.remove('visible');
+        } else if (idx < activeIndex) {
+          step.classList.add('outgoing');
         }
       });
 
-      // Update sculpture based on specific progress
-      if (progress > 0 && progress < 1) {
-        sculpture.material.opacity = THREE.MathUtils.lerp(sculpture.material.opacity, 0.5, 0.1);
-        sculpture.rotation.y += 0.02;
-        sculpture.position.y = (progress - 0.5) * -4;
-        sculpture.scale.setScalar(1.2 + Math.sin(progress * Math.PI) * 0.3);
+      // Update Parallax Visuals
+      if (progress >= 0 && progress <= 1) {
+          // Update BG Number
+          processBgNum.textContent = `0${activeIndex + 1}`;
+          processBgNum.style.transform = `translateY(${(progress * 100) - 50}px) scale(${0.8 + progress * 0.4})`;
+          
+          // Update Progress Bar
+          progressBar.style.height = `${progress * 100}%`;
+
+          // Update Three.js sculpture
+          sculpture.material.opacity = 0.2 + (progress * 0.4);
+          sculpture.rotation.y = progress * Math.PI * 2;
+          sculpture.position.y = (progress - 0.5) * -5;
+          sculpture.scale.setScalar(1 + Math.sin(progress * Math.PI * 4) * 0.1);
       }
     };
 
