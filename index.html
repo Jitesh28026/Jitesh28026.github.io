@@ -2208,6 +2208,66 @@
 
     window.addEventListener('scroll', updateActiveNav);
     updateActiveNav();
+
+    // ==========================================
+    // PROCESS SECTION — Sequential Parallax Reveal
+    // ==========================================
+    (function() {
+      if (window.innerWidth <= 768) return; // Skip on mobile
+
+      const processSection = document.querySelector('#process');
+      const processSteps = document.querySelectorAll('.process-step');
+      const processBgNum = document.getElementById('processBgNum');
+      const processBar = document.getElementById('processBar');
+      const processDots = document.querySelectorAll('.process-dot');
+
+      if (!processSection || processSteps.length === 0) return;
+
+      const STEP_COUNT = processSteps.length;
+
+      function getProgress() {
+        const rect = processSection.getBoundingClientRect();
+        const scrollable = processSection.offsetHeight - window.innerHeight;
+        if (scrollable <= 0) return 0;
+        return Math.max(0, Math.min(1, -rect.top / scrollable));
+      }
+
+      function update() {
+        if (window.innerWidth <= 768) return;
+
+        const progress = getProgress();
+        const idx = Math.min(STEP_COUNT - 1, Math.floor(progress * STEP_COUNT));
+
+        // Steps
+        processSteps.forEach((step, i) => {
+          step.classList.toggle('active', i === idx);
+        });
+
+        // Background number
+        if (processBgNum) {
+          processBgNum.textContent = '0' + (idx + 1);
+          const pY = (progress - 0.5) * -60;
+          processBgNum.style.transform = 'translate(-50%, calc(-50% + ' + pY + 'px))';
+        }
+
+        // Progress bar
+        if (processBar) {
+          processBar.style.height = (progress * 100) + '%';
+        }
+
+        // Dots
+        processDots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === idx);
+        });
+
+        // Store progress on window for Three.js to read
+        window.__processProgress = progress;
+        window.__processActiveStep = idx;
+      }
+
+      window.addEventListener('scroll', update, { passive: true });
+      update(); // Run once on load
+    })();
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
   <!-- Add AOS Script and Initializer -->
@@ -2291,67 +2351,9 @@
       targetY = (event.clientY / window.innerHeight) - 0.5;
     });
 
-    // =============================================
-    // PROCESS SECTION — Sequential Parallax Reveal
-    // =============================================
-    const processSection = document.querySelector('#process');
-    const processSteps = document.querySelectorAll('.process-step');
-    const processBgNum = document.getElementById('processBgNum');
-    const processBar = document.getElementById('processBar');
-    const processDots = document.querySelectorAll('.process-dot');
-    const STEP_COUNT = processSteps.length; // 4
-    let prevActiveStep = 0;
-
-    function getProcessProgress() {
-      const rect = processSection.getBoundingClientRect();
-      const scrollableDistance = processSection.offsetHeight - window.innerHeight;
-      if (scrollableDistance <= 0) return 0;
-      const rawProgress = -rect.top / scrollableDistance;
-      return Math.max(0, Math.min(1, rawProgress));
-    }
-
-    function updateProcess() {
-      if (window.innerWidth <= 768) return;
-
-      const progress = getProcessProgress();
-      const activeIndex = Math.min(STEP_COUNT - 1, Math.floor(progress * STEP_COUNT));
-
-      // 1. Update step visibility
-      processSteps.forEach((step, i) => {
-        step.classList.toggle('active', i === activeIndex);
-      });
-
-      // 2. Update background number with parallax offset
-      processBgNum.textContent = '0' + (activeIndex + 1);
-      const parallaxY = ((progress - 0.5) * -60);
-      processBgNum.style.transform = `translate(-50%, calc(-50% + ${parallaxY}px))`;
-
-      // 3. Update progress bar
-      processBar.style.height = (progress * 100) + '%';
-
-      // 4. Update dots
-      processDots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === activeIndex);
-      });
-
-      // 5. Sync Three.js sculpture
-      const stepFraction = (progress * STEP_COUNT) - activeIndex; // 0-1 within current step
-      sculpture.material.opacity = 0.15 + (progress * 0.3);
-      sculpture.rotation.y += 0.005;
-      sculpture.rotation.x = Math.sin(progress * Math.PI * 2) * 0.3;
-      sculpture.position.y = parallaxY * 0.04;
-      sculpture.scale.setScalar(1 + Math.sin(progress * Math.PI) * 0.15);
-
-      prevActiveStep = activeIndex;
-    }
-
     window.addEventListener('scroll', () => {
       currentScroll = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-      updateProcess();
     });
-
-    // Also run on load in case section is already in view
-    updateProcess();
 
     // Animation Loop
     const clock = new THREE.Clock();
