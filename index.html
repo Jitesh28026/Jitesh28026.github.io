@@ -2369,7 +2369,14 @@
       particlesMesh.rotation.x = currentScroll * 0.5;
       particlesMesh.position.y = -currentScroll * 2;
 
-      // interaction reactivity
+      // Sync sculpture with process scroll (reads from standalone script)
+      const pp = window.__processProgress || 0;
+      sculpture.material.opacity = 0.1 + (pp * 0.35);
+      sculpture.rotation.y += 0.003 + (pp * 0.008);
+      sculpture.rotation.x = Math.sin(pp * Math.PI * 2) * 0.2;
+      sculpture.position.y = (pp - 0.5) * -2.5;
+
+      // Interaction reactivity
       scene.rotation.x = mouseY * 0.1;
       scene.rotation.y = mouseX * 0.1;
 
