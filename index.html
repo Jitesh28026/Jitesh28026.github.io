@@ -1300,40 +1300,57 @@
     }
 
     /* Global Three.js Canvas Styling */
-    #global-three-canvas {
-      position: fixed;
+    /* Process Step Sequential Reveal Styling */
+    .process-section {
+      height: 450vh; /* Extra scroll room for sequential reveal */
+      position: relative;
+    }
+
+    .process-section .section-container {
+      position: sticky;
       top: 0;
-      left: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      align-items: center;
+      justify-items: center;
+      margin-top: 4rem;
+      position: relative;
+      height: 400px;
+    }
+
+    .process-step {
+      grid-area: 1 / 1;
       width: 100%;
-      height: 100%;
-      z-index: -1;
+      max-width: 600px;
+      opacity: 0; /* Hidden by default, controlled by JS */
+      transform: translateY(30px);
+      transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
       pointer-events: none;
-      opacity: 0.45;
-      transition: opacity 0.5s ease;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+    }
+
+    .process-step.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
     @media (max-width: 768px) {
-      #global-three-canvas {
-        opacity: 0.25; /* Further subdued for mobile readability */
-      }
-    }
-
-    /* Process Step Interaction Styling */
-    .process-step {
-      transition: transform 0.4s ease, border-color 0.4s ease, background 0.4s ease;
-      position: relative;
-      z-index: 2;
-    }
-    
-    .process-step.active {
-      background: var(--white);
-      border-color: var(--accent);
-      box-shadow: var(--shadow-md);
-      transform: scale(1.02);
-    }
-    
-    .process-step.active .step-num {
-      color: var(--accent);
+      .process-section { height: auto; }
+      .process-section .section-container { position: relative; height: auto; padding: 80px 1.5rem; }
+      .process-grid { display: flex; flex-direction: column; height: auto; gap: 2rem; }
+      .process-step { opacity: 1; transform: none; position: relative; pointer-events: auto; text-align: left; }
     }
 
     .hero-inner, .section-container, .marquee-strip, footer {
@@ -1679,7 +1696,7 @@
         <div class="section-label">How I work</div>
         <h2 class="section-heading">How I tackle <span class="muted">problems.</span></h2>
       </div>
-      <div class="process-grid reveal">
+      <div class="process-grid">
         <div class="process-step">
           <div class="step-icon">&#128269;</div>
           <div class="step-num">01</div>
@@ -1896,39 +1913,48 @@
       targetY = (event.clientY / window.innerHeight) - 0.5;
     });
 
-    window.addEventListener('scroll', () => {
-      currentScroll = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-    });
-
-    // PROCESS SECTION OBSERVER
+    // Sequential Step Logic
+    const processSection = document.querySelector('#process');
     const processSteps = document.querySelectorAll('.process-step');
-    const observerOptions = {
-      root: null,
-      threshold: 0.6
-    };
+    
+    const updateSequentialReveal = () => {
+      if(window.innerWidth <= 768) return; // Skip on mobile
 
-    let activeStepIndex = -1;
+      const rect = processSection.getBoundingClientRect();
+      const sectionHeight = processSection.offsetHeight;
+      const viewHeight = window.innerHeight;
+      
+      // Calculate progress (0 to 1) through the sticky section
+      let progress = -rect.top / (sectionHeight - viewHeight);
+      progress = Math.max(0, Math.min(1, progress));
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            processSteps.forEach((step, index) => {
-                if (step === entry.target) {
-                    step.classList.add('active');
-                    activeStepIndex = index;
-                } else {
-                    step.classList.remove('active');
-                }
-            });
+      const stepCount = processSteps.length;
+      const activeIndex = Math.floor(progress * stepCount);
+      
+      processSteps.forEach((step, idx) => {
+        if (idx === activeIndex && progress > 0 && progress < 1) {
+          step.classList.add('visible');
+        } else {
+          step.classList.remove('visible');
         }
       });
-    }, observerOptions);
 
-    processSteps.forEach(step => observer.observe(step));
+      // Update sculpture based on specific progress
+      if (progress > 0 && progress < 1) {
+        sculpture.material.opacity = THREE.MathUtils.lerp(sculpture.material.opacity, 0.5, 0.1);
+        sculpture.rotation.y += 0.02;
+        sculpture.position.y = (progress - 0.5) * -4;
+        sculpture.scale.setScalar(1.2 + Math.sin(progress * Math.PI) * 0.3);
+      }
+    };
+
+    window.addEventListener('scroll', () => {
+      currentScroll = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+      updateSequentialReveal();
+    });
 
     // Animation Loop
     const clock = new THREE.Clock();
-
     const animate = () => {
       const elapsedTime = clock.getElapsedTime();
 
@@ -1941,21 +1967,7 @@
       particlesMesh.rotation.x = currentScroll * 0.5;
       particlesMesh.position.y = -currentScroll * 2;
 
-      // Update Kinetic Sculpture
-      if (activeStepIndex !== -1) {
-          // Morphing/Rotating based on active step
-          sculpture.rotation.y += 0.01;
-          sculpture.rotation.x += 0.012;
-          sculpture.scale.setScalar(1 + Math.sin(elapsedTime * 2) * 0.05);
-          
-          // Move sculpture towards the active section area
-          sculpture.position.y = THREE.MathUtils.lerp(sculpture.position.y, (1 - currentScroll * 10) + activeStepIndex * 0.5, 0.05);
-          sculpture.material.opacity = THREE.MathUtils.lerp(sculpture.material.opacity, 0.4, 0.1);
-      } else {
-          sculpture.material.opacity = THREE.MathUtils.lerp(sculpture.material.opacity, 0.1, 0.05);
-      }
-
-      // Interaction reactivity
+      // interaction reactivity
       scene.rotation.x = mouseY * 0.1;
       scene.rotation.y = mouseX * 0.1;
 
