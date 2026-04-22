@@ -1102,95 +1102,147 @@
     /* ==========================================
        PROCESS SECTION
     ========================================== */
+    /* ==========================================
+       PROCESS SECTION
+    ========================================== */
     .process-section {
-      background: var(--off-white);
-      color: var(--text-primary);
+      background: var(--white);
+      padding: 0;
       position: relative;
-      overflow: hidden;
+      overflow: visible;
     }
 
-    .process-section::before {
+    .process-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      padding: 10rem 4rem;
+    }
+
+    .process-sticky-content {
+      position: sticky;
+      top: 15rem;
+      height: fit-content;
+    }
+
+    .process-nav {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .process-nav-item {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .process-nav-item::before {
       content: '';
       position: absolute;
-      top: -200px;
-      right: -200px;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-      pointer-events: none;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--mid-gray);
+      transition: all 0.3s ease;
     }
 
-    .process-section .section-label {
+    .process-nav-item.active {
       color: var(--accent);
+      font-weight: 600;
+      transform: translateX(8px);
     }
 
-    .process-section .section-label::before {
+    .process-nav-item.active::before {
       background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
     }
 
-    .process-section .section-heading {
-      color: var(--text-primary);
+    .process-scroll-content {
+      display: flex;
+      flex-direction: column;
+      gap: 6rem;
     }
 
-    .process-section .section-heading .muted {
-      color: var(--text-secondary);
-    }
-
-    .process-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      margin-top: 3.5rem;
-    }
-
-    .process-step {
-      padding: 36px 28px;
-      border-right: 1px solid var(--light-gray);
-      position: relative;
-      transition: background 0.3s, box-shadow 0.3s;
-    }
-
-    .process-step:last-child {
-      border-right: none;
-    }
-
-    .process-step:hover {
+    .process-card {
       background: var(--white);
+      border: 1px solid var(--mid-gray);
+      border-radius: 24px;
+      padding: 48px;
+      position: relative;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 0.2;
+      transform: translateY(40px);
       box-shadow: var(--shadow-sm);
+    }
+
+    .process-card.active {
+      opacity: 1;
+      transform: translateY(0);
+      border-color: var(--accent-glow);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .step-icon {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      display: block;
     }
 
     .step-num {
       font-family: 'Instrument Serif', serif;
-      font-size: 3.5rem;
-      color: var(--mid-gray);
-      line-height: 1;
-      margin-bottom: 1.25rem;
+      font-size: 1.5rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: block;
+      opacity: 0.6;
     }
 
     .step-title {
       font-family: 'Instrument Serif', serif;
-      font-size: 1.35rem;
-      margin-bottom: 0.75rem;
+      font-size: 2.2rem;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
       color: var(--text-primary);
     }
 
     .step-desc {
-      font-size: 0.88rem;
+      font-size: 1.1rem;
       color: var(--text-secondary);
-      line-height: 1.7;
+      line-height: 1.8;
+      font-weight: 400;
     }
 
-    .step-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(232, 87, 58, 0.12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      font-size: 1rem;
+    @media (max-width: 1024px) {
+      .process-container {
+        grid-template-columns: 1fr;
+        padding: 5rem 2.5rem;
+      }
+      .process-sticky-content {
+        position: relative;
+        top: 0;
+        margin-bottom: 4rem;
+      }
+      .process-nav {
+        display: none;
+      }
+      .process-card {
+        opacity: 1;
+        transform: none;
+        padding: 32px;
+      }
     }
+
 
     /* ==========================================
        CONTACT SECTION
@@ -1530,185 +1582,8 @@
       }
     }
 
-    /* ==========================================
-       PROCESS SECTION — Sticky Parallax Reveal
-    ========================================== */
-    .process-section {
-      height: 400vh;
-      position: relative;
-    }
 
-    .process-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 0 4rem;
-      overflow: hidden;
-    }
 
-    /* Giant background step number — parallax layer */
-    .process-bg-number {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: 'Instrument Serif', serif;
-      font-size: clamp(15rem, 30vw, 28rem);
-      line-height: 1;
-      color: rgba(79, 70, 229, 0.04);
-      pointer-events: none;
-      z-index: 0;
-      transition: opacity 0.6s ease;
-    }
-
-    /* Vertical progress bar */
-    .process-progress {
-      position: absolute;
-      left: 3rem;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 3px;
-      height: 180px;
-      background: rgba(79, 70, 229, 0.1);
-      border-radius: 4px;
-      overflow: hidden;
-      z-index: 5;
-    }
-
-    .process-progress-fill {
-      width: 100%;
-      height: 0%;
-      background: var(--accent);
-      border-radius: 4px;
-      transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* Step indicator dots */
-    .process-dots {
-      position: absolute;
-      right: 3rem;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      z-index: 5;
-    }
-
-    .process-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(79, 70, 229, 0.15);
-      transition: all 0.4s ease;
-    }
-
-    .process-dot.active {
-      background: var(--accent);
-      transform: scale(1.4);
-      box-shadow: 0 0 12px rgba(79, 70, 229, 0.4);
-    }
-
-    /* The grid that stacks all steps on top of each other */
-    .process-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 1fr;
-      width: 100%;
-      max-width: 640px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .process-step {
-      grid-area: 1 / 1;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-                  transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      pointer-events: none;
-      text-align: center;
-      padding: 3rem 2.5rem;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 28px;
-      border: 1px solid rgba(79, 70, 229, 0.08);
-      backdrop-filter: blur(16px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
-    }
-
-    .process-step.active {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .process-step .step-icon {
-      font-size: 2.5rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .process-step .step-num {
-      font-family: 'Instrument Serif', serif;
-      font-size: 1rem;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
-    }
-
-    .process-step .step-title {
-      font-family: 'Instrument Serif', serif;
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      color: var(--text-primary);
-    }
-
-    .process-step .step-desc {
-      font-size: 1rem;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      max-width: 480px;
-      margin: 0 auto;
-    }
-
-    /* Section header inside sticky */
-    .process-header {
-      text-align: center;
-      margin-bottom: 3rem;
-      position: relative;
-      z-index: 2;
-    }
-
-    @media (max-width: 768px) {
-      .process-section {
-        height: auto;
-      }
-      .process-sticky {
-        position: relative;
-        height: auto;
-        padding: 80px 1.5rem;
-      }
-      .process-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-      }
-      .process-step {
-        opacity: 1;
-        transform: none;
-        position: relative;
-        pointer-events: auto;
-        text-align: left;
-      }
-      .process-bg-number,
-      .process-progress,
-      .process-dots {
-        display: none;
-      }
-    }
 
     .hero-inner, .section-container, .marquee-strip, footer {
       position: relative;
@@ -2048,60 +1923,47 @@
 
   <!-- PROCESS -->
   <section class="process-section" id="process">
-    <div class="process-sticky">
-
-      <!-- Parallax background number -->
-      <div class="process-bg-number" id="processBgNum">01</div>
-
-      <!-- Vertical progress bar -->
-      <div class="process-progress">
-        <div class="process-progress-fill" id="processBar"></div>
+    <div class="process-container">
+      <div class="process-sticky-content">
+        <div class="section-label">Process</div>
+        <h2 class="section-heading">How I tackle <br><span class="muted">complex problems.</span></h2>
+        <div class="process-nav">
+          <div class="process-nav-item active" data-step="0">01. Deep Starts</div>
+          <div class="process-nav-item" data-step="1">02. Balanced Decisions</div>
+          <div class="process-nav-item" data-step="2">03. Ship to Learn</div>
+          <div class="process-nav-item" data-step="3">04. Real-world Refinement</div>
+        </div>
       </div>
-
-      <!-- Step indicator dots -->
-      <div class="process-dots" id="processDots">
-        <div class="process-dot active" data-step="0"></div>
-        <div class="process-dot" data-step="1"></div>
-        <div class="process-dot" data-step="2"></div>
-        <div class="process-dot" data-step="3"></div>
-      </div>
-
-      <!-- Header -->
-      <div class="process-header">
-        <div class="section-label">How I work</div>
-        <h2 class="section-heading">How I tackle <span class="muted">problems.</span></h2>
-      </div>
-
-      <!-- Steps (stacked via CSS grid) -->
-      <div class="process-grid">
-        <div class="process-step active">
-          <div class="step-icon">&#128269;</div>
-          <div class="step-num">01</div>
-          <div class="step-title">Deep starts</div>
+      
+      <div class="process-scroll-content">
+        <div class="process-card" id="step-0">
+          <span class="step-icon">🔍</span>
+          <span class="step-num">01</span>
+          <h3 class="step-title">Deep starts</h3>
           <p class="step-desc">I spend a lot of time upfront just trying to understand the problem. I dig into what users need and what the business wants so I can focus on building the most impactful solution from the start.</p>
         </div>
-        <div class="process-step">
-          <div class="step-icon">&#128506;</div>
-          <div class="step-num">02</div>
-          <div class="step-title">Balanced decisions</div>
+        <div class="process-card" id="step-1">
+          <span class="step-icon">📍</span>
+          <span class="step-num">02</span>
+          <h3 class="step-title">Balanced decisions</h3>
           <p class="step-desc">I don't just follow one source of truth. I make decisions by mixing research data with business goals and my own gut feeling from building real products. It's about finding a solution that actually works in the real world.</p>
         </div>
-        <div class="process-step">
-          <div class="step-icon">&#9889;</div>
-          <div class="step-num">03</div>
-          <div class="step-title">Ship to learn</div>
+        <div class="process-card" id="step-2">
+          <span class="step-icon">⚡</span>
+          <span class="step-num">03</span>
+          <h3 class="step-title">Ship to learn</h3>
           <p class="step-desc">I believe the best insights come from real-world usage. I aim to ship the initial product as soon as it's ready, because you only truly understand what a user wants once they start using your design in their day-to-day life.</p>
         </div>
-        <div class="process-step">
-          <div class="step-icon">&#128260;</div>
-          <div class="step-num">04</div>
-          <div class="step-title">Real-world refinement</div>
+        <div class="process-card" id="step-3">
+          <span class="step-icon">♻️</span>
+          <span class="step-num">04</span>
+          <h3 class="step-title">Real-world refinement</h3>
           <p class="step-desc">For me, the design isn't "done" at launch. I use the feedback and behavior from the live product to iterate and pivot. Shipping is just the beginning of the process, not the end.</p>
         </div>
       </div>
-
     </div>
   </section>
+
 
   <!-- CONTACT -->
   <section class="contact-section" id="contact">
@@ -2210,64 +2072,51 @@
     updateActiveNav();
 
     // ==========================================
-    // PROCESS SECTION — Sequential Parallax Reveal
+    // PROCESS SECTION — Intersection Observer Reveal
     // ==========================================
     (function() {
-      if (window.innerWidth <= 768) return; // Skip on mobile
+      const processCards = document.querySelectorAll('.process-card');
+      const navItems = document.querySelectorAll('.process-nav-item');
+      
+      const options = {
+        threshold: 0.6,
+        rootMargin: '0px'
+      };
 
-      const processSection = document.querySelector('#process');
-      const processSteps = document.querySelectorAll('.process-step');
-      const processBgNum = document.getElementById('processBgNum');
-      const processBar = document.getElementById('processBar');
-      const processDots = document.querySelectorAll('.process-dot');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const index = Array.from(processCards).indexOf(entry.target);
+            
+            // Update active card
+            processCards.forEach(card => card.classList.remove('active'));
+            entry.target.classList.add('active');
+            
+            // Update nav items
+            navItems.forEach((item, i) => {
+              item.classList.toggle('active', i === index);
+            });
 
-      if (!processSection || processSteps.length === 0) return;
-
-      const STEP_COUNT = processSteps.length;
-
-      function getProgress() {
-        const rect = processSection.getBoundingClientRect();
-        const scrollable = processSection.offsetHeight - window.innerHeight;
-        if (scrollable <= 0) return 0;
-        return Math.max(0, Math.min(1, -rect.top / scrollable));
-      }
-
-      function update() {
-        if (window.innerWidth <= 768) return;
-
-        const progress = getProgress();
-        const idx = Math.min(STEP_COUNT - 1, Math.floor(progress * STEP_COUNT));
-
-        // Steps
-        processSteps.forEach((step, i) => {
-          step.classList.toggle('active', i === idx);
+            // Update Three.js integration
+            window.__processActiveStep = index;
+            window.__processProgress = index / (processCards.length - 1);
+          }
         });
+      }, options);
 
-        // Background number
-        if (processBgNum) {
-          processBgNum.textContent = '0' + (idx + 1);
-          const pY = (progress - 0.5) * -60;
-          processBgNum.style.transform = 'translate(-50%, calc(-50% + ' + pY + 'px))';
-        }
+      processCards.forEach(card => observer.observe(card));
 
-        // Progress bar
-        if (processBar) {
-          processBar.style.height = (progress * 100) + '%';
-        }
-
-        // Dots
-        processDots.forEach((dot, i) => {
-          dot.classList.toggle('active', i === idx);
+      // Click to scroll for nav items
+      navItems.forEach((item, index) => {
+        item.addEventListener('click', () => {
+          processCards[index].scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
         });
-
-        // Store progress on window for Three.js to read
-        window.__processProgress = progress;
-        window.__processActiveStep = idx;
-      }
-
-      window.addEventListener('scroll', update, { passive: true });
-      update(); // Run once on load
+      });
     })();
+
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
   <!-- Add AOS Script and Initializer -->
