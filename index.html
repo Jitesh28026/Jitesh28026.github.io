@@ -1113,65 +1113,19 @@
     }
 
     .process-container {
-      max-width: 1300px;
+      max-width: 900px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 4rem;
       padding: 10rem 4rem;
     }
 
-    .process-sticky-content {
-      position: sticky;
-      top: 15rem;
-      height: fit-content;
-    }
-
-    .process-nav {
-      margin-top: 3rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .process-nav-item {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      transition: all 0.3s ease;
-      cursor: pointer;
-      position: relative;
-      padding-left: 24px;
-    }
-
-    .process-nav-item::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--mid-gray);
-      transition: all 0.3s ease;
-    }
-
-    .process-nav-item.active {
-      color: var(--accent);
-      font-weight: 600;
-      transform: translateX(8px);
-    }
-
-    .process-nav-item.active::before {
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--accent-glow);
+    .process-header {
+      margin-bottom: 4rem;
     }
 
     .process-scroll-content {
       display: flex;
       flex-direction: column;
-      gap: 6rem;
+      gap: 2.5rem;
     }
 
     .process-card {
@@ -1180,17 +1134,14 @@
       border-radius: 24px;
       padding: 48px;
       position: relative;
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      opacity: 0.2;
-      transform: translateY(40px);
       box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
     }
 
-    .process-card.active {
-      opacity: 1;
-      transform: translateY(0);
+    .process-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-4px);
       border-color: var(--accent-glow);
-      box-shadow: var(--shadow-lg);
     }
 
     .step-icon {
@@ -1225,20 +1176,9 @@
 
     @media (max-width: 1024px) {
       .process-container {
-        grid-template-columns: 1fr;
         padding: 5rem 2.5rem;
       }
-      .process-sticky-content {
-        position: relative;
-        top: 0;
-        margin-bottom: 4rem;
-      }
-      .process-nav {
-        display: none;
-      }
       .process-card {
-        opacity: 1;
-        transform: none;
         padding: 32px;
       }
     }
@@ -1435,13 +1375,6 @@
       .carousel-track { gap: 24px; }
       .carousel-track-container { gap: 24px; }
 
-      .process-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .process-step {
-        border-bottom: 1px solid var(--light-gray);
-      }
 
       .nav-links {
         display: none;
@@ -1530,9 +1463,6 @@
         100% { transform: translateX(0); }
       }
 
-      .process-grid {
-        grid-template-columns: 1fr;
-      }
 
       footer {
         flex-direction: column;
@@ -1924,37 +1854,31 @@
   <!-- PROCESS -->
   <section class="process-section" id="process">
     <div class="process-container">
-      <div class="process-sticky-content">
+      <div class="process-header reveal">
         <div class="section-label">Process</div>
         <h2 class="section-heading">How I tackle <br><span class="muted">complex problems.</span></h2>
-        <div class="process-nav">
-          <div class="process-nav-item active" data-step="0">01. Deep Starts</div>
-          <div class="process-nav-item" data-step="1">02. Balanced Decisions</div>
-          <div class="process-nav-item" data-step="2">03. Ship to Learn</div>
-          <div class="process-nav-item" data-step="3">04. Real-world Refinement</div>
-        </div>
       </div>
       
       <div class="process-scroll-content">
-        <div class="process-card" id="step-0">
+        <div class="process-card reveal">
           <span class="step-icon">🔍</span>
           <span class="step-num">01</span>
           <h3 class="step-title">Deep starts</h3>
           <p class="step-desc">I spend a lot of time upfront just trying to understand the problem. I dig into what users need and what the business wants so I can focus on building the most impactful solution from the start.</p>
         </div>
-        <div class="process-card" id="step-1">
+        <div class="process-card reveal">
           <span class="step-icon">📍</span>
           <span class="step-num">02</span>
           <h3 class="step-title">Balanced decisions</h3>
           <p class="step-desc">I don't just follow one source of truth. I make decisions by mixing research data with business goals and my own gut feeling from building real products. It's about finding a solution that actually works in the real world.</p>
         </div>
-        <div class="process-card" id="step-2">
+        <div class="process-card reveal">
           <span class="step-icon">⚡</span>
           <span class="step-num">03</span>
           <h3 class="step-title">Ship to learn</h3>
           <p class="step-desc">I believe the best insights come from real-world usage. I aim to ship the initial product as soon as it's ready, because you only truly understand what a user wants once they start using your design in their day-to-day life.</p>
         </div>
-        <div class="process-card" id="step-3">
+        <div class="process-card reveal">
           <span class="step-icon">♻️</span>
           <span class="step-num">04</span>
           <h3 class="step-title">Real-world refinement</h3>
@@ -2072,49 +1996,19 @@
     updateActiveNav();
 
     // ==========================================
-    // PROCESS SECTION — Intersection Observer Reveal
+    // PROCESS SECTION — Three.js Progress
     // ==========================================
     (function() {
-      const processCards = document.querySelectorAll('.process-card');
-      const navItems = document.querySelectorAll('.process-nav-item');
-      
-      const options = {
-        threshold: 0.6,
-        rootMargin: '0px'
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const index = Array.from(processCards).indexOf(entry.target);
-            
-            // Update active card
-            processCards.forEach(card => card.classList.remove('active'));
-            entry.target.classList.add('active');
-            
-            // Update nav items
-            navItems.forEach((item, i) => {
-              item.classList.toggle('active', i === index);
-            });
-
-            // Update Three.js integration
-            window.__processActiveStep = index;
-            window.__processProgress = index / (processCards.length - 1);
-          }
+      const processSection = document.getElementById('process');
+      if (processSection) {
+        window.addEventListener('scroll', () => {
+          const rect = processSection.getBoundingClientRect();
+          const windowHeight = window.innerHeight;
+          let progress = (windowHeight - rect.top) / (rect.height + windowHeight);
+          progress = Math.max(0, Math.min(1, progress));
+          window.__processProgress = progress;
         });
-      }, options);
-
-      processCards.forEach(card => observer.observe(card));
-
-      // Click to scroll for nav items
-      navItems.forEach((item, index) => {
-        item.addEventListener('click', () => {
-          processCards[index].scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-          });
-        });
-      });
+      }
     })();
 
   </script>
