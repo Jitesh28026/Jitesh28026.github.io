@@ -1105,6 +1105,9 @@
     /* ==========================================
        PROCESS SECTION
     ========================================== */
+    /* ==========================================
+       PROCESS SECTION
+    ========================================== */
     .process-section {
       background: var(--white);
       padding: 0;
@@ -1113,7 +1116,7 @@
     }
 
     .process-container {
-      max-width: 900px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 10rem 4rem;
     }
@@ -1122,31 +1125,21 @@
       margin-bottom: 4rem;
     }
 
-    .process-scroll-content {
-      display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3rem 4rem;
     }
 
-    .process-card {
-      background: var(--white);
-      border: 1px solid var(--mid-gray);
-      border-radius: 24px;
-      padding: 48px;
+    .process-step {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--light-gray);
       position: relative;
-      box-shadow: var(--shadow-sm);
-      transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
-    }
-
-    .process-card:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-4px);
-      border-color: var(--accent-glow);
     }
 
     .step-icon {
       font-size: 2.5rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       display: block;
     }
 
@@ -1154,7 +1147,7 @@
       font-family: 'Instrument Serif', serif;
       font-size: 1.5rem;
       color: var(--accent);
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       display: block;
       opacity: 0.6;
     }
@@ -1163,7 +1156,7 @@
       font-family: 'Instrument Serif', serif;
       font-size: 2.2rem;
       line-height: 1.2;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       color: var(--text-primary);
     }
 
@@ -1178,8 +1171,19 @@
       .process-container {
         padding: 5rem 2.5rem;
       }
-      .process-card {
-        padding: 32px;
+      .process-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem 3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .process-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .process-step {
+        border-bottom: 1px solid var(--light-gray);
       }
     }
 
@@ -1859,26 +1863,26 @@
         <h2 class="section-heading">How I tackle <br><span class="muted">complex problems.</span></h2>
       </div>
       
-      <div class="process-scroll-content">
-        <div class="process-card reveal">
+      <div class="process-grid">
+        <div class="process-step reveal">
           <span class="step-icon">🔍</span>
           <span class="step-num">01</span>
           <h3 class="step-title">Deep starts</h3>
           <p class="step-desc">I spend a lot of time upfront just trying to understand the problem. I dig into what users need and what the business wants so I can focus on building the most impactful solution from the start.</p>
         </div>
-        <div class="process-card reveal">
+        <div class="process-step reveal" style="transition-delay: 0.1s;">
           <span class="step-icon">📍</span>
           <span class="step-num">02</span>
           <h3 class="step-title">Balanced decisions</h3>
           <p class="step-desc">I don't just follow one source of truth. I make decisions by mixing research data with business goals and my own gut feeling from building real products. It's about finding a solution that actually works in the real world.</p>
         </div>
-        <div class="process-card reveal">
+        <div class="process-step reveal" style="transition-delay: 0.2s;">
           <span class="step-icon">⚡</span>
           <span class="step-num">03</span>
           <h3 class="step-title">Ship to learn</h3>
           <p class="step-desc">I believe the best insights come from real-world usage. I aim to ship the initial product as soon as it's ready, because you only truly understand what a user wants once they start using your design in their day-to-day life.</p>
         </div>
-        <div class="process-card reveal">
+        <div class="process-step reveal" style="transition-delay: 0.3s;">
           <span class="step-icon">♻️</span>
           <span class="step-num">04</span>
           <h3 class="step-title">Real-world refinement</h3>
