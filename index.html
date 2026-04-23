@@ -1497,24 +1497,6 @@
       }
     }
 
-    /* Global Three.js Canvas Styling */
-    #global-three-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-      opacity: 0.45;
-      transition: opacity 0.5s ease;
-    }
-
-    @media (max-width: 768px) {
-      #global-three-canvas {
-        opacity: 0.25; /* Further subdued for mobile readability */
-      }
-    }
 
 
 
@@ -1549,7 +1531,6 @@
 
   <!-- HERO -->
   <section class="hero" id="home">
-    <canvas id="global-three-canvas"></canvas>
     <div class="hero-inner">
       <div class="hero-content">
         <div class="hero-badge">
@@ -1999,155 +1980,7 @@
     window.addEventListener('scroll', updateActiveNav);
     updateActiveNav();
 
-    // ==========================================
-    // PROCESS SECTION — Three.js Progress
-    // ==========================================
-    (function() {
-      const processSection = document.getElementById('process');
-      if (processSection) {
-        window.addEventListener('scroll', () => {
-          const rect = processSection.getBoundingClientRect();
-          const windowHeight = window.innerHeight;
-          let progress = (windowHeight - rect.top) / (rect.height + windowHeight);
-          progress = Math.max(0, Math.min(1, progress));
-          window.__processProgress = progress;
-        });
-      }
-    })();
 
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
-  <!-- Add AOS Script and Initializer -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init({
-      duration: 1000,
-      once: true,
-      easing: 'ease-out-cubic',
-    });
-  </script>
-
-  <!-- THREE.JS GLOBAL IMPLEMENTATION -->
-  <script type="module">
-    import * as THREE from 'https://cdn.skypack.dev/three@0.136.0';
-
-    const canvas = document.querySelector('#global-three-canvas');
-    
-    // Scene Setup
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({
-      canvas: canvas,
-      alpha: true,
-      antialias: true
-    });
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    // GLOBAL ATMOSPHERE: Floating Particles
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 400;
-    const posArray = new Float32Array(particlesCount * 3);
-
-    for(let i = 0; i < particlesCount * 3; i++) {
-      posArray[i] = (Math.random() - 0.5) * 15;
-    }
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.015,
-      color: 0x4F46E5,
-      transparent: true,
-      opacity: 0.4
-    });
-    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particlesMesh);
-
-    // KINETIC SCULPTURE (Processes)
-    const isMobile = window.innerWidth <= 768;
-    const sculptureGeo = new THREE.IcosahedronGeometry(isMobile ? 1.2 : 2, 2);
-    const sculptureMat = new THREE.MeshPhongMaterial({
-      color: 0x4F46E5,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.15,
-    });
-    const sculpture = new THREE.Mesh(sculptureGeo, sculptureMat);
-    sculpture.position.set(isMobile ? 0 : 4, 0, -5);
-    scene.add(sculpture);
-
-    // Lights
-    const mainLight = new THREE.PointLight(0xffffff, 1);
-    mainLight.position.set(5, 5, 5);
-    scene.add(mainLight);
-
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
-
-    camera.position.z = 6;
-
-    // INTERACTION TRACKING
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
-    let currentScroll = 0;
-
-    window.addEventListener('mousemove', (event) => {
-      targetX = (event.clientX / window.innerWidth) - 0.5;
-      targetY = (event.clientY / window.innerHeight) - 0.5;
-    });
-
-    window.addEventListener('scroll', () => {
-      currentScroll = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-    });
-
-    // Animation Loop
-    const clock = new THREE.Clock();
-    const animate = () => {
-      const elapsedTime = clock.getElapsedTime();
-
-      // Smooth mouse movement
-      mouseX += (targetX - mouseX) * 0.05;
-      mouseY += (targetY - mouseY) * 0.05;
-
-      // Update background atmosphere
-      particlesMesh.rotation.y = elapsedTime * 0.03;
-      particlesMesh.rotation.x = currentScroll * 0.5;
-      particlesMesh.position.y = -currentScroll * 2;
-
-      // Sync sculpture with process scroll (reads from standalone script)
-      const pp = window.__processProgress || 0;
-      sculpture.material.opacity = 0.1 + (pp * 0.35);
-      sculpture.rotation.y += 0.003 + (pp * 0.008);
-      sculpture.rotation.x = Math.sin(pp * Math.PI * 2) * 0.2;
-      sculpture.position.y = (pp - 0.5) * -2.5;
-
-      // Interaction reactivity
-      scene.rotation.x = mouseY * 0.1;
-      scene.rotation.y = mouseX * 0.1;
-
-      renderer.render(scene, camera);
-      window.requestAnimationFrame(animate);
-    };
-
-    // Resize Handler
-    window.addEventListener('resize', () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      const mobile = width <= 768;
-
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-      
-      // Update object scales on resize
-      sculpture.scale.setScalar(mobile ? 0.6 : 1);
-      sculpture.position.x = mobile ? 0 : 4;
-    });
-
-    animate();
-  </script>
 </body>
 
 </html>
