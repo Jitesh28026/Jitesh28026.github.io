@@ -1146,12 +1146,15 @@
     .process-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-rows: 1fr;
       gap: 2rem;
       align-items: start;
       position: relative;
     }
 
     .process-step {
+      display: flex;
+      height: 100%;
       background: var(--white);
       padding: 3rem;
       border: 1px solid var(--mid-gray);
@@ -1178,6 +1181,9 @@
     }
 
     .step-content {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
       position: relative;
       z-index: 2;
     }
