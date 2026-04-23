@@ -64,7 +64,7 @@
       left: 0;
       right: 0;
       z-index: 1000;
-      padding: 16px 24px;
+      padding: 12px 24px;
       transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -1110,80 +1110,146 @@
     ========================================== */
     .process-section {
       background: var(--white);
-      padding: 0;
+      padding: 10rem 0;
       position: relative;
-      overflow: visible;
+      overflow: hidden;
     }
+
+    /* Chaotic background blobs */
+    .process-blob {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    .blob-1 { top: -10%; left: -5%; }
+    .blob-2 { bottom: 10%; right: -5%; background: radial-gradient(circle, rgba(79, 70, 229, 0.1) 0%, transparent 70%); }
 
     .process-container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 10rem 4rem;
+      padding: 0 4rem;
+      position: relative;
+      z-index: 1;
     }
 
     .process-header {
-      margin-bottom: 4rem;
+      margin-bottom: 6rem;
+      max-width: 600px;
     }
 
     .process-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 3rem 4rem;
-    }
-
-    .process-step {
-      padding: 32px 0;
-      border-bottom: 1px solid var(--light-gray);
+      grid-template-columns: repeat(12, 1fr);
+      gap: 2rem;
       position: relative;
     }
 
+    .process-step {
+      grid-column: span 5;
+      background: var(--white);
+      padding: 3rem;
+      border: 1px solid var(--mid-gray);
+      border-radius: 32px;
+      position: relative;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: var(--shadow-sm);
+      cursor: default;
+    }
+
+    .process-step:hover {
+      transform: translateY(-10px) scale(1.02) !important;
+      border-color: var(--accent);
+      box-shadow: var(--shadow-hover);
+      z-index: 10;
+    }
+
+    /* Chaotic positioning */
+    .process-step:nth-child(1) { grid-column: 1 / span 6; transform: rotate(-1.5deg); }
+    .process-step:nth-child(2) { grid-column: 7 / span 6; transform: rotate(1deg); margin-top: 5rem; }
+    .process-step:nth-child(3) { grid-column: 2 / span 6; transform: rotate(0.8deg); margin-top: -2rem; }
+    .process-step:nth-child(4) { grid-column: 7 / span 6; transform: rotate(-1deg); margin-top: 3rem; }
+
+    .step-content {
+      position: relative;
+      z-index: 2;
+    }
+
     .step-icon {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-      display: block;
+      font-size: 3rem;
+      margin-bottom: 2rem;
+      display: inline-block;
+      transition: transform 0.4s ease;
+    }
+
+    .process-step:hover .step-icon {
+      transform: scale(1.2) rotate(10deg);
     }
 
     .step-num {
       font-family: 'Instrument Serif', serif;
       font-size: 1.5rem;
       color: var(--accent);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
       display: block;
-      opacity: 0.6;
+      opacity: 0.5;
     }
 
     .step-title {
       font-family: 'Instrument Serif', serif;
-      font-size: 2.2rem;
-      line-height: 1.2;
-      margin-bottom: 1rem;
+      font-size: 2.5rem;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
       color: var(--text-primary);
     }
 
     .step-desc {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       color: var(--text-secondary);
-      line-height: 1.8;
+      line-height: 1.7;
       font-weight: 400;
     }
 
     @media (max-width: 1024px) {
       .process-container {
-        padding: 5rem 2.5rem;
+        padding: 0 2.5rem;
       }
       .process-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 2rem 3rem;
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+      }
+      .process-step {
+        grid-column: auto !important;
+        margin-top: 0 !important;
+        transform: none !important;
       }
     }
 
     @media (max-width: 768px) {
-      .process-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
+      .process-section {
+        padding: 4rem 0;
+      }
+      .process-header {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
       }
       .process-step {
-        border-bottom: 1px solid var(--light-gray);
+        text-align: center;
+        padding: 2.5rem 1.5rem;
+      }
+      .step-icon {
+        font-size: 2.5rem;
+      }
+      .step-title {
+        font-size: 2rem;
       }
     }
 
@@ -1414,16 +1480,38 @@
 
     @media (max-width: 768px) {
       .navbar {
-        padding: 10px 16px;
+        padding: 6px 12px;
       }
 
       .navbar-inner {
-        padding: 12px 20px;
+        padding: 6px 16px;
+      }
+
+      .hero {
+        min-height: auto;
       }
 
       .hero-inner {
-        padding: 80px 1.5rem 3rem;
+        padding: 40px 1.5rem 2.5rem;
         min-height: auto;
+        text-align: center;
+      }
+
+      .hero-title br {
+        display: none;
+      }
+
+      .hero-badge {
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-badge {
+        justify-content: center;
+      }
+
+      .hero-actions {
+        justify-content: center;
+        width: 100%;
       }
 
       .hero-title {
@@ -1431,7 +1519,7 @@
       }
 
       section {
-        padding: 4rem 1.5rem;
+        padding: 3.5rem 1.5rem;
       }
 
       .work-grid {
@@ -1440,8 +1528,9 @@
 
       .work-header {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
+        align-items: center;
+        text-align: center;
+        gap: 1.5rem;
       }
 
       .about-grid {
@@ -1479,6 +1568,14 @@
         flex-direction: column;
         gap: 2rem;
         text-align: center;
+      }
+
+      .footer-links {
+        justify-content: center;
+      }
+
+      .nav-logo {
+        margin: 0 auto;
       }
     }
 
@@ -1838,6 +1935,8 @@
 
   <!-- PROCESS -->
   <section class="process-section" id="process">
+    <div class="process-blob blob-1"></div>
+    <div class="process-blob blob-2"></div>
     <div class="process-container">
       <div class="process-header reveal">
         <div class="section-label">Process</div>
@@ -1846,28 +1945,36 @@
       
       <div class="process-grid">
         <div class="process-step reveal">
-          <span class="step-icon">🔍</span>
-          <span class="step-num">01</span>
-          <h3 class="step-title">Deep starts</h3>
-          <p class="step-desc">I spend a lot of time upfront just trying to understand the problem. I dig into what users need and what the business wants so I can focus on building the most impactful solution from the start.</p>
+          <div class="step-content">
+            <span class="step-icon">🔍</span>
+            <span class="step-num">01</span>
+            <h3 class="step-title">Deep starts</h3>
+            <p class="step-desc">I spend a lot of time upfront just trying to understand the problem. I dig into what users need and what the business wants so I can focus on building the most impactful solution from the start.</p>
+          </div>
         </div>
         <div class="process-step reveal" style="transition-delay: 0.1s;">
-          <span class="step-icon">📍</span>
-          <span class="step-num">02</span>
-          <h3 class="step-title">Balanced decisions</h3>
-          <p class="step-desc">I don't just follow one source of truth. I make decisions by mixing research data with business goals and my own gut feeling from building real products. It's about finding a solution that actually works in the real world.</p>
+          <div class="step-content">
+            <span class="step-icon">📍</span>
+            <span class="step-num">02</span>
+            <h3 class="step-title">Balanced decisions</h3>
+            <p class="step-desc">I don't just follow one source of truth. I make decisions by mixing research data with business goals and my own gut feeling from building real products. It's about finding a solution that actually works in the real world.</p>
+          </div>
         </div>
         <div class="process-step reveal" style="transition-delay: 0.2s;">
-          <span class="step-icon">⚡</span>
-          <span class="step-num">03</span>
-          <h3 class="step-title">Ship to learn</h3>
-          <p class="step-desc">I believe the best insights come from real-world usage. I aim to ship the initial product as soon as it's ready, because you only truly understand what a user wants once they start using your design in their day-to-day life.</p>
+          <div class="step-content">
+            <span class="step-icon">⚡</span>
+            <span class="step-num">03</span>
+            <h3 class="step-title">Ship to learn</h3>
+            <p class="step-desc">I believe the best insights come from real-world usage. I aim to ship the initial product as soon as it's ready, because you only truly understand what a user wants once they start using your design in their day-to-day life.</p>
+          </div>
         </div>
         <div class="process-step reveal" style="transition-delay: 0.3s;">
-          <span class="step-icon">♻️</span>
-          <span class="step-num">04</span>
-          <h3 class="step-title">Real-world refinement</h3>
-          <p class="step-desc">For me, the design isn't "done" at launch. I use the feedback and behavior from the live product to iterate and pivot. Shipping is just the beginning of the process, not the end.</p>
+          <div class="step-content">
+            <span class="step-icon">♻️</span>
+            <span class="step-num">04</span>
+            <h3 class="step-title">Real-world refinement</h3>
+            <p class="step-desc">For me, the design isn't "done" at launch. I use the feedback and behavior from the live product to iterate and pivot. Shipping is just the beginning of the process, not the end.</p>
+          </div>
         </div>
       </div>
     </div>
