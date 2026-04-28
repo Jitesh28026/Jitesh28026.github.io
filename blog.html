@@ -8,7 +8,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@1&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
   
   <!-- Scroll Reveal Class Dependencies -->
   <style>
@@ -407,10 +407,850 @@
       .about-stats-float { right: 0; bottom: -20px; }
       section { padding: 80px 1.5rem 4rem; }
     }
+
+    /* ==========================================
+       PRECISION WITH ATMOSPHERE ABOUT REDESIGN
+    ========================================== */
+    :root {
+      --white: #141414;
+      --off-white: #0d0d0d;
+      --light-gray: #1b1b1b;
+      --mid-gray: #2d2a24;
+      --text-primary: #f0eadf;
+      --text-secondary: #9b958a;
+      --accent: #c8a96e;
+      --accent-dark: #9f8350;
+      --accent-light: rgba(200, 169, 110, 0.12);
+      --accent-glow: rgba(200, 169, 110, 0.18);
+      --border: rgba(200, 169, 110, 0.22);
+      --border-muted: rgba(240, 234, 223, 0.12);
+      --content-max: 1240px;
+      --space-desktop: 4rem;
+      --space-tablet: 2rem;
+      --space-phone: 1.25rem;
+      --shadow-sm: none;
+      --shadow-md: none;
+      --shadow-lg: none;
+      --shadow-hover: 0 0 0 1px rgba(200, 169, 110, 0.45);
+      --radius: 2px;
+      --radius-sm: 2px;
+    }
+
+    html {
+      scrollbar-color: var(--accent) #080808;
+      scrollbar-width: thin;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #080808;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+    }
+
+    body {
+      min-height: 100vh;
+      background: #0d0d0d;
+      color: var(--text-primary);
+      font-family: 'Space Grotesk', sans-serif;
+      cursor: none;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0.025;
+      mix-blend-mode: screen;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    body.is-loading {
+      overflow: hidden;
+    }
+
+    body.is-loading .navbar,
+    body.is-loading section,
+    body.is-loading footer {
+      opacity: 0;
+    }
+
+    .navbar,
+    section,
+    footer {
+      transition: opacity 0.4s ease;
+    }
+
+    .site-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: #0d0d0d;
+      color: var(--accent);
+      font-family: 'DM Mono', monospace;
+      transition: transform 0.5s cubic-bezier(0.7, 0, 1, 1);
+    }
+
+    .site-loader.is-exiting {
+      transform: translateY(-100%);
+    }
+
+    .loader-scanlines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.06;
+      background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.9) 0 1px, transparent 1px 5px);
+    }
+
+    .loader-core {
+      width: min(560px, calc(100vw - 48px));
+      text-align: center;
+    }
+
+    .loader-logo {
+      margin-bottom: 2rem;
+      color: var(--accent);
+      font-size: 2.8rem;
+      font-weight: 500;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .loader-cursor {
+      animation: loaderBlink 0.9s steps(2, start) infinite;
+    }
+
+    .loader-bar {
+      height: 12px;
+      border: 1px solid var(--accent);
+      background: #090909;
+      padding: 2px;
+    }
+
+    .loader-bar span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--accent);
+      animation: loaderFill 2.5s ease-out forwards;
+    }
+
+    .loader-status {
+      min-height: 1.25rem;
+      margin-top: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      text-align: left;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .loader-corner {
+      position: absolute;
+      bottom: 22px;
+      color: rgba(240, 234, 223, 0.48);
+      font-size: 0.68rem;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .loader-corner-left { left: 24px; }
+    .loader-corner-right { right: 24px; }
+
+    @keyframes loaderFill {
+      to { width: 100%; }
+    }
+
+    @keyframes loaderBlink {
+      50% { opacity: 0; }
+    }
+
+    .cursor-dot,
+    .cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      pointer-events: none;
+      transform: translate3d(-50%, -50%, 0);
+    }
+
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .cursor-ring {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      opacity: 0.62;
+    }
+
+    .navbar {
+      padding: 14px 18px;
+    }
+
+    .navbar-inner {
+      width: min(100%, var(--content-max));
+      max-width: var(--content-max);
+      overflow: visible;
+      border: 1px solid var(--border-muted);
+      border-radius: 0;
+      background: rgba(13, 13, 13, 0.86);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: none;
+    }
+
+    .navbar-inner::before {
+      display: none;
+    }
+
+    .nav-logo,
+    .section-heading,
+    .about-stats-float .stat-number,
+    .footer-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .nav-links a,
+    .section-label,
+    .skill-chip,
+    .footer-copy,
+    .footer-links a,
+    .about-stats-float .stat-label {
+      font-family: 'DM Mono', monospace;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      border-radius: 0;
+      text-transform: uppercase;
+      font-size: 0.74rem;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .nav-links a.nav-cta {
+      background: var(--accent);
+      color: #0d0d0d;
+      border-color: var(--accent);
+      box-shadow: none;
+    }
+
+    .nav-toggle span {
+      background: var(--accent);
+    }
+
+    section,
+    footer {
+      border-top: 1px solid var(--border-muted);
+      background: rgba(13, 13, 13, 0.94);
+    }
+
+    section {
+      padding: 0 !important;
+    }
+
+    .section-container {
+      max-width: var(--content-max);
+      padding: 112px var(--space-desktop) 5rem;
+    }
+
+    .about-grid {
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-photo-frame,
+    .about-stats-float,
+    .skill-chip {
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .about-photo-frame {
+      background: #111111;
+      border: 1px solid var(--border-muted);
+    }
+
+    .about-photo-frame::after {
+      display: none;
+    }
+
+    .about-stats-float {
+      border: 1px solid var(--border-muted);
+      background: rgba(17, 17, 17, 0.94);
+    }
+
+    .about-stats-float .stat-number {
+      color: var(--accent);
+    }
+
+    .section-label {
+      color: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .section-heading {
+      font-size: clamp(2.8rem, 4.8vw, 4.8rem);
+      line-height: 0.96;
+      margin-bottom: 1.25rem;
+    }
+
+    .muted {
+      color: var(--accent);
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .about-body {
+      color: var(--text-secondary);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.06rem;
+      line-height: 1.8;
+    }
+
+    .skills-grid {
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    .skill-chip {
+      border: 1px solid var(--border-muted);
+      background: transparent;
+      color: var(--accent);
+    }
+
+    .aim-lab {
+      margin-top: 4.5rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border-muted);
+    }
+
+    .aim-lab-grid {
+      display: grid;
+      grid-template-columns: minmax(240px, 0.42fr) minmax(0, 0.58fr);
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .aim-lab-copy {
+      max-width: 28rem;
+    }
+
+    .aim-lab-copy .section-label {
+      margin-bottom: 1rem;
+    }
+
+    .aim-lab-copy p {
+      color: var(--text-secondary);
+      font-family: 'DM Mono', monospace;
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    .aim-lab-panel {
+      border: 1px solid var(--border-muted);
+      background: #111111;
+      min-height: 460px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .aim-lab-shell {
+      position: relative;
+      width: 100%;
+      min-height: 460px;
+      background:
+        linear-gradient(rgba(200, 169, 110, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200, 169, 110, 0.035) 1px, transparent 1px),
+        #0d0d0d;
+      background-size: 36px 36px, 36px 36px, auto;
+    }
+
+    .aim-lab-shell::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at center, rgba(200, 169, 110, 0.05), transparent 58%);
+    }
+
+    .aim-lab-shell[data-state="results"] .aim-lab-head {
+      opacity: 0;
+    }
+
+    .aim-lab-head {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      right: 16px;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      color: var(--accent);
+      pointer-events: none;
+    }
+
+    .aim-lab-head strong {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .aim-lab-stage {
+      position: relative;
+      width: 100%;
+      height: 460px;
+      cursor: crosshair;
+    }
+
+    .aim-lab-overlay,
+    .aim-lab-results {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .aim-lab-overlay[hidden],
+    .aim-lab-results[hidden] {
+      display: none !important;
+    }
+
+    .aim-lab-overlay-card,
+    .aim-lab-results-card {
+      width: min(100%, 340px);
+      border: 1px solid var(--border-muted);
+      background: rgba(13, 13, 13, 0.94);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .aim-lab-overlay-card h3,
+    .aim-lab-results-card h3 {
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+      font-family: 'DM Mono', monospace;
+      font-size: 1.35rem;
+      line-height: 1.05;
+      text-transform: uppercase;
+    }
+
+    .aim-lab-overlay-card p,
+    .aim-lab-results-card p {
+      color: var(--text-secondary);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .aim-lab-button {
+      margin-top: 1.25rem;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-primary);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      padding: 0.9rem 1.25rem;
+      cursor: pointer;
+      transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+    }
+
+    .aim-lab-button:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(200, 169, 110, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .aim-lab-button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0d0d0d;
+    }
+
+    .aim-lab-button.primary:hover {
+      color: #0d0d0d;
+      background: #d5b77b;
+    }
+
+    .aim-lab-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .aim-lab-results-card {
+      text-align: left;
+    }
+
+    .aim-lab-results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      margin: 1rem 0 1.25rem;
+      background: var(--border-muted);
+    }
+
+    .aim-lab-stat {
+      background: #111111;
+      padding: 0.9rem 0.8rem;
+    }
+
+    .aim-lab-stat-label {
+      display: block;
+      margin-bottom: 0.35rem;
+      color: var(--text-secondary);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.64rem;
+      text-transform: uppercase;
+    }
+
+    .aim-lab-stat-value {
+      display: block;
+      color: var(--text-primary);
+      font-family: 'DM Mono', monospace;
+      font-size: 1.12rem;
+      font-weight: 500;
+    }
+
+    .aim-lab-verdict {
+      margin-bottom: 1rem;
+      color: var(--accent);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+    }
+
+    footer {
+      display: flex;
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: 2.5rem var(--space-desktop);
+      justify-content: space-between;
+      align-items: center;
+      border-left: 1px solid var(--border-muted);
+      border-right: 1px solid var(--border-muted);
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (min-width: 779px) and (max-width: 1179px) {
+      .nav-toggle {
+        display: none;
+      }
+
+      .nav-links {
+        display: flex !important;
+        position: static;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        flex-direction: row;
+        gap: 4px;
+      }
+
+      .nav-links a,
+      .nav-links a.nav-cta {
+        padding: 8px 14px;
+        font-size: 0.72rem;
+        border: 0;
+      }
+
+      .section-container {
+        padding: 104px var(--space-tablet) 4rem;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        padding: 2rem var(--space-tablet);
+      }
+
+      .aim-lab-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 778px) {
+      body {
+        cursor: auto;
+      }
+
+      .cursor-dot,
+      .cursor-ring {
+        display: none;
+      }
+
+      .loader-logo {
+        font-size: 2rem;
+      }
+
+      .loader-corner {
+        bottom: 16px;
+      }
+
+      .loader-corner-left { left: 16px; }
+      .loader-corner-right { right: 16px; }
+
+      .navbar {
+        padding: 10px 12px;
+      }
+
+      .navbar-inner {
+        padding: 14px 16px;
+      }
+
+      .nav-logo {
+        margin: 0;
+        font-size: 1.1rem;
+      }
+
+      .nav-toggle {
+        display: block;
+        z-index: 1300;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        right: 0;
+        bottom: auto;
+        padding: 14px;
+        border: 1px solid var(--border-muted);
+        background: rgba(13, 13, 13, 0.98);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        z-index: 1200;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a,
+      .nav-links a.nav-cta {
+        margin-left: 0;
+        padding: 14px 16px;
+        font-size: 0.88rem;
+        text-align: left;
+        border: 1px solid var(--border-muted);
+        background: #121212;
+        color: var(--text-primary);
+      }
+
+      .nav-links a.nav-cta {
+        background: var(--accent);
+        color: #0d0d0d;
+        border-color: var(--accent);
+      }
+
+      .section-container {
+        padding: 96px var(--space-phone) 3rem;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .about-stats-float {
+        position: static;
+        margin-top: 1rem;
+      }
+
+      .section-heading {
+        font-size: clamp(2.4rem, 13vw, 3.5rem);
+      }
+
+      .about-body {
+        font-size: 1rem;
+      }
+
+      .aim-lab {
+        margin-top: 3.25rem;
+        padding-top: 2.25rem;
+      }
+
+      .aim-lab-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .aim-lab-copy {
+        max-width: none;
+      }
+
+      .aim-lab-panel,
+      .aim-lab-shell,
+      .aim-lab-stage {
+        min-height: 500px;
+        height: 500px;
+      }
+
+      .aim-lab-results-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .aim-lab-results {
+        align-items: stretch;
+        padding: 3.5rem 1rem 1rem;
+      }
+
+      .aim-lab-results-card {
+        width: 100%;
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      .aim-lab-button {
+        width: 100%;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+        padding: 2rem var(--space-phone);
+      }
+
+      .footer-links {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 479px) {
+      .aim-lab-panel,
+      .aim-lab-shell,
+      .aim-lab-stage {
+        min-height: 540px;
+        height: 540px;
+      }
+
+      .aim-lab-head {
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        font-size: 0.66rem;
+      }
+
+      .aim-lab-overlay,
+      .aim-lab-results {
+        padding: 1rem;
+      }
+
+      .aim-lab-results {
+        padding: 3.25rem 1rem 1rem;
+      }
+
+      .aim-lab-overlay-card,
+      .aim-lab-results-card {
+        padding: 1.2rem;
+      }
+    }
+
+    @media (min-width: 1180px) {
+      .nav-toggle {
+        display: none;
+      }
+
+      .nav-links {
+        display: flex !important;
+        position: static;
+        padding: 0;
+        border: 0;
+        background: transparent;
+      }
+    }
+
+    @media (pointer: coarse) {
+      body {
+        cursor: auto;
+      }
+
+      .cursor-dot,
+      .cursor-ring {
+        display: none;
+      }
+    }
   </style>
 </head>
 
-<body>
+<body class="is-loading">
+  <div class="site-loader" id="siteLoader" aria-live="polite" aria-label="Loading about page">
+    <div class="loader-scanlines" aria-hidden="true"></div>
+    <div class="loader-core">
+      <div class="loader-logo">JITESH.EXE<span class="loader-cursor">_</span></div>
+      <div class="loader-bar" aria-hidden="true"><span></span></div>
+      <div class="loader-status" id="loaderStatus">&gt; OPENING ABOUT FILE...</div>
+    </div>
+    <div class="loader-corner loader-corner-left">&copy; INSERT COIN</div>
+    <div class="loader-corner loader-corner-right">2YRS EXP &middot; BLR &middot; v2.0</div>
+  </div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
   <!-- FIXED NAVBAR -->
   <nav class="navbar" id="navbar">
     <div class="navbar-inner">
@@ -468,6 +1308,54 @@
           </div>
         </div>
       </div>
+
+      <div class="aim-lab reveal">
+        <div class="aim-lab-grid">
+          <div class="aim-lab-copy">
+            <div class="section-label">AIM LAB</div>
+            <p>When I'm not designing, I'm probably in a deathmatch. This is a 15-second aim trainer. Don't embarrass yourself.</p>
+          </div>
+          <div class="aim-lab-panel">
+            <div class="aim-lab-shell" id="aimLab" data-state="idle">
+              <div class="aim-lab-head">
+                <div>SCORE <strong id="aimScore">0</strong></div>
+                <div>TIME <strong id="aimTime">15.0</strong></div>
+              </div>
+              <div class="aim-lab-stage" id="aimStage">
+                <canvas class="aim-lab-canvas" id="aimCanvas" width="720" height="460"></canvas>
+                <div class="aim-lab-overlay" id="aimOverlay">
+                  <div class="aim-lab-overlay-card">
+                    <h3>Range Ready</h3>
+                    <p>One target at a time. Fifteen seconds. Clean clicks only.</p>
+                    <button class="aim-lab-button primary" id="aimStartButton" type="button">Start</button>
+                  </div>
+                </div>
+                <div class="aim-lab-results" id="aimResults" hidden>
+                  <div class="aim-lab-results-card">
+                    <h3>Match Report</h3>
+                    <div class="aim-lab-results-grid">
+                      <div class="aim-lab-stat">
+                        <span class="aim-lab-stat-label">Score</span>
+                        <span class="aim-lab-stat-value" id="aimResultScore">0</span>
+                      </div>
+                      <div class="aim-lab-stat">
+                        <span class="aim-lab-stat-label">Accuracy</span>
+                        <span class="aim-lab-stat-value" id="aimResultAccuracy">0%</span>
+                      </div>
+                      <div class="aim-lab-stat">
+                        <span class="aim-lab-stat-label">Avg Reaction</span>
+                        <span class="aim-lab-stat-value" id="aimResultReaction">0ms</span>
+                      </div>
+                    </div>
+                    <div class="aim-lab-verdict" id="aimVerdict">Needs warmup</div>
+                    <button class="aim-lab-button" id="aimReplayButton" type="button">Play Again</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -483,6 +1371,295 @@
   </footer>
 
   <script>
+    // LOADER + CUSTOM CURSOR
+    const loader = document.getElementById('siteLoader');
+    const loaderStatus = document.getElementById('loaderStatus');
+    const loaderStatuses = [
+      '> OPENING ABOUT FILE...',
+      '> READING SYSTEM NOTES...',
+      '> INDEXING PROCESS...',
+      '> ALIGNING SIGNAL...',
+      '> READY.'
+    ];
+
+    if (loader && loaderStatus) {
+      let loaderIndex = 0;
+      const statusTimer = window.setInterval(() => {
+        loaderIndex = Math.min(loaderIndex + 1, loaderStatuses.length - 1);
+        loaderStatus.textContent = loaderStatuses[loaderIndex];
+      }, 400);
+
+      window.setTimeout(() => {
+        window.clearInterval(statusTimer);
+        loaderStatus.textContent = loaderStatuses[loaderStatuses.length - 1];
+        loader.classList.add('is-exiting');
+
+        window.setTimeout(() => {
+          document.body.classList.remove('is-loading');
+          loader.setAttribute('aria-hidden', 'true');
+        }, 500);
+      }, 2800);
+    } else {
+      document.body.classList.remove('is-loading');
+    }
+
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorRing = document.querySelector('.cursor-ring');
+    const canUseCursor = cursorDot && cursorRing && window.matchMedia('(pointer: fine)').matches;
+
+    if (canUseCursor) {
+      let dotX = window.innerWidth / 2;
+      let dotY = window.innerHeight / 2;
+      let ringX = dotX;
+      let ringY = dotY;
+
+      window.addEventListener('mousemove', (event) => {
+        dotX = event.clientX;
+        dotY = event.clientY;
+        cursorDot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate(-50%, -50%)`;
+      }, { passive: true });
+
+      const renderCursor = () => {
+        ringX += (dotX - ringX) * 0.18;
+        ringY += (dotY - ringY) * 0.18;
+        cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+        window.requestAnimationFrame(renderCursor);
+      };
+
+      renderCursor();
+    }
+
+    // AIM LAB
+    const aimLab = document.getElementById('aimLab');
+    const aimStage = document.getElementById('aimStage');
+    const aimCanvas = document.getElementById('aimCanvas');
+    const aimOverlay = document.getElementById('aimOverlay');
+    const aimResults = document.getElementById('aimResults');
+    const aimStartButton = document.getElementById('aimStartButton');
+    const aimReplayButton = document.getElementById('aimReplayButton');
+    const aimScoreEl = document.getElementById('aimScore');
+    const aimTimeEl = document.getElementById('aimTime');
+    const aimResultScore = document.getElementById('aimResultScore');
+    const aimResultAccuracy = document.getElementById('aimResultAccuracy');
+    const aimResultReaction = document.getElementById('aimResultReaction');
+    const aimVerdict = document.getElementById('aimVerdict');
+
+    if (aimLab && aimStage && aimCanvas) {
+      const ctx = aimCanvas.getContext('2d');
+      const roundLength = 15000;
+      let score = 0;
+      let totalClicks = 0;
+      let reactionTimes = [];
+      let target = null;
+      let roundActive = false;
+      let roundStart = 0;
+      let targetSpawnedAt = 0;
+      let rafId = 0;
+      let burst = null;
+
+      function resizeAimCanvas() {
+        const rect = aimStage.getBoundingClientRect();
+        const ratio = window.devicePixelRatio || 1;
+        aimCanvas.width = Math.round(rect.width * ratio);
+        aimCanvas.height = Math.round(rect.height * ratio);
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      }
+
+      function randomBetween(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function spawnTarget(now) {
+        const rect = aimStage.getBoundingClientRect();
+        const radius = randomBetween(20, 30);
+        target = {
+          x: randomBetween(radius + 18, rect.width - radius - 18),
+          y: randomBetween(radius + 52, rect.height - radius - 18),
+          radius
+        };
+        targetSpawnedAt = now;
+      }
+
+      function createBurst(x, y) {
+        burst = { x, y, start: performance.now() };
+      }
+
+      function drawGrid(width, height) {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(200, 169, 110, 0.05)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < width; x += 36) {
+          ctx.beginPath();
+          ctx.moveTo(x + 0.5, 0);
+          ctx.lineTo(x + 0.5, height);
+          ctx.stroke();
+        }
+        for (let y = 0; y < height; y += 36) {
+          ctx.beginPath();
+          ctx.moveTo(0, y + 0.5);
+          ctx.lineTo(width, y + 0.5);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawTarget(now) {
+        if (!target) return;
+        const pulse = 1 + Math.sin(now / 140) * 0.06;
+        const radius = target.radius * pulse;
+        ctx.save();
+        ctx.translate(target.x, target.y);
+
+        ctx.strokeStyle = 'rgba(200, 169, 110, 0.95)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.strokeStyle = 'rgba(200, 169, 110, 0.28)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius + 7, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = '#c8a96e';
+        ctx.beginPath();
+        ctx.arc(0, 0, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = 'rgba(200, 169, 110, 0.5)';
+        ctx.beginPath();
+        ctx.moveTo(-radius - 12, 0);
+        ctx.lineTo(radius + 12, 0);
+        ctx.moveTo(0, -radius - 12);
+        ctx.lineTo(0, radius + 12);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function drawBurst(now) {
+        if (!burst) return;
+        const elapsed = now - burst.start;
+        if (elapsed > 220) {
+          burst = null;
+          return;
+        }
+        const progress = elapsed / 220;
+        const radius = 10 + progress * 26;
+        ctx.save();
+        ctx.translate(burst.x, burst.y);
+        ctx.strokeStyle = `rgba(200, 169, 110, ${0.7 - progress * 0.7})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function updateScoreboard(timeLeftMs) {
+        aimScoreEl.textContent = String(score);
+        aimTimeEl.textContent = Math.max(0, timeLeftMs / 1000).toFixed(1);
+      }
+
+      function verdictForScore(value) {
+        if (value <= 5) return 'NEEDS WARMUP';
+        if (value <= 10) return 'DECENT AIM';
+        if (value <= 15) return 'SHARP';
+        return 'VALORANT READY';
+      }
+
+      function endRound() {
+        roundActive = false;
+        cancelAnimationFrame(rafId);
+        const accuracy = totalClicks ? Math.round((score / totalClicks) * 100) : 0;
+        const avgReaction = reactionTimes.length
+          ? Math.round(reactionTimes.reduce((sum, time) => sum + time, 0) / reactionTimes.length)
+          : 0;
+
+        aimResultScore.textContent = String(score);
+        aimResultAccuracy.textContent = `${accuracy}%`;
+        aimResultReaction.textContent = `${avgReaction}ms`;
+        aimVerdict.textContent = verdictForScore(score);
+        aimResults.hidden = false;
+        aimOverlay.hidden = true;
+        aimLab.dataset.state = 'results';
+        target = null;
+        drawFrame(performance.now(), 0);
+      }
+
+      function drawFrame(now, timeLeftMs) {
+        const rect = aimStage.getBoundingClientRect();
+        ctx.clearRect(0, 0, rect.width, rect.height);
+        drawGrid(rect.width, rect.height);
+        drawTarget(now);
+        drawBurst(now);
+      }
+
+      function frame(now) {
+        if (!roundActive) return;
+        const elapsed = now - roundStart;
+        const timeLeftMs = roundLength - elapsed;
+        updateScoreboard(timeLeftMs);
+        drawFrame(now, timeLeftMs);
+
+        if (timeLeftMs <= 0) {
+          endRound();
+          return;
+        }
+
+        rafId = window.requestAnimationFrame(frame);
+      }
+
+      function startRound() {
+        resizeAimCanvas();
+        score = 0;
+        totalClicks = 0;
+        reactionTimes = [];
+        burst = null;
+        roundActive = true;
+        roundStart = performance.now();
+        spawnTarget(roundStart);
+        updateScoreboard(roundLength);
+        aimOverlay.hidden = true;
+        aimResults.hidden = true;
+        aimLab.dataset.state = 'live';
+        rafId = window.requestAnimationFrame(frame);
+      }
+
+      function getPointerPosition(event) {
+        const rect = aimCanvas.getBoundingClientRect();
+        return {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+        };
+      }
+
+      aimStage.addEventListener('click', (event) => {
+        if (!roundActive || !target) return;
+        totalClicks += 1;
+        const point = getPointerPosition(event);
+        const distance = Math.hypot(point.x - target.x, point.y - target.y);
+
+        if (distance <= target.radius) {
+          score += 1;
+          reactionTimes.push(performance.now() - targetSpawnedAt);
+          createBurst(target.x, target.y);
+          spawnTarget(performance.now());
+        }
+      });
+
+      aimStartButton.addEventListener('click', startRound);
+      aimReplayButton.addEventListener('click', startRound);
+      window.addEventListener('resize', () => {
+        resizeAimCanvas();
+        drawFrame(performance.now(), roundLength);
+      });
+
+      resizeAimCanvas();
+      updateScoreboard(roundLength);
+      drawFrame(performance.now(), roundLength);
+    }
+
     // NAVBAR LOGIC
     const navbar = document.getElementById('navbar');
     let lastScroll = 0;
