@@ -1561,11 +1561,12 @@
         aimTimeEl.textContent = Math.max(0, timeLeftMs / 1000).toFixed(1);
       }
 
-      function verdictForScore(value) {
-        if (value <= 5) return 'NEEDS WARMUP';
-        if (value <= 10) return 'DECENT AIM';
-        if (value <= 15) return 'SHARP';
-        return 'VALORANT READY';
+      function verdictForReaction(value, hasSamples) {
+        if (!hasSamples) return 'NEEDS WARMUP';
+        if (value < 700) return 'VALORANT READY';
+        if (value <= 1000) return 'SHARP';
+        if (value <= 1300) return 'DECENT AIM';
+        return 'NEEDS WARMUP';
       }
 
       function endRound() {
@@ -1579,7 +1580,7 @@
         aimResultScore.textContent = String(score);
         aimResultAccuracy.textContent = `${accuracy}%`;
         aimResultReaction.textContent = `${avgReaction}ms`;
-        aimVerdict.textContent = verdictForScore(score);
+        aimVerdict.textContent = verdictForReaction(avgReaction, reactionTimes.length > 0);
         aimResults.hidden = false;
         aimOverlay.hidden = true;
         aimLab.dataset.state = 'results';
