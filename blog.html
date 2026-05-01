@@ -1383,6 +1383,336 @@
     </div>
   </footer>
 
-  <script src="blog.js"></script>
+  <script>
+    // LOADER + CUSTOM CURSOR
+    const loader = document.getElementById('siteLoader');
+    const loaderStatus = document.getElementById('loaderStatus');
+    const loaderStatuses = [
+      '> OPENING ABOUT FILE...',
+      '> READING SYSTEM NOTES...',
+      '> INDEXING PROCESS...',
+      '> ALIGNING SIGNAL...',
+      '> READY.'
+    ];
+
+    if (loader && loaderStatus) {
+      let loaderIndex = 0;
+      const statusTimer = window.setInterval(() => {
+        loaderIndex = Math.min(loaderIndex + 1, loaderStatuses.length - 1);
+        loaderStatus.textContent = loaderStatuses[loaderIndex];
+      }, 400);
+
+      window.setTimeout(() => {
+        window.clearInterval(statusTimer);
+        loaderStatus.textContent = loaderStatuses[loaderStatuses.length - 1];
+        loader.classList.add('is-exiting');
+
+        window.setTimeout(() => {
+          document.body.classList.remove('is-loading');
+          loader.setAttribute('aria-hidden', 'true');
+        }, 500);
+      }, 2800);
+    } else {
+      document.body.classList.remove('is-loading');
+    }
+
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorRing = document.querySelector('.cursor-ring');
+    const canUseCursor = cursorDot && cursorRing && window.matchMedia('(pointer: fine)').matches;
+
+    if (canUseCursor) {
+      let dotX = window.innerWidth / 2;
+      let dotY = window.innerHeight / 2;
+      let ringX = dotX;
+      let ringY = dotY;
+
+      window.addEventListener('mousemove', (event) => {
+        dotX = event.clientX;
+        dotY = event.clientY;
+        cursorDot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate(-50%, -50%)`;
+      }, { passive: true });
+
+      const renderCursor = () => {
+        ringX += (dotX - ringX) * 0.18;
+        ringY += (dotY - ringY) * 0.18;
+        cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+        window.requestAnimationFrame(renderCursor);
+      };
+
+      renderCursor();
+    }
+
+    // AIM LAB
+    const aimLab = document.getElementById('aimLab');
+    const aimStage = document.getElementById('aimStage');
+    const aimCanvas = document.getElementById('aimCanvas');
+    const aimOverlay = document.getElementById('aimOverlay');
+    const aimResults = document.getElementById('aimResults');
+    const aimStartButton = document.getElementById('aimStartButton');
+    const aimReplayButton = document.getElementById('aimReplayButton');
+    const aimScoreEl = document.getElementById('aimScore');
+    const aimTimeEl = document.getElementById('aimTime');
+    const aimResultScore = document.getElementById('aimResultScore');
+    const aimResultAccuracy = document.getElementById('aimResultAccuracy');
+    const aimResultReaction = document.getElementById('aimResultReaction');
+    const aimVerdict = document.getElementById('aimVerdict');
+
+    if (aimLab && aimStage && aimCanvas) {
+      const ctx = aimCanvas.getContext('2d');
+      const roundLength = 15000;
+      let score = 0;
+      let totalClicks = 0;
+      let reactionTimes = [];
+      let target = null;
+      let roundActive = false;
+      let roundStart = 0;
+      let targetSpawnedAt = 0;
+      let rafId = 0;
+      let burst = null;
+
+      function resizeAimCanvas() {
+        const rect = aimStage.getBoundingClientRect();
+        const ratio = window.devicePixelRatio || 1;
+        aimCanvas.width = Math.round(rect.width * ratio);
+        aimCanvas.height = Math.round(rect.height * ratio);
+        ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      }
+
+      function randomBetween(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function spawnTarget(now) {
+        const rect = aimStage.getBoundingClientRect();
+        const radius = randomBetween(20, 30);
+        target = {
+          x: randomBetween(radius + 18, rect.width - radius - 18),
+          y: randomBetween(radius + 52, rect.height - radius - 18),
+          radius
+        };
+        targetSpawnedAt = now;
+      }
+
+      function createBurst(x, y) {
+        burst = { x, y, start: performance.now() };
+      }
+
+      function drawGrid(width, height) {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(200, 169, 110, 0.05)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < width; x += 36) {
+          ctx.beginPath();
+          ctx.moveTo(x + 0.5, 0);
+          ctx.lineTo(x + 0.5, height);
+          ctx.stroke();
+        }
+        for (let y = 0; y < height; y += 36) {
+          ctx.beginPath();
+          ctx.moveTo(0, y + 0.5);
+          ctx.lineTo(width, y + 0.5);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawTarget(now) {
+        if (!target) return;
+        const pulse = 1 + Math.sin(now / 140) * 0.06;
+        const radius = target.radius * pulse;
+        ctx.save();
+        ctx.translate(target.x, target.y);
+
+        ctx.strokeStyle = 'rgba(200, 169, 110, 0.95)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.strokeStyle = 'rgba(200, 169, 110, 0.28)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius + 7, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = '#c8a96e';
+        ctx.beginPath();
+        ctx.arc(0, 0, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = 'rgba(200, 169, 110, 0.5)';
+        ctx.beginPath();
+        ctx.moveTo(-radius - 12, 0);
+        ctx.lineTo(radius + 12, 0);
+        ctx.moveTo(0, -radius - 12);
+        ctx.lineTo(0, radius + 12);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function drawBurst(now) {
+        if (!burst) return;
+        const elapsed = now - burst.start;
+        if (elapsed > 220) {
+          burst = null;
+          return;
+        }
+        const progress = elapsed / 220;
+        const radius = 10 + progress * 26;
+        ctx.save();
+        ctx.translate(burst.x, burst.y);
+        ctx.strokeStyle = `rgba(200, 169, 110, ${0.7 - progress * 0.7})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function updateScoreboard(timeLeftMs) {
+        aimScoreEl.textContent = String(score);
+        aimTimeEl.textContent = Math.max(0, timeLeftMs / 1000).toFixed(1);
+      }
+
+      function verdictForReaction(value, hasSamples) {
+        if (!hasSamples) return 'NEEDS WARMUP';
+        if (value < 700) return 'VALORANT READY';
+        if (value <= 1000) return 'SHARP';
+        if (value <= 1300) return 'DECENT AIM';
+        return 'NEEDS WARMUP';
+      }
+
+      function endRound() {
+        roundActive = false;
+        cancelAnimationFrame(rafId);
+        const accuracy = totalClicks ? Math.round((score / totalClicks) * 100) : 0;
+        const avgReaction = reactionTimes.length
+          ? Math.round(reactionTimes.reduce((sum, time) => sum + time, 0) / reactionTimes.length)
+          : 0;
+
+        aimResultScore.textContent = String(score);
+        aimResultAccuracy.textContent = `${accuracy}%`;
+        aimResultReaction.textContent = `${avgReaction}ms`;
+        aimVerdict.textContent = verdictForReaction(avgReaction, reactionTimes.length > 0);
+        aimResults.hidden = false;
+        aimOverlay.hidden = true;
+        aimLab.dataset.state = 'results';
+        target = null;
+        drawFrame(performance.now(), 0);
+      }
+
+      function drawFrame(now, timeLeftMs) {
+        const rect = aimStage.getBoundingClientRect();
+        ctx.clearRect(0, 0, rect.width, rect.height);
+        drawGrid(rect.width, rect.height);
+        drawTarget(now);
+        drawBurst(now);
+      }
+
+      function frame(now) {
+        if (!roundActive) return;
+        const elapsed = now - roundStart;
+        const timeLeftMs = roundLength - elapsed;
+        updateScoreboard(timeLeftMs);
+        drawFrame(now, timeLeftMs);
+
+        if (timeLeftMs <= 0) {
+          endRound();
+          return;
+        }
+
+        rafId = window.requestAnimationFrame(frame);
+      }
+
+      function startRound() {
+        resizeAimCanvas();
+        score = 0;
+        totalClicks = 0;
+        reactionTimes = [];
+        burst = null;
+        roundActive = true;
+        roundStart = performance.now();
+        spawnTarget(roundStart);
+        updateScoreboard(roundLength);
+        aimOverlay.hidden = true;
+        aimResults.hidden = true;
+        aimLab.dataset.state = 'live';
+        rafId = window.requestAnimationFrame(frame);
+      }
+
+      function getPointerPosition(event) {
+        const rect = aimCanvas.getBoundingClientRect();
+        return {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+        };
+      }
+
+      aimStage.addEventListener('click', (event) => {
+        if (!roundActive || !target) return;
+        totalClicks += 1;
+        const point = getPointerPosition(event);
+        const distance = Math.hypot(point.x - target.x, point.y - target.y);
+
+        if (distance <= target.radius) {
+          score += 1;
+          reactionTimes.push(performance.now() - targetSpawnedAt);
+          createBurst(target.x, target.y);
+          spawnTarget(performance.now());
+        }
+      });
+
+      aimStartButton.addEventListener('click', startRound);
+      aimReplayButton.addEventListener('click', startRound);
+      window.addEventListener('resize', () => {
+        resizeAimCanvas();
+        drawFrame(performance.now(), roundLength);
+      });
+
+      resizeAimCanvas();
+      updateScoreboard(roundLength);
+      drawFrame(performance.now(), roundLength);
+    }
+
+    // NAVBAR LOGIC
+    const navbar = document.getElementById('navbar');
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > lastScroll && currentScroll > 120) {
+        navbar.classList.add('hidden');
+      } else {
+        navbar.classList.remove('hidden');
+      }
+      lastScroll = currentScroll;
+    });
+
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('active');
+      navLinks.classList.toggle('open');
+    });
+
+    // Close mobile nav when a link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navToggle.classList.remove('active');
+        navLinks.classList.remove('open');
+      });
+    });
+
+    // SCROLL REVEAL (Intersection Observer)
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 100);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>
