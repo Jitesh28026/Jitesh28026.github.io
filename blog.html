@@ -497,6 +497,10 @@
       opacity: 0;
     }
 
+    body.loader-skipped .site-loader {
+      display: none !important;
+    }
+
     .navbar,
     section,
     footer {
@@ -1252,6 +1256,14 @@
 </head>
 
 <body class="is-loading">
+  <script>
+    // Skip the intro loader if it's already been shown this browsing session
+    // (e.g., navigating between index and blog within the same tab).
+    if (sessionStorage.getItem('jitesh_loader_shown')) {
+      document.body.classList.remove('is-loading');
+      document.body.classList.add('loader-skipped');
+    }
+  </script>
   <div class="site-loader" id="siteLoader" aria-live="polite" aria-label="Loading about page">
     <div class="loader-scanlines" aria-hidden="true"></div>
     <div class="loader-core">
@@ -1385,6 +1397,8 @@
 
   <script>
     // LOADER + CUSTOM CURSOR
+    const FIRST_LOAD_KEY = 'jitesh_loader_shown';
+    const skipLoader = !!sessionStorage.getItem(FIRST_LOAD_KEY);
     const loader = document.getElementById('siteLoader');
     const loaderStatus = document.getElementById('loaderStatus');
     const loaderStatuses = [
@@ -1395,7 +1409,10 @@
       '> READY.'
     ];
 
-    if (loader && loaderStatus) {
+    if (skipLoader) {
+      document.body.classList.remove('is-loading');
+      if (loader) loader.setAttribute('aria-hidden', 'true');
+    } else if (loader && loaderStatus) {
       let loaderIndex = 0;
       const statusTimer = window.setInterval(() => {
         loaderIndex = Math.min(loaderIndex + 1, loaderStatuses.length - 1);
@@ -1410,10 +1427,12 @@
         window.setTimeout(() => {
           document.body.classList.remove('is-loading');
           loader.setAttribute('aria-hidden', 'true');
+          try { sessionStorage.setItem(FIRST_LOAD_KEY, '1'); } catch (e) {}
         }, 500);
       }, 2800);
     } else {
       document.body.classList.remove('is-loading');
+      try { sessionStorage.setItem(FIRST_LOAD_KEY, '1'); } catch (e) {}
     }
 
     const cursorDot = document.querySelector('.cursor-dot');
