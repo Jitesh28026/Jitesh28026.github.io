@@ -2918,6 +2918,32 @@
       }
     }
 
+    /* 10a. Single scrollbar fix — both html & body had overflow-x: hidden,
+       which made Chromium create two scroll containers (and thus two
+       scrollbars). overflow: clip prevents the body from becoming its
+       own scrollport. */
+    html { overflow-x: clip !important; }
+    body { overflow-x: clip !important; overflow-y: visible !important; }
+
+    /* 10. Mobile / touch — let OS handle scrollbars
+       (the gold custom webkit scrollbar was showing as a persistent
+       yellow bar on phones and intercepting scroll touches). */
+    @media (max-width: 768px), (pointer: coarse) {
+      html {
+        scrollbar-width: auto;
+        scrollbar-color: auto;
+      }
+      ::-webkit-scrollbar {
+        width: 0 !important;
+        height: 0 !important;
+        background: transparent !important;
+      }
+      ::-webkit-scrollbar-track,
+      ::-webkit-scrollbar-thumb {
+        background: transparent !important;
+      }
+    }
+
     /* Respect reduced motion */
     @media (prefers-reduced-motion: reduce) {
       .hero::after,
@@ -3160,7 +3186,7 @@
   <header class="gallery-header" id="gallery">
     <div class="section-label">Playground</div>
     <h1 class="gallery-title">Visual Explorations</h1>
-    <p class="gallery-subtitle">A collection of UI snippets, high-fidelity mockups, and micro-interactions. Feel free to replace these placeholder images with your actual design files.</p>
+    <p class="gallery-subtitle">A collection of UI snippets, high-fidelity mockups, and micro-interactions &mdash; small experiments from the side of the desk.</p>
   </header>
 
   <main class="gallery-container">
@@ -3528,6 +3554,27 @@
         });
       }, { threshold: 0.15 });
       footerObserver.observe(footerEl);
+    })();
+  </script>
+  <script>
+    // Disable tilt + interactive flourishes on touch devices so the hero
+    // doesn't intercept scroll gestures on mobile.
+    (function () {
+      const isTouch = window.matchMedia('(pointer: coarse)').matches
+        || window.matchMedia('(hover: none)').matches;
+      if (!isTouch) return;
+      document.querySelectorAll('[data-tilt]').forEach((el) => {
+        el.removeAttribute('data-tilt');
+        el.removeAttribute('data-tilt-glare');
+        el.removeAttribute('data-tilt-max-glare');
+        el.removeAttribute('data-tilt-speed');
+        el.removeAttribute('data-tilt-perspective');
+        el.removeAttribute('data-tilt-max');
+        if (el.vanillaTilt && typeof el.vanillaTilt.destroy === 'function') {
+          el.vanillaTilt.destroy();
+        }
+        el.style.transform = '';
+      });
     })();
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
