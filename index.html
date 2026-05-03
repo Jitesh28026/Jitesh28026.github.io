@@ -2752,6 +2752,187 @@
       }
     }
   </style>
+  <style>
+    /* ==========================================
+       POLISH PASS — additive only
+    ========================================== */
+
+    /* 1. Hero — slow animated gradient backdrop */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: -10%;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 18% 22%, rgba(200, 169, 110, 0.10), transparent 60%),
+        radial-gradient(ellipse 55% 50% at 82% 78%, rgba(200, 169, 110, 0.07), transparent 60%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(200, 169, 110, 0.04), transparent 70%);
+      animation: heroDrift 22s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    .hero-content, .hero-visual { position: relative; z-index: 1; }
+    @keyframes heroDrift {
+      0%   { transform: translate3d(0, 0, 0) scale(1); }
+      50%  { transform: translate3d(2.5%, -1.5%, 0) scale(1.04); }
+      100% { transform: translate3d(-2%, 1.5%, 0) scale(1.02); }
+    }
+
+    /* 2. Loader — realistic terminal block cursor */
+    .loader-cursor {
+      display: inline-block;
+      width: 0.55em;
+      color: transparent;
+      background: var(--accent);
+      margin-left: 0.1em;
+      vertical-align: baseline;
+      animation: termCursorBlink 1.06s steps(1) infinite;
+    }
+    @keyframes termCursorBlink {
+      0%, 49% { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    /* 3. Hero headline — subtle glitch on hover */
+    @media (hover: hover) and (pointer: fine) {
+      .hero-title { transition: text-shadow 0.2s ease; }
+      .hero-title:hover {
+        animation: glitchShake 0.34s steps(2) 1;
+        text-shadow:
+          1.4px 0 0 rgba(200, 169, 110, 0.55),
+          -1.4px 0 0 rgba(108, 200, 220, 0.40);
+      }
+      @keyframes glitchShake {
+        0%   { transform: translate(0, 0); }
+        20%  { transform: translate(-1px, 1px); }
+        40%  { transform: translate(1.5px, -1px); }
+        60%  { transform: translate(-1px, 0); }
+        80%  { transform: translate(1px, 1px); }
+        100% { transform: translate(0, 0); }
+      }
+    }
+
+    /* 4. "Currently" section — sequential fade-in */
+    .currently-label,
+    .currently-grid > * {
+      opacity: 0;
+      transform: translateY(6px);
+      animation: currentlyFade 0.55s ease forwards;
+    }
+    .currently-label                  { animation-delay: 0.85s; }
+    .currently-grid > *:nth-child(1)  { animation-delay: 0.95s; }
+    .currently-grid > *:nth-child(2)  { animation-delay: 1.05s; }
+    .currently-grid > *:nth-child(3)  { animation-delay: 1.18s; }
+    .currently-grid > *:nth-child(4)  { animation-delay: 1.28s; }
+    .currently-grid > *:nth-child(5)  { animation-delay: 1.42s; }
+    .currently-grid > *:nth-child(6)  { animation-delay: 1.52s; }
+    @keyframes currentlyFade {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 5. Marquee — slightly faster, smoother */
+    .marquee-inner {
+      animation-duration: 24s !important;
+      animation-timing-function: linear !important;
+      will-change: transform;
+    }
+
+    /* 6. Project cards — refined hover lift */
+    .project-card {
+      will-change: transform;
+      transition:
+        transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+        box-shadow 0.4s ease,
+        border-color 0.4s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.18);
+    }
+
+    /* 7. Nav links — underline animation on hover */
+    .nav-links a:not(.nav-cta) {
+      position: relative;
+    }
+    .nav-links a:not(.nav-cta)::after {
+      content: '';
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 5px;
+      height: 1.5px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.2, 1);
+      pointer-events: none;
+    }
+    .nav-links a:not(.nav-cta):hover::after {
+      transform: scaleX(1);
+    }
+
+    /* 8. Footer — fade in on scroll */
+    footer.footer-reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+    footer.footer-reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 9. 3D sphere — more prominent across breakpoints */
+    #global-three-canvas { opacity: 0.55 !important; }
+    @media (max-width: 1200px) {
+      #global-three-canvas { opacity: 0.5 !important; }
+    }
+    @media (max-width: 768px) {
+      #global-three-canvas { opacity: 0.42 !important; }
+    }
+    @media (max-width: 480px) {
+      #global-three-canvas { opacity: 0.38 !important; }
+    }
+
+    /* Readability guard — soft vignette behind hero copy so text stays crisp
+       even with a brighter sphere/particles behind it. */
+    .hero-content::before {
+      content: '';
+      position: absolute;
+      inset: -5% -8% -5% -10%;
+      background: radial-gradient(ellipse at 30% 50%,
+        rgba(13, 13, 13, 0.78) 0%,
+        rgba(13, 13, 13, 0.55) 40%,
+        rgba(13, 13, 13, 0) 75%);
+      filter: blur(8px);
+      z-index: -1;
+      pointer-events: none;
+    }
+    @media (max-width: 768px) {
+      .hero-content::before {
+        inset: -4% -6% -4% -6%;
+        background: radial-gradient(ellipse at 50% 50%,
+          rgba(13, 13, 13, 0.78) 0%,
+          rgba(13, 13, 13, 0.55) 50%,
+          rgba(13, 13, 13, 0) 85%);
+      }
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .hero::after,
+      .currently-label,
+      .currently-grid > *,
+      .loader-cursor {
+        animation: none !important;
+      }
+      .currently-label,
+      .currently-grid > * { opacity: 1 !important; transform: none !important; }
+      .hero-title:hover { animation: none !important; text-shadow: none !important; }
+      .marquee-inner { animation-duration: 35s !important; }
+      footer.footer-reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+  </style>
 </head>
 
 <body class="is-loading">
@@ -2893,7 +3074,6 @@
           <div class="section-label">Selected Work</div>
           <h2 class="section-heading">Projects that <span class="muted">shipped.</span></h2>
         </div>
-        <a href="#contact" class="btn-outline" id="all-case-studies">All case studies &rarr;</a>
       </div>
       <div class="work-grid">
         <!-- PROJECT 01: dataX.ai - Safe Consolidation -->
@@ -3331,6 +3511,24 @@
 
     window.addEventListener('scroll', updateActiveNav);
     updateActiveNav();
+
+    // ==========================================
+    // FOOTER FADE-IN ON SCROLL
+    // ==========================================
+    (function () {
+      const footerEl = document.querySelector('footer');
+      if (!footerEl) return;
+      footerEl.classList.add('footer-reveal');
+      const footerObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            footerObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      footerObserver.observe(footerEl);
+    })();
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
   <!-- Add AOS Script and Initializer -->
@@ -3391,16 +3589,26 @@
         scene.add(particlesMesh);
 
         // KINETIC SCULPTURE (Processes)
-        const isMobile = window.innerWidth <= 768;
-        const sculptureGeo = new THREE.IcosahedronGeometry(isMobile ? 1.2 : 2, 2);
+        // Responsive sizing: more prominent at every breakpoint, but offset
+        // toward the right so it stays out of the way of body copy.
+        function getSphereParams() {
+          const w = window.innerWidth;
+          if (w <= 480)  return { scale: 0.95, x: 1.6, y: -0.3, z: -4.5 };
+          if (w <= 768)  return { scale: 1.10, x: 2.3, y: -0.1, z: -4.2 };
+          if (w <= 1200) return { scale: 1.30, x: 3.6, y:  0.0, z: -4.0 };
+          return            { scale: 1.45, x: 4.4, y:  0.0, z: -3.8 };
+        }
+        const sphereParams = getSphereParams();
+        const sculptureGeo = new THREE.IcosahedronGeometry(2, 2);
         const sculptureMat = new THREE.MeshPhongMaterial({
           color: 0xc8a96e,
           wireframe: true,
           transparent: true,
-          opacity: 0.12,
+          opacity: 0.22,
         });
         const sculpture = new THREE.Mesh(sculptureGeo, sculptureMat);
-        sculpture.position.set(isMobile ? 0 : 4, 0, -5);
+        sculpture.position.set(sphereParams.x, sphereParams.y, sphereParams.z);
+        sculpture.scale.setScalar(sphereParams.scale);
         scene.add(sculpture);
 
         // Lights
@@ -3445,10 +3653,10 @@
 
           // Sync sculpture with process scroll (reads from standalone script)
           const pp = window.__processProgress || 0;
-          sculpture.material.opacity = 0.1 + (pp * 0.35);
-          sculpture.rotation.y += 0.003 + (pp * 0.008);
-          sculpture.rotation.x = Math.sin(pp * Math.PI * 2) * 0.2;
-          sculpture.position.y = (pp - 0.5) * -2.5;
+          sculpture.material.opacity = 0.26 + (pp * 0.38);
+          sculpture.rotation.y += 0.0035 + (pp * 0.009);
+          sculpture.rotation.x = Math.sin(pp * Math.PI * 2) * 0.22;
+          sculpture.position.y = sphereParams.y + (pp - 0.5) * -2.5;
 
           // Interaction reactivity
           scene.rotation.x = mouseY * 0.1;
@@ -3462,15 +3670,19 @@
         window.addEventListener('resize', () => {
           const width = window.innerWidth;
           const height = window.innerHeight;
-          const mobile = width <= 768;
 
           camera.aspect = width / height;
           camera.updateProjectionMatrix();
           renderer.setSize(width, height);
-          
-          // Update object scales on resize
-          sculpture.scale.setScalar(mobile ? 0.6 : 1);
-          sculpture.position.x = mobile ? 0 : 4;
+
+          // Re-derive sphere placement from the same breakpoint table
+          const p = getSphereParams();
+          sphereParams.scale = p.scale;
+          sphereParams.x = p.x;
+          sphereParams.y = p.y;
+          sphereParams.z = p.z;
+          sculpture.scale.setScalar(p.scale);
+          sculpture.position.set(p.x, p.y, p.z);
         });
 
         animate();
