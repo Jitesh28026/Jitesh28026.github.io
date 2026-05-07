@@ -592,12 +592,36 @@
       flex: 0 0 auto;
     }
 
-    /* IMAGE FIGURE, 1440:1024 */
+    /* IMAGE FIGURE — 1440:1024 + soft halo + top-corner brackets */
     .cs-figure {
       display: block;
-      margin: 36px 0 0;
+      margin: 48px 0 0;
+      padding: 18px;
       width: 100%;
       position: relative;
+      background:
+        radial-gradient(ellipse 100% 80% at 50% 0%, rgba(32, 87, 241, 0.07), transparent 70%),
+        radial-gradient(ellipse 90% 70% at 50% 100%, rgba(235, 241, 255, 0.6), transparent 75%);
+      border-radius: 24px;
+      isolation: isolate;
+    }
+    .cs-figure::before,
+    .cs-figure::after {
+      content: '';
+      position: absolute;
+      width: 28px; height: 28px;
+      border: 1.5px solid var(--blue);
+      opacity: 0.32;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .cs-figure::before {
+      top: 6px; left: 6px;
+      border-right: none; border-bottom: none;
+    }
+    .cs-figure::after {
+      top: 6px; right: 6px;
+      border-left: none; border-bottom: none;
     }
     .cs-figure-block {
       position: relative;
@@ -606,6 +630,7 @@
       border-radius: 14px;
       overflow: hidden;
       background: var(--blue-light);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.04);
     }
     .cs-figure-block img {
       position: absolute;
@@ -911,6 +936,11 @@
       .end-actions { padding: 24px 22px 80px; flex-direction: column; }
       .end-actions .btn { width: 100%; justify-content: center; }
       .bottom-line { font-size: 18px; padding-left: 18px; }
+      .cs-figure { padding: 12px; margin-top: 36px; }
+      .cs-figure::before,
+      .cs-figure::after { width: 18px; height: 18px; top: 4px; }
+      .cs-figure::before { left: 4px; }
+      .cs-figure::after { right: 4px; }
       footer {
         padding: 24px 22px;
         flex-direction: column;
@@ -952,8 +982,7 @@
           <span class="meta-chip">Status: In Development</span>
         </div>
         <div class="hero-actions">
-          <a href="#medium-link" class="btn btn-primary" target="_blank" rel="noopener">View Full Case Study on Medium →</a>
-          <a href="#figma-deck" class="btn btn-secondary" target="_blank" rel="noopener">View Figma Slides →</a>
+          <a href="#full-case-study" class="btn btn-primary" target="_blank" rel="noopener">View full case study →</a>
         </div>
       </div>
     </div>
@@ -1357,8 +1386,7 @@
 
   <!-- END BUTTONS -->
   <div class="end-actions">
-    <a href="#medium-link" class="btn btn-primary" target="_blank" rel="noopener">Read full case study on Medium →</a>
-    <a href="#figma-deck" class="btn btn-secondary" target="_blank" rel="noopener">View Figma Slides →</a>
+    <a href="#full-case-study" class="btn btn-primary" target="_blank" rel="noopener">View full case study →</a>
     <a href="index.html#work" class="btn btn-secondary">← All work</a>
   </div>
 
