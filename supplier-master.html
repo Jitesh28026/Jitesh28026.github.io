@@ -635,8 +635,32 @@
       letter-spacing: 0.04em;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 768px) {
+    /* RESPONSIVE — 3 breakpoints: desktop (default >=1024) / tablet / mobile */
+
+    /* TABLET — 768px to 1023px */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      nav { padding: 14px 28px; }
+      .hero { padding: 130px 28px 70px; }
+      .hero-image { padding: 0 28px; }
+      section { padding: 70px 28px; }
+      .belief-section { padding: 70px 28px; }
+      .cards-3 { grid-template-columns: 1fr 1fr; }
+      .cards-2 { grid-template-columns: 1fr 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr 1fr; }
+      .outcomes-row { grid-template-columns: 1fr 1fr 1fr; }
+      .before-after { grid-template-columns: 1fr 1fr; }
+      .two-col-img { grid-template-columns: 1fr 1fr; }
+      .constraints-grid { grid-template-columns: 1fr 1fr; }
+      .compare-table { font-size: 13.5px; }
+      .reflection { padding: 48px 32px; }
+      .end-section { padding: 80px 28px; }
+      .chapter-break { padding: 100px 28px; }
+      .dual-cta { padding: 56px 28px 0; }
+      footer { padding: 28px 28px; }
+    }
+
+    /* MOBILE — under 768px */
+    @media (max-width: 767px) {
       nav { padding: 14px 20px; }
       .hero { padding: 120px 20px 60px; }
       .hero-image { padding: 0 20px; }
@@ -652,6 +676,12 @@
       .compare-table { font-size: 13px; }
       .reflection { padding: 40px 24px; }
       .end-section { padding: 60px 20px; }
+      .chapter-break { padding: 80px 24px; }
+      .dual-cta { padding: 48px 20px 0; }
+      .hero-frame::before,
+      .hero-frame::after,
+      .hero-frame .hero-frame-bl,
+      .hero-frame .hero-frame-br { width: 18px; height: 18px; }
       footer { padding: 24px 20px; flex-direction: column; gap: 8px; text-align: center; }
     }
 
@@ -827,14 +857,6 @@
       }
     }
 
-    @media (max-width: 768px) {
-      .chapter-break { padding: 80px 24px; }
-      .dual-cta { padding: 48px 20px 0; }
-      .hero-frame::before,
-      .hero-frame::after,
-      .hero-frame .hero-frame-bl,
-      .hero-frame .hero-frame-br { width: 18px; height: 18px; }
-    }
   </style>
 </head>
 <body>
