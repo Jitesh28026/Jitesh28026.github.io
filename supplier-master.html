@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Making Data Consolidation Feel Safe — Jitesh Thakker</title>
-  <meta name="description" content="Designing the Supplier Details, Merge & Split flows for an AI-powered supplier master data platform — a four-step governed flow built around the belief that nothing in an enterprise system should move silently." />
-  <meta property="og:title" content="Making Data Consolidation Feel Safe — Jitesh Thakker" />
+  <title>Making Data Consolidation Feel Safe, Jitesh Thakker</title>
+  <meta name="description" content="Designing the Supplier Details, Merge & Split flows for an AI-powered supplier master data platform, a four-step governed flow built around the belief that nothing in an enterprise system should move silently." />
+  <meta property="og:title" content="Making Data Consolidation Feel Safe, Jitesh Thakker" />
   <meta property="og:description" content="A four-step governed merge & split flow for an AI-powered supplier MDM. Designed so nothing moves silently." />
   <meta property="og:type" content="article" />
   <meta property="og:image" content="/assets/sm-og.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Making Data Consolidation Feel Safe — Jitesh Thakker" />
+  <meta name="twitter:title" content="Making Data Consolidation Feel Safe, Jitesh Thakker" />
   <meta name="twitter:description" content="A four-step governed merge & split flow for an AI-powered supplier MDM. Designed so nothing moves silently." />
   <meta name="twitter:image" content="/assets/sm-og.png" />
   <script>document.documentElement.classList.add('js');</script>
@@ -43,9 +43,11 @@
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      overflow-x: clip;
     }
+    html { overflow-x: clip; }
 
-    /* Scroll progress bar — fixed, top of viewport, above nav */
+    /* Scroll progress bar, fixed, top of viewport, above nav */
     .scroll-progress-track {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -94,8 +96,9 @@
       transition: color 0.2s;
     }
     .nav-back:hover { color: var(--blue); }
+    .nav-back-short { display: none; }
 
-    /* HERO ZONE — gradient + glow + corner brackets */
+    /* HERO ZONE, gradient + glow + corner brackets */
     .hero-zone {
       position: relative;
       background:
@@ -242,7 +245,7 @@
       color: var(--blue);
     }
 
-    /* BELIEF — three lines, hairline above */
+    /* BELIEF, three lines, hairline above */
     .belief-section {
       padding: 80px 40px;
       max-width: 860px;
@@ -314,7 +317,7 @@
       color: var(--dark);
     }
 
-    /* Bottom-line — bold pull-quote, blue left bar */
+    /* Bottom-line, bold pull-quote, blue left bar */
     .bottom-line {
       font-family: var(--sans);
       font-size: clamp(20px, 2.6vw, 24px);
@@ -358,37 +361,48 @@
     .card p { font-size: 14px; line-height: 1.6; }
 
     /* COMPARE TABLE */
+    .table-scroll {
+      margin: 40px 0 0;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFF 100%);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 28px rgba(15, 23, 42, 0.04);
+    }
     .compare-table {
       width: 100%;
+      min-width: 560px;
       border-collapse: separate;
       border-spacing: 0;
-      margin: 40px 0 0;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-      background: var(--white);
+      background: transparent;
     }
     .compare-table th,
     .compare-table td {
-      padding: 16px 22px;
+      padding: 18px 24px;
       text-align: left;
       font-size: 14px;
       border-bottom: 1px solid var(--border);
     }
     .compare-table th {
-      background: var(--bg);
+      background: linear-gradient(180deg, #F1F5FF 0%, #FAFBFF 100%);
       font-weight: 600;
       color: var(--mid);
-      font-size: 12px;
-      letter-spacing: 0.04em;
+      font-size: 11px;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
     }
     .compare-table td { color: var(--mid); font-weight: 300; }
     .compare-table tr:last-child td { border-bottom: none; }
     .compare-table tr.highlight td {
-      background: var(--blue-light);
+      background: linear-gradient(90deg, var(--blue-light) 0%, rgba(235, 241, 255, 0.6) 100%);
       font-weight: 600;
       color: var(--blue);
+      position: relative;
+    }
+    .compare-table tr.highlight td:first-child {
+      box-shadow: inset 3px 0 0 var(--blue);
     }
     .tick { color: #16A34A; font-weight: 500; }
     .cross { color: #DC2626; font-weight: 500; }
@@ -491,7 +505,7 @@
       letter-spacing: 0.02em;
     }
 
-    /* IMAGE FIGURE — 1440:1024 aspect-ratio for all */
+    /* IMAGE FIGURE, 1440:1024 aspect-ratio for all */
     .cs-figure {
       display: block;
       margin: 36px 0 0;
@@ -577,7 +591,7 @@
     }
     .step-block .cs-figure { margin-top: 16px; }
 
-    /* CHAPTER-BREAK — full-width blue, parallax heading */
+    /* CHAPTER-BREAK, full-width blue, parallax heading */
     .chapter-break {
       background: var(--blue);
       color: var(--white);
@@ -741,7 +755,7 @@
       letter-spacing: 0.04em;
     }
 
-    /* Scroll animations — only when motion is OK */
+    /* Scroll animations, only when motion is OK */
     @media (prefers-reduced-motion: no-preference) {
       html.js .scroll-fade {
         opacity: 0;
@@ -770,7 +784,7 @@
       }
     }
 
-    /* RESPONSIVE — 3 breakpoints: desktop default >=1024 / tablet / mobile */
+    /* RESPONSIVE, 3 breakpoints: desktop default >=1024 / tablet / mobile */
 
     @media (min-width: 768px) and (max-width: 1023px) {
       nav { padding: 14px 28px; }
@@ -790,7 +804,11 @@
     }
 
     @media (max-width: 767px) {
-      nav { padding: 14px 20px; }
+      nav { padding: 14px 18px; }
+      .nav-logo { font-size: 12px; letter-spacing: 0.04em; }
+      .nav-back { font-size: 11px; }
+      .nav-back-full { display: none; }
+      .nav-back-short { display: inline; }
       .hero { padding: 130px 22px 80px; max-width: 100%; }
       .hero-frame::before,
       .hero-frame::after,
@@ -835,7 +853,10 @@
   <!-- NAV -->
   <nav>
     <a href="index.html" class="nav-logo">JITESH.EXE_</a>
-    <a href="index.html#work" class="nav-back">← Back to work</a>
+    <a href="index.html#work" class="nav-back">
+      <span class="nav-back-full">← Back to work</span>
+      <span class="nav-back-short">← Back</span>
+    </a>
   </nav>
 
   <!-- HERO -->
@@ -885,7 +906,7 @@
       </div>
       <div class="card">
         <h3>No explicit relationship assignment.</h3>
-        <p>Subsidiaries and affiliates moved silently — or not at all — when suppliers were consolidated.</p>
+        <p>Subsidiaries and affiliates moved silently, or not at all, when suppliers were consolidated.</p>
       </div>
       <div class="card">
         <h3>No way to undo a wrong consolidation.</h3>
@@ -898,7 +919,8 @@
   <!-- COMPETITIVE -->
   <section class="scroll-fade">
     <h2>Platforms existed.<br><em>None solved this for humans.</em></h2>
-    <p>Informatica MDM, SAP MDG, and Reltio exist — but they're built for IT administrators. Their merge workflows are buried in configuration panels with no visual feedback and no explicit relationship handling.</p>
+    <p>Informatica MDM, SAP MDG, and Reltio exist, but they're built for IT administrators. Their merge workflows are buried in configuration panels with no visual feedback and no explicit relationship handling.</p>
+    <div class="table-scroll">
     <table class="compare-table">
       <thead>
         <tr>
@@ -923,19 +945,20 @@
         </tr>
         <tr class="highlight">
           <td>dataX.ai</td>
-          <td>✓</td>
-          <td>✓</td>
-          <td>✓</td>
+          <td><span class="tick" style="color: var(--blue);">✓</span></td>
+          <td><span class="tick" style="color: var(--blue);">✓</span></td>
+          <td><span class="tick" style="color: var(--blue);">✓</span></td>
         </tr>
       </tbody>
     </table>
+    </div>
     <p class="bottom-line">No competitor offered all three. That was the opportunity.</p>
   </section>
 
   <!-- USERS -->
   <section class="scroll-fade">
     <h2>One shared need<br><em>across all roles.</em></h2>
-    <p>The platform serves data stewards, procurement managers, and operations admins. What they share isn't a job title — it's a need for confidence. Every action they take has downstream consequences they may not fully see.</p>
+    <p>The platform serves data stewards, procurement managers, and operations admins. What they share isn't a job title, it's a need for confidence. Every action they take has downstream consequences they may not fully see.</p>
     <div class="cards-3 scroll-stagger">
       <div class="card">
         <h3>Data Stewards</h3>
@@ -956,7 +979,7 @@
   <!-- PROCESS -->
   <section class="scroll-fade">
     <h2>The scope<br><em>wasn't in the PRD.</em></h2>
-    <p>Merge and split weren't scoped initially. The first stakeholder call revealed the real need — there was no governed way to handle supplier consolidation. No competitor had solved this for business users. I designed from scratch with no prior reference, front-loaded the thinking before touching Figma, and iterated on exactly one thing: the relationship assignment logic.</p>
+    <p>Merge and split weren't scoped initially. The first stakeholder call revealed the real need, there was no governed way to handle supplier consolidation. No competitor had solved this for business users. I designed from scratch with no prior reference, front-loaded the thinking before touching Figma, and iterated on exactly one thing: the relationship assignment logic.</p>
     <div class="cards-3 scroll-stagger">
       <div class="card">
         <h3>Front-loaded the thinking.</h3>
@@ -964,7 +987,7 @@
       </div>
       <div class="card">
         <h3>Discovered in the field.</h3>
-        <p>Merge and split were uncovered in the first stakeholder call — not in the brief. The best problems aren't always in the PRD.</p>
+        <p>Merge and split were uncovered in the first stakeholder call, not in the brief. The best problems aren't always in the PRD.</p>
       </div>
       <div class="card">
         <h3>One real iteration.</h3>
@@ -976,28 +999,28 @@
   <!-- LAUNCHPAD -->
   <section class="scroll-fade">
     <h2>The launchpad<br><em>for everything.</em></h2>
-    <p>Before a user can merge or split a supplier, they need to understand it fully. Tab architecture separates concerns — each tab has one job. The header strip surfaces status and Auto Sync state before any scrolling. Inline editing keeps users in context — no modal, no lost place.</p>
+    <p>Before a user can merge or split a supplier, they need to understand it fully. Tab architecture separates concerns, each tab has one job. The header strip surfaces status and Auto Sync state before any scrolling. Inline editing keeps users in context, no modal, no lost place.</p>
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/sm-01-launchpad-attributes.png" alt="Supplier Details — Attributes tab, full view" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/sm-01-launchpad-attributes.png" alt="Supplier Details, Attributes tab, full view" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">SM-01 · LAUNCHPAD</span>
-          <span class="ph-desc">Supplier Details — Attributes tab, full view</span>
+          <span class="ph-desc">Supplier Details, Attributes tab, full view</span>
         </div>
       </div>
-      <span class="cs-caption">Supplier Details — Attributes tab, full view.</span>
+      <span class="cs-caption">Supplier Details, Attributes tab, full view.</span>
     </figure>
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/sm-02-launchpad-edit.png" alt="Edit state — inline form, Cancel/Confirm always visible" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/sm-02-launchpad-edit.png" alt="Edit state, inline form, Cancel/Confirm always visible" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">SM-02 · INLINE EDIT</span>
-          <span class="ph-desc">Edit state — inline form, Cancel/Confirm always visible</span>
+          <span class="ph-desc">Edit state, inline form, Cancel/Confirm always visible</span>
         </div>
       </div>
-      <span class="cs-caption">Edit state — inline form, Cancel/Confirm always visible.</span>
+      <span class="cs-caption">Edit state, inline form, Cancel/Confirm always visible.</span>
     </figure>
   </section>
 
@@ -1012,17 +1035,17 @@
   <!-- MERGE FLOW -->
   <section class="scroll-fade">
     <h2>Four steps. <em>No surprises.</em><br>Nothing moves silently.</h2>
-    <p>Merging two supplier records is one of the most consequential actions in the platform. I designed a four-step guided flow that makes every decision visible and every action deliberate. The merge triggers directly from the supplier page — no separate flow, no context switch. The action lives where the data lives.</p>
+    <p>Merging two supplier records is one of the most consequential actions in the platform. I designed a four-step guided flow that makes every decision visible and every action deliberate. The merge triggers directly from the supplier page, no separate flow, no context switch. The action lives where the data lives.</p>
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/sm-03-merge-trigger.png" alt="Merge triggered from the supplier page — source supplier pre-filled" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/sm-03-merge-trigger.png" alt="Merge triggered from the supplier page, source supplier pre-filled" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">SM-03 · MERGE TRIGGER</span>
-          <span class="ph-desc">Merge triggered from the supplier page — source supplier pre-filled</span>
+          <span class="ph-desc">Merge triggered from the supplier page, source supplier pre-filled</span>
         </div>
       </div>
-      <span class="cs-caption">Merge triggered from the supplier page — source supplier pre-filled.</span>
+      <span class="cs-caption">Merge triggered from the supplier page, source supplier pre-filled.</span>
     </figure>
 
     <div class="step-block">
@@ -1030,28 +1053,28 @@
       <p class="step-lead">Key identifiers visible on both cards. No blind merges.</p>
       <figure class="cs-figure">
         <div class="cs-figure-block">
-          <img src="assets/case-studies/sm-04-merge-step1.png" alt="Add Target Supplier — Step 1" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+          <img src="assets/case-studies/sm-04-merge-step1.png" alt="Add Target Supplier, Step 1" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
           <div class="img-placeholder">
             <span class="ph-label">SM-04 · MERGE STEP 1</span>
-            <span class="ph-desc">Add Target Supplier — Step 1</span>
+            <span class="ph-desc">Add Target Supplier, Step 1</span>
           </div>
         </div>
-        <span class="cs-caption">Add Target Supplier — Step 1.</span>
+        <span class="cs-caption">Add Target Supplier, Step 1.</span>
       </figure>
     </div>
 
     <div class="step-block">
       <h3>Consequences before selection.</h3>
-      <p class="step-lead">Early designs used a dropdown. Users chose without understanding what they were committing to. Cards replaced it — the outcome is visible before any commitment is made.</p>
+      <p class="step-lead">Early designs used a dropdown. Users chose without understanding what they were committing to. Cards replaced it, the outcome is visible before any commitment is made.</p>
       <figure class="cs-figure">
         <div class="cs-figure-block">
-          <img src="assets/case-studies/sm-05-merge-step2.png" alt="Select Merge Strategy — Step 2" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+          <img src="assets/case-studies/sm-05-merge-step2.png" alt="Select Merge Strategy, Step 2" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
           <div class="img-placeholder">
             <span class="ph-label">SM-05 · MERGE STEP 2</span>
-            <span class="ph-desc">Select Merge Strategy — Step 2</span>
+            <span class="ph-desc">Select Merge Strategy, Step 2</span>
           </div>
         </div>
-        <span class="cs-caption">Select Merge Strategy — Step 2.</span>
+        <span class="cs-caption">Select Merge Strategy, Step 2.</span>
       </figure>
     </div>
 
@@ -1060,13 +1083,13 @@
       <p class="step-lead">Source left, target right. Every field independently assignable. Custom value option means users aren't forced to pick either.</p>
       <figure class="cs-figure">
         <div class="cs-figure-block">
-          <img src="assets/case-studies/sm-06-merge-step3.png" alt="Compare and Edit — Step 3" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+          <img src="assets/case-studies/sm-06-merge-step3.png" alt="Compare and Edit, Step 3" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
           <div class="img-placeholder">
             <span class="ph-label">SM-06 · MERGE STEP 3</span>
-            <span class="ph-desc">Compare and Edit — Step 3</span>
+            <span class="ph-desc">Compare and Edit, Step 3</span>
           </div>
         </div>
-        <span class="cs-caption">Compare and Edit — Step 3.</span>
+        <span class="cs-caption">Compare and Edit, Step 3.</span>
       </figure>
     </div>
   </section>
@@ -1074,19 +1097,19 @@
   <!-- NOTHING MOVES SILENTLY -->
   <section class="scroll-fade">
     <h2>Nothing moves <em>silently.</em></h2>
-    <p>This was the most debated part of the project. When two suppliers merge, what happens to their subsidiaries, affiliates, and parent companies? Auto-assigning relationships felt too risky — one silent move could corrupt an entire supplier hierarchy.</p>
+    <p>This was the most debated part of the project. When two suppliers merge, what happens to their subsidiaries, affiliates, and parent companies? Auto-assigning relationships felt too risky, one silent move could corrupt an entire supplier hierarchy.</p>
 
     <div class="before-after scroll-stagger">
       <div class="ba-block">
-        <div class="ba-label">BEFORE — Early design</div>
+        <div class="ba-label">BEFORE, Early design</div>
         <ul>
-          <li>Bulk assignment — select all and move</li>
+          <li>Bulk assignment, select all and move</li>
           <li>One misclick moves everything silently</li>
           <li>No visibility into what moved where</li>
         </ul>
       </div>
       <div class="ba-block after">
-        <div class="ba-label">AFTER — Final design</div>
+        <div class="ba-label">AFTER, Final design</div>
         <ul>
           <li>Every relationship listed individually</li>
           <li>One explicit decision per record</li>
@@ -1095,17 +1118,17 @@
       </div>
     </div>
 
-    <p style="margin-top: 32px;">A mandatory confirmation checkbox requires users to acknowledge they've reviewed every assignment. This isn't friction — it's a contract. <strong>The user is saying: I have reviewed every decision. I own this.</strong></p>
+    <p style="margin-top: 32px;">A mandatory confirmation checkbox requires users to acknowledge they've reviewed every assignment. This isn't friction, it's a contract. <strong>The user is saying: I have reviewed every decision. I own this.</strong></p>
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/sm-07-assign-records.png" alt="Assign Records — explicit decision per relationship, grouped by type" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/sm-07-assign-records.png" alt="Assign Records, explicit decision per relationship, grouped by type" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">SM-07 · ASSIGN RECORDS</span>
-          <span class="ph-desc">Assign Records — explicit decision per relationship, grouped by type</span>
+          <span class="ph-desc">Assign Records, explicit decision per relationship, grouped by type</span>
         </div>
       </div>
-      <span class="cs-caption">Assign Records — explicit decision per relationship, grouped by type.</span>
+      <span class="cs-caption">Assign Records, explicit decision per relationship, grouped by type.</span>
     </figure>
 
     <p class="bottom-line">One misclick here corrupts an entire hierarchy. That's why nothing is assumed.</p>
@@ -1114,47 +1137,47 @@
   <!-- SEE EVERYTHING -->
   <section class="scroll-fade">
     <h2>See everything. Change anything.<br><em>Then execute.</em></h2>
-    <p>A complete summary of the merged supplier — all attributes, contacts, locations, and a relationship assignment table showing exactly where every record ended up. Users can navigate back and correct anything before executing.</p>
+    <p>A complete summary of the merged supplier, all attributes, contacts, locations, and a relationship assignment table showing exactly where every record ended up. Users can navigate back and correct anything before executing.</p>
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/sm-08-merge-step4.png" alt="Review and Merge — Step 4" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/sm-08-merge-step4.png" alt="Review and Merge, Step 4" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">SM-08 · REVIEW & MERGE</span>
-          <span class="ph-desc">Review and Merge — Step 4</span>
+          <span class="ph-desc">Review and Merge, Step 4</span>
         </div>
       </div>
-      <span class="cs-caption">Review and Merge — Step 4.</span>
+      <span class="cs-caption">Review and Merge, Step 4.</span>
     </figure>
 
-    <p class="bottom-line">Before you execute, you see everything. That's not a courtesy — it's the design.</p>
+    <p class="bottom-line">Before you execute, you see everything. That's not a courtesy, it's the design.</p>
   </section>
 
   <!-- SPLIT FLOW -->
   <section class="scroll-fade">
     <h2>The inverse problem.<br><em>Same rigour.</em></h2>
-    <p>The split flow solves the inverse problem — a supplier incorrectly merged needs to be separated. Same entry point, same mental model, no relearning. Every contact, location, and document must be explicitly assigned to one of the new suppliers. One action per item. Nothing assumed. Same confirmation checkbox. Same audit trail.</p>
+    <p>The split flow solves the inverse problem, a supplier incorrectly merged needs to be separated. Same entry point, same mental model, no relearning. Every contact, location, and document must be explicitly assigned to one of the new suppliers. One action per item. Nothing assumed. Same confirmation checkbox. Same audit trail.</p>
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/sm-09-split-distribute.png" alt="Split — Distribute Data, one assign action per item" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/sm-09-split-distribute.png" alt="Split, Distribute Data, one assign action per item" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">SM-09 · SPLIT · DISTRIBUTE</span>
-          <span class="ph-desc">Split — Distribute Data, one assign action per item</span>
+          <span class="ph-desc">Split, Distribute Data, one assign action per item</span>
         </div>
       </div>
-      <span class="cs-caption">Split — Distribute Data, one assign action per item.</span>
+      <span class="cs-caption">Split, Distribute Data, one assign action per item.</span>
     </figure>
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/sm-10-split-review.png" alt="Review and Split — three suppliers, one confirmation" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/sm-10-split-review.png" alt="Review and Split, three suppliers, one confirmation" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">SM-10 · SPLIT · REVIEW</span>
-          <span class="ph-desc">Review and Split — three suppliers, one confirmation</span>
+          <span class="ph-desc">Review and Split, three suppliers, one confirmation</span>
         </div>
       </div>
-      <span class="cs-caption">Review and Split — three suppliers, one confirmation.</span>
+      <span class="cs-caption">Review and Split, three suppliers, one confirmation.</span>
     </figure>
 
     <p class="bottom-line">Same rigour as merge. Because the stakes are identical.</p>
@@ -1210,16 +1233,16 @@
       </div>
     </div>
 
-    <p class="outcomes-footnote">* Projected. Phase 1 — metrics updated post-launch.</p>
+    <p class="outcomes-footnote">* Projected. Phase 1, metrics updated post-launch.</p>
   </section>
 
   <!-- LIMITATIONS -->
   <section class="scroll-fade">
-    <h2>What we didn't<br><em>get to solve — yet.</em></h2>
+    <h2>What we didn't<br><em>get to solve, yet.</em></h2>
     <div class="cards-3 scroll-stagger">
       <div class="card">
         <h3>No usability testing with real users.</h3>
-        <p>Designs based on stakeholder inputs and competitive analysis — not yet validated with actual data stewards.</p>
+        <p>Designs based on stakeholder inputs and competitive analysis, not yet validated with actual data stewards.</p>
       </div>
       <div class="card">
         <h3>Bulk operations not designed.</h3>
@@ -1238,7 +1261,7 @@
     <div class="reflection">
       <p>Designing for trust is different from designing for usability.</p>
       <p>Usability asks: <em>can the user do this?</em><br>Trust asks: <em>does the user feel safe doing this?</em></p>
-      <p>The relationship assignment screen isn't the most beautiful thing I've designed. It might be the most important. Not because it looks good — because it makes the whole system trustworthy.</p>
+      <p>The relationship assignment screen isn't the most beautiful thing I've designed. It might be the most important. Not because it looks good, because it makes the whole system trustworthy.</p>
       <p><strong>That's the kind of designer I'm trying to be.</strong></p>
     </div>
   </div>
@@ -1248,7 +1271,7 @@
     <a href="edit-feature.html" class="next-case">
       <div class="next-case-label">Next case study</div>
       <div class="next-case-title">When read-only <em>wasn't good enough.</em></div>
-      <p class="next-case-teaser">A two-role edit and review workflow for a B2B catalogue — where AI couldn't fix bad data and structured human input had to.</p>
+      <p class="next-case-teaser">A two-role edit and review workflow for a B2B catalogue, where AI couldn't fix bad data and structured human input had to.</p>
     </a>
   </div>
 

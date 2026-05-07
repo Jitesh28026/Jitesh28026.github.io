@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>When Read-Only Wasn't Good Enough — Jitesh Thakker</title>
-  <meta name="description" content="A two-role edit and review workflow for a B2B Digital Catalogue — because AI can't fix bad data at the source. Designing structured human input within a read-only system." />
-  <meta property="og:title" content="When Read-Only Wasn't Good Enough — Jitesh Thakker" />
+  <title>When Read-Only Wasn't Good Enough, Jitesh Thakker</title>
+  <meta name="description" content="A two-role edit and review workflow for a B2B Digital Catalogue, because AI can't fix bad data at the source. Designing structured human input within a read-only system." />
+  <meta property="og:title" content="When Read-Only Wasn't Good Enough, Jitesh Thakker" />
   <meta property="og:description" content="A two-role edit & review workflow for a B2B catalogue. Designing structured human input where AI enrichment couldn't fix bad source data." />
   <meta property="og:type" content="article" />
   <meta property="og:image" content="/assets/ef-og.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="When Read-Only Wasn't Good Enough — Jitesh Thakker" />
+  <meta name="twitter:title" content="When Read-Only Wasn't Good Enough, Jitesh Thakker" />
   <meta name="twitter:description" content="A two-role edit & review workflow for a B2B catalogue. Designing structured human input where AI enrichment couldn't fix bad source data." />
   <meta name="twitter:image" content="/assets/ef-og.png" />
   <script>document.documentElement.classList.add('js');</script>
@@ -43,7 +43,9 @@
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      overflow-x: clip;
     }
+    html { overflow-x: clip; }
 
     /* Scroll progress */
     .scroll-progress-track {
@@ -94,6 +96,7 @@
       transition: color 0.2s;
     }
     .nav-back:hover { color: var(--blue); }
+    .nav-back-short { display: none; }
 
     /* HERO */
     .hero-zone {
@@ -333,7 +336,7 @@
     .card h3 { font-size: 16px; margin-bottom: 10px; }
     .card p { font-size: 14px; line-height: 1.6; }
 
-    /* ROLE CARDS — same look as cards-2 with a tag */
+    /* ROLE CARDS, same look as cards-2 with a tag */
     .role-cards {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -536,27 +539,30 @@
       letter-spacing: 0.02em;
     }
 
-    /* FLOW DIAGRAM */
+    /* FLOW DIAGRAM — wraps instead of horizontal scroll */
     .flow-diagram {
       display: flex;
-      align-items: center;
-      gap: 0;
+      flex-wrap: wrap;
+      align-items: stretch;
+      justify-content: center;
+      gap: 10px;
       margin: 40px 0 0;
-      overflow-x: auto;
-      padding-bottom: 8px;
     }
     .flow-step {
-      flex-shrink: 0;
+      flex: 1 1 calc(20% - 10px);
+      min-width: 130px;
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 18px 22px;
+      padding: 18px 16px;
       text-align: center;
-      min-width: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     .flow-step.live {
       border-color: var(--blue);
-      background: var(--blue-light);
+      background: linear-gradient(180deg, var(--blue-light), #F5F8FF);
     }
     .flow-step-num {
       font-family: var(--mono);
@@ -580,11 +586,13 @@
     .flow-arrow {
       font-size: 18px;
       color: var(--blue);
-      padding: 0 10px;
-      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
     }
 
-    /* IMAGE FIGURE — 1440:1024 */
+    /* IMAGE FIGURE, 1440:1024 */
     .cs-figure {
       display: block;
       margin: 36px 0 0;
@@ -870,7 +878,14 @@
     }
 
     @media (max-width: 767px) {
-      nav { padding: 14px 20px; }
+      nav { padding: 14px 18px; }
+      .nav-logo { font-size: 12px; letter-spacing: 0.04em; }
+      .nav-back { font-size: 11px; }
+      .nav-back-full { display: none; }
+      .nav-back-short { display: inline; }
+      .flow-diagram { flex-direction: column; align-items: stretch; }
+      .flow-step { flex: 1 1 100%; width: 100%; min-width: 0; }
+      .flow-arrow { transform: rotate(90deg); margin: 2px auto; }
       .hero { padding: 130px 22px 80px; max-width: 100%; }
       .hero-frame::before,
       .hero-frame::after,
@@ -913,7 +928,10 @@
 
   <nav>
     <a href="index.html" class="nav-logo">JITESH.EXE_</a>
-    <a href="index.html#work" class="nav-back">← Back to work</a>
+    <a href="index.html#work" class="nav-back">
+      <span class="nav-back-full">← Back to work</span>
+      <span class="nav-back-short">← Back</span>
+    </a>
   </nav>
 
   <!-- HERO -->
@@ -927,7 +945,7 @@
         <span class="hero-frame-br" aria-hidden="true"></span>
         <div class="hero-tag">> CASE_STUDY · DATAX.AI · 2025</div>
         <h1>When read-only<br><em>wasn't good enough.</em></h1>
-        <p class="hero-sub">Designing a two-role edit and review workflow for the B2B Digital Catalogue — because AI can't fix bad data at the source.</p>
+        <p class="hero-sub">Designing a two-role edit and review workflow for the B2B Digital Catalogue, because AI can't fix bad data at the source.</p>
         <div class="meta-row">
           <span class="meta-chip">Role: Product Designer</span>
           <span class="meta-chip">Tool: Figma</span>
@@ -958,11 +976,11 @@
     <div class="cards-3 scroll-stagger">
       <div class="card">
         <h3>AI enrichment failed.</h3>
-        <p>The model could only work with what it was given. Bad input meant bad output — consistently.</p>
+        <p>The model could only work with what it was given. Bad input meant bad output, consistently.</p>
       </div>
       <div class="card">
         <h3>Source data was poor.</h3>
-        <p>Data arrived from multiple client funnels — incomplete, inconsistent, missing key attributes.</p>
+        <p>Data arrived from multiple client funnels, incomplete, inconsistent, missing key attributes.</p>
       </div>
       <div class="card">
         <h3>Clients had no way to fix it.</h3>
@@ -975,13 +993,13 @@
   <!-- WHY NOT AI -->
   <section class="scroll-fade">
     <h2>The fix wasn't smarter automation.<br><em>It was structured human input.</em></h2>
-    <p>Retraining the model, adding data sources, tweaking thresholds — none of it addressed the root cause. No human could correct what the AI got wrong. The data entered the system incorrect and stayed incorrect. The solution required giving clients the ability to fix attributes directly — with governance to ensure quality and a review layer to prevent new errors.</p>
+    <p>Retraining the model, adding data sources, tweaking thresholds, none of it addressed the root cause. No human could correct what the AI got wrong. The data entered the system incorrect and stayed incorrect. The solution required giving clients the ability to fix attributes directly, with governance to ensure quality and a review layer to prevent new errors.</p>
   </section>
 
   <!-- USERS -->
   <section class="scroll-fade">
     <h2>One product. Two roles.<br><em>One shared outcome.</em></h2>
-    <p>Both roles are client-side — this is a self-serve workflow. The separation ensures no single user can submit and approve their own changes, maintaining data integrity without requiring internal oversight.</p>
+    <p>Both roles are client-side, this is a self-serve workflow. The separation ensures no single user can submit and approve their own changes, maintaining data integrity without requiring internal oversight.</p>
 
     <div class="role-cards scroll-stagger">
       <div class="role-card">
@@ -1002,24 +1020,24 @@
   <!-- CONSTRAINTS -->
   <section class="scroll-fade">
     <h2>The constraints weren't obstacles.<br><em>They were the design brief.</em></h2>
-    <p>Before touching Figma, I mapped every backend constraint, every system boundary, and every edge case. The edit feature sat at the intersection of multiple products — each with their own data ownership rules.</p>
+    <p>Before touching Figma, I mapped every backend constraint, every system boundary, and every edge case. The edit feature sat at the intersection of multiple products, each with their own data ownership rules.</p>
 
     <div class="constraints-grid scroll-stagger">
       <div class="constraint-item">
         <div class="constraint-dot" aria-hidden="true"></div>
-        <p><strong>Specifications</strong> — owned by MMA (separate product). Cannot be edited here.</p>
+        <p><strong>Specifications</strong>, owned by MMA (separate product). Cannot be edited here.</p>
       </div>
       <div class="constraint-item">
         <div class="constraint-dot" aria-hidden="true"></div>
-        <p><strong>Classification path</strong> — owned by Taxonomy (another product). Read-only in this flow.</p>
+        <p><strong>Classification path</strong>, owned by Taxonomy (another product). Read-only in this flow.</p>
       </div>
       <div class="constraint-item">
         <div class="constraint-dot" aria-hidden="true"></div>
-        <p><strong>Adding new attributes</strong> — introduces data governance issues. Not in Phase 1 scope.</p>
+        <p><strong>Adding new attributes</strong>, introduces data governance issues. Not in Phase 1 scope.</p>
       </div>
       <div class="constraint-item">
         <div class="constraint-dot" aria-hidden="true"></div>
-        <p><strong>Partial acceptance</strong> — backend limitation. Reviewer must accept all or reject all in Phase 1.</p>
+        <p><strong>Partial acceptance</strong>, backend limitation. Reviewer must accept all or reject all in Phase 1.</p>
       </div>
     </div>
 
@@ -1033,7 +1051,7 @@
 
     <div class="before-after scroll-stagger">
       <div class="ba-block">
-        <div class="ba-label">BEFORE — Single rejection</div>
+        <div class="ba-label">BEFORE, Single rejection</div>
         <ul>
           <li>Single accept/reject on entire submission</li>
           <li>One comment field for reviewer notes</li>
@@ -1042,7 +1060,7 @@
         </ul>
       </div>
       <div class="ba-block after">
-        <div class="ba-label">AFTER — Field-level comments</div>
+        <div class="ba-label">AFTER, Field-level comments</div>
         <ul>
           <li>Comment field per attribute being reviewed</li>
           <li>Editor knows exactly which field to fix</li>
@@ -1066,17 +1084,17 @@
   <!-- TRIGGER -->
   <section class="scroll-fade">
     <h2>From read-only to editable<br><em>in one click.</em></h2>
-    <p>The edit flow begins on the Product Details Page — the same page where incorrect data lives. No navigation to a separate editing interface, no context switch. The edit button lives where the problem is visible.</p>
+    <p>The edit flow begins on the Product Details Page, the same page where incorrect data lives. No navigation to a separate editing interface, no context switch. The edit button lives where the problem is visible.</p>
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/ef-01-pdp-trigger.png" alt="PDP page — Edit button triggered from product details, permission-aware" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/ef-01-pdp-trigger.png" alt="PDP page, Edit button triggered from product details, permission-aware" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">EF-01 · PDP TRIGGER</span>
-          <span class="ph-desc">PDP page — Edit button triggered from product details, permission-aware</span>
+          <span class="ph-desc">PDP page, Edit button triggered from product details, permission-aware</span>
         </div>
       </div>
-      <span class="cs-caption">PDP page — Edit button triggered from product details, permission-aware.</span>
+      <span class="cs-caption">PDP page, Edit button triggered from product details, permission-aware.</span>
     </figure>
 
     <p class="bottom-line">Editing lives where the data lives.</p>
@@ -1085,17 +1103,17 @@
   <!-- INLINE EDIT -->
   <section class="scroll-fade">
     <h2>Inline editing. Field-level control.<br><em>Within boundaries.</em></h2>
-    <p>Not all attributes can be edited here. Backend constraints, data ownership across products, and governance requirements all shape the scope. Clear boundaries reduce error surface — and tell users exactly where to go when something can't be fixed here.</p>
+    <p>Not all attributes can be edited here. Backend constraints, data ownership across products, and governance requirements all shape the scope. Clear boundaries reduce error surface, and tell users exactly where to go when something can't be fixed here.</p>
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/ef-02-edit-attributes.png" alt="Edit attributes screen — editable fields inline, locked fields clearly marked" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/ef-02-edit-attributes.png" alt="Edit attributes screen, editable fields inline, locked fields clearly marked" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">EF-02 · EDIT ATTRIBUTES</span>
-          <span class="ph-desc">Edit attributes screen — editable fields inline, locked fields clearly marked</span>
+          <span class="ph-desc">Edit attributes screen, editable fields inline, locked fields clearly marked</span>
         </div>
       </div>
-      <span class="cs-caption">Edit attributes screen — editable fields inline, locked fields clearly marked.</span>
+      <span class="cs-caption">Edit attributes screen, editable fields inline, locked fields clearly marked.</span>
     </figure>
 
     <div class="editable-table">
@@ -1109,7 +1127,7 @@
         <div class="editable-item">Product images</div>
       </div>
       <div class="editable-col locked">
-        <div class="editable-col-header">✗ Locked — why</div>
+        <div class="editable-col-header">✗ Locked, why</div>
         <div class="editable-item">Specifications</div>
         <div class="editable-item reason">Owned by MMA product</div>
         <div class="editable-item">Classification path</div>
@@ -1128,13 +1146,13 @@
       <p class="step-lead">The reviewer reviews the result, not the typos.</p>
       <figure class="cs-figure">
         <div class="cs-figure-block">
-          <img src="assets/case-studies/ef-03-preview-edits.png" alt="Preview edits — original vs edited values side by side before submission" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+          <img src="assets/case-studies/ef-03-preview-edits.png" alt="Preview edits, original vs edited values side by side before submission" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
           <div class="img-placeholder">
             <span class="ph-label">EF-03 · PREVIEW EDITS</span>
-            <span class="ph-desc">Preview edits — original vs edited values side by side before submission</span>
+            <span class="ph-desc">Preview edits, original vs edited values side by side before submission</span>
           </div>
         </div>
-        <span class="cs-caption">Preview edits — original vs edited values side by side before submission.</span>
+        <span class="cs-caption">Preview edits, original vs edited values side by side before submission.</span>
       </figure>
     </div>
   </section>
@@ -1145,29 +1163,29 @@
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/ef-04-reviewer-queue.png" alt="Reviewer queue — pending submissions with editor name and timestamp" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/ef-04-reviewer-queue.png" alt="Reviewer queue, pending submissions with editor name and timestamp" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">EF-04 · REVIEWER QUEUE</span>
-          <span class="ph-desc">Reviewer queue — pending submissions with editor name and timestamp</span>
+          <span class="ph-desc">Reviewer queue, pending submissions with editor name and timestamp</span>
         </div>
       </div>
-      <span class="cs-caption">Reviewer queue — pending submissions with editor name and timestamp.</span>
+      <span class="cs-caption">Reviewer queue, pending submissions with editor name and timestamp.</span>
     </figure>
 
     <p style="margin-top: 32px;">Every submission visible with editor name, product, and timestamp. Reviewers always have full context before opening a submission.</p>
 
     <div class="step-block">
       <h3>Field-level comments on rejection.</h3>
-      <p class="step-lead">The most important iteration in the entire flow. Reviewers can leave a comment per attribute — not a single blanket rejection. Editors receive exactly what needs fixing, field by field.</p>
+      <p class="step-lead">The most important iteration in the entire flow. Reviewers can leave a comment per attribute, not a single blanket rejection. Editors receive exactly what needs fixing, field by field.</p>
       <figure class="cs-figure">
         <div class="cs-figure-block">
-          <img src="assets/case-studies/ef-05-review-screen.png" alt="Review screen — field-level comment boxes per attribute" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+          <img src="assets/case-studies/ef-05-review-screen.png" alt="Review screen, field-level comment boxes per attribute" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
           <div class="img-placeholder">
             <span class="ph-label">EF-05 · REVIEW SCREEN</span>
-            <span class="ph-desc">Review screen — field-level comment boxes per attribute</span>
+            <span class="ph-desc">Review screen, field-level comment boxes per attribute</span>
           </div>
         </div>
-        <span class="cs-caption">Review screen — field-level comment boxes per attribute.</span>
+        <span class="cs-caption">Review screen, field-level comment boxes per attribute.</span>
       </figure>
     </div>
 
@@ -1178,26 +1196,26 @@
       </div>
       <div class="card">
         <h3>Send Back</h3>
-        <p>Editor receives field-level feedback. Loops back to edit step. No partial acceptance in Phase 1 — backend constraint.</p>
+        <p>Editor receives field-level feedback. Loops back to edit step. No partial acceptance in Phase 1, backend constraint.</p>
       </div>
     </div>
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/ef-06-accept-reject.png" alt="Accept and reject actions — two clear paths, one decision" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/ef-06-accept-reject.png" alt="Accept and reject actions, two clear paths, one decision" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">EF-06 · ACCEPT / REJECT</span>
-          <span class="ph-desc">Accept and reject actions — two clear paths, one decision</span>
+          <span class="ph-desc">Accept and reject actions, two clear paths, one decision</span>
         </div>
       </div>
-      <span class="cs-caption">Accept and reject actions — two clear paths, one decision.</span>
+      <span class="cs-caption">Accept and reject actions, two clear paths, one decision.</span>
     </figure>
   </section>
 
   <!-- THE LOOP -->
   <section class="scroll-fade">
     <h2>Linear by design.<br><em>Until the data is right.</em></h2>
-    <p>The flow is deliberately linear — no branching, no parallel paths. If rejected, it loops back to step 1. The editor re-edits based on field-level feedback and resubmits. The loop ends when the data is right — not when patience runs out.</p>
+    <p>The flow is deliberately linear, no branching, no parallel paths. If rejected, it loops back to step 1. The editor re-edits based on field-level feedback and resubmits. The loop ends when the data is right, not when patience runs out.</p>
 
     <div class="flow-diagram">
       <div class="flow-step">
@@ -1233,13 +1251,13 @@
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/ef-07-final-acceptance.png" alt="Final acceptance — changes live, audit log entry created" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/ef-07-final-acceptance.png" alt="Final acceptance, changes live, audit log entry created" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">EF-07 · FINAL ACCEPTANCE</span>
-          <span class="ph-desc">Final acceptance — changes live, audit log entry created</span>
+          <span class="ph-desc">Final acceptance, changes live, audit log entry created</span>
         </div>
       </div>
-      <span class="cs-caption">Final acceptance — changes live, audit log entry created.</span>
+      <span class="cs-caption">Final acceptance, changes live, audit log entry created.</span>
     </figure>
 
     <p class="bottom-line">A multi-team escalation became a 2-role self-serve workflow.</p>
@@ -1300,11 +1318,11 @@
 
   <!-- LIMITATIONS -->
   <section class="scroll-fade">
-    <h2>What we didn't<br><em>get to solve — yet.</em></h2>
+    <h2>What we didn't<br><em>get to solve, yet.</em></h2>
     <div class="cards-3 scroll-stagger">
       <div class="card">
         <h3>No partial acceptance.</h3>
-        <p>Reviewer must accept all or send all back. Backend limitation — granular field-level acceptance is a Phase 2 problem.</p>
+        <p>Reviewer must accept all or send all back. Backend limitation, granular field-level acceptance is a Phase 2 problem.</p>
       </div>
       <div class="card">
         <h3>No bulk editing.</h3>
@@ -1321,9 +1339,9 @@
   <!-- REFLECTION -->
   <div class="reflection-section scroll-fade">
     <div class="reflection">
-      <p>Designing within constraints isn't compromising — <em>it's collaborating with reality.</em></p>
+      <p>Designing within constraints isn't compromising, <em>it's collaborating with reality.</em></p>
       <p>The best designers don't ask for the perfect canvas. They ask: <em>what's the smallest, sharpest version of this that solves a real problem today?</em></p>
-      <p>This won't win design awards. But it'll quietly improve thousands of catalogue records — and make the AI that depends on them actually useful.</p>
+      <p>This won't win design awards. But it'll quietly improve thousands of catalogue records, and make the AI that depends on them actually useful.</p>
       <p><strong>That matters more.</strong></p>
     </div>
   </div>
