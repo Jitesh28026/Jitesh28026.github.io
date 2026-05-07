@@ -132,21 +132,6 @@
       margin: 0 auto;
     }
     .hero-frame { position: relative; }
-    .hero-frame::before,
-    .hero-frame::after,
-    .hero-frame .hero-frame-bl,
-    .hero-frame .hero-frame-br {
-      content: '';
-      position: absolute;
-      width: 28px; height: 28px;
-      border: 1.5px solid var(--blue);
-      opacity: 0.32;
-      pointer-events: none;
-    }
-    .hero-frame::before { top: -20px; left: -20px; border-right: none; border-bottom: none; }
-    .hero-frame::after { top: -20px; right: -20px; border-left: none; border-bottom: none; }
-    .hero-frame .hero-frame-bl { bottom: -20px; left: -20px; border-right: none; border-top: none; }
-    .hero-frame .hero-frame-br { bottom: -20px; right: -20px; border-left: none; border-top: none; }
 
     .hero-tag {
       font-family: var(--mono);
@@ -912,10 +897,6 @@
       .flow-step { flex: 1 1 100%; width: 100%; min-width: 0; }
       .flow-arrow { transform: rotate(90deg); margin: 2px auto; }
       .hero { padding: 130px 22px 80px; max-width: 100%; }
-      .hero-frame::before,
-      .hero-frame::after,
-      .hero-frame .hero-frame-bl,
-      .hero-frame .hero-frame-br { width: 18px; height: 18px; }
       .hero-actions .btn { width: 100%; justify-content: center; }
       section { padding: 64px 22px; }
       section + section { padding-top: 56px; }
@@ -968,8 +949,6 @@
 
     <div class="hero">
       <div class="hero-frame">
-        <span class="hero-frame-bl" aria-hidden="true"></span>
-        <span class="hero-frame-br" aria-hidden="true"></span>
         <div class="hero-tag">> CASE_STUDY · DATAX.AI · 2025</div>
         <h1>When read-only<br><em>wasn't good enough.</em></h1>
         <p class="hero-sub">Designing a two-role edit and review workflow for the B2B Digital Catalogue, because AI can't fix bad data at the source.</p>
