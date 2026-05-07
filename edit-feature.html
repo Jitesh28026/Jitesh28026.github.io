@@ -1065,12 +1065,12 @@
         </ul>
       </div>
       <div class="ba-block after">
-        <div class="ba-label">AFTER, Field-level comments</div>
+        <div class="ba-label">AFTER, Field-level rejection</div>
         <ul>
-          <li>Comment field per attribute being reviewed</li>
+          <li>Reject checkbox per field</li>
+          <li>Comment box reveals only when field is flagged</li>
           <li>Editor knows exactly which field to fix</li>
           <li>Fewer re-submission cycles</li>
-          <li>Faster resolution, cleaner data outcomes</li>
         </ul>
       </div>
     </div>
@@ -1093,7 +1093,7 @@
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/ef-01-pdp-trigger.png" alt="PDP page, Edit button triggered from product details, permission-aware" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/ef-01.png" alt="PDP page, Edit button triggered from product details, permission-aware" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">EF-01 · PDP TRIGGER</span>
           <span class="ph-desc">PDP page, Edit button triggered from product details, permission-aware</span>
@@ -1112,7 +1112,7 @@
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/ef-02-edit-attributes.png" alt="Edit attributes screen, editable fields inline, locked fields clearly marked" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/ef-02.png" alt="Edit attributes screen, editable fields inline, locked fields clearly marked" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
           <span class="ph-label">EF-02 · EDIT ATTRIBUTES</span>
           <span class="ph-desc">Edit attributes screen, editable fields inline, locked fields clearly marked</span>
@@ -1151,7 +1151,7 @@
       <p class="step-lead">The reviewer reviews the result, not the typos.</p>
       <figure class="cs-figure">
         <div class="cs-figure-block">
-          <img src="assets/case-studies/ef-03-preview-edits.png" alt="Preview edits, original vs edited values side by side before submission" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+          <img src="assets/case-studies/ef-03.png" alt="Preview edits, original vs edited values side by side before submission" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
           <div class="img-placeholder">
             <span class="ph-label">EF-03 · PREVIEW EDITS</span>
             <span class="ph-desc">Preview edits, original vs edited values side by side before submission</span>
@@ -1165,56 +1165,68 @@
   <!-- REVIEWER FLOW -->
   <section class="scroll-fade">
     <h2>Approve, reject,<br><em>or guide.</em></h2>
+    <p>The reviewer sees a queue of pending edit tickets, SKU ID, status, supplier, and timestamp. One click opens the full submission. Every pending edit is visible, nothing gets lost in email threads or support tickets.</p>
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/ef-04-reviewer-queue.png" alt="Reviewer queue, pending submissions with editor name and timestamp" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/ef-04.png" alt="Manage Edits queue, pending submissions with status and supplier context" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
-          <span class="ph-label">EF-04 · REVIEWER QUEUE</span>
-          <span class="ph-desc">Reviewer queue, pending submissions with editor name and timestamp</span>
+          <span class="ph-label">EF-04 · MANAGE EDITS QUEUE</span>
+          <span class="ph-desc">Manage Edits queue, pending submissions with status and supplier context</span>
         </div>
       </div>
-      <span class="cs-caption">Reviewer queue, pending submissions with editor name and timestamp.</span>
+      <span class="cs-caption">Manage Edits queue, pending submissions with status and supplier context.</span>
     </figure>
 
-    <p style="margin-top: 32px;">Every submission visible with editor name, product, and timestamp. Reviewers always have full context before opening a submission.</p>
+    <p style="margin-top: 40px;">The review screen shows current value vs new value side by side for every attribute, images, documents, and all editable fields. The reviewer works through each field individually, not the submission as a whole.</p>
 
-    <div class="step-block">
-      <h3>Field-level comments on rejection.</h3>
-      <p class="step-lead">The most important iteration in the entire flow. Reviewers can leave a comment per attribute, not a single blanket rejection. Editors receive exactly what needs fixing, field by field.</p>
-      <figure class="cs-figure">
-        <div class="cs-figure-block">
-          <img src="assets/case-studies/ef-05-review-screen.png" alt="Review screen, field-level comment boxes per attribute" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
-          <div class="img-placeholder">
-            <span class="ph-label">EF-05 · REVIEW SCREEN</span>
-            <span class="ph-desc">Review screen, field-level comment boxes per attribute</span>
-          </div>
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="assets/case-studies/ef-05.png" alt="Review Edits screen, current vs new value side by side, Reject checkbox per field" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-05 · REVIEW EDITS</span>
+          <span class="ph-desc">Review Edits screen, current vs new value side by side, Reject checkbox per field</span>
         </div>
-        <span class="cs-caption">Review screen, field-level comment boxes per attribute.</span>
-      </figure>
-    </div>
+      </div>
+      <span class="cs-caption">Review Edits screen, current vs new value side by side, Reject checkbox per field.</span>
+    </figure>
+
+    <p style="margin-top: 40px;">Checking <strong>'Reject this edit'</strong> on any field reveals a comment box, the reviewer explains exactly what's wrong with that specific field. Multiple fields can be rejected with separate comments. The global Reject button only activates once at least one field is flagged, you can't accidentally reject without flagging something first.</p>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="assets/case-studies/ef-06.png" alt="Field-level rejection, comment box reveals on checkbox, specific feedback per attribute" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-06 · FIELD REJECTION</span>
+          <span class="ph-desc">Field-level rejection, comment box reveals on checkbox, specific feedback per attribute</span>
+        </div>
+      </div>
+      <span class="cs-caption">Field-level rejection, comment box reveals on checkbox, specific feedback per attribute.</span>
+    </figure>
 
     <div class="cards-2 scroll-stagger" style="margin-top: 48px;">
       <div class="card">
-        <h3>Accept All</h3>
-        <p>Changes go live immediately. AI enrichment re-triggers on updated data. Audit log captures the decision.</p>
+        <h3>Accept</h3>
+        <p>All non-rejected fields go live immediately. Audit log captures the decision.</p>
       </div>
       <div class="card">
-        <h3>Send Back</h3>
-        <p>Editor receives field-level feedback. Loops back to edit step. No partial acceptance in Phase 1, backend constraint.</p>
+        <h3>Reject</h3>
+        <p>Submission sent back to editor with field-level comments. Editor knows exactly what to fix and where.</p>
       </div>
     </div>
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/ef-06-accept-reject.png" alt="Accept and reject actions, two clear paths, one decision" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/ef-07.png" alt="Accepted and Rejected confirmation states, clear outcome, Manage Edits CTA" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
-          <span class="ph-label">EF-06 · ACCEPT / REJECT</span>
-          <span class="ph-desc">Accept and reject actions, two clear paths, one decision</span>
+          <span class="ph-label">EF-07 · CONFIRMATION</span>
+          <span class="ph-desc">Accepted and Rejected confirmation states, clear outcome, Manage Edits CTA</span>
         </div>
       </div>
-      <span class="cs-caption">Accept and reject actions, two clear paths, one decision.</span>
+      <span class="cs-caption">Accepted and Rejected confirmation states, clear outcome, Manage Edits CTA.</span>
     </figure>
+
+    <p class="bottom-line">The reviewer doesn't reject submissions. They reject specific fields, and tell the editor exactly why.</p>
   </section>
 
   <!-- THE LOOP -->
@@ -1256,9 +1268,9 @@
 
     <figure class="cs-figure">
       <div class="cs-figure-block">
-        <img src="assets/case-studies/ef-07-final-acceptance.png" alt="Final acceptance, changes live, audit log entry created" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <img src="assets/case-studies/ef-08.png" alt="Final acceptance, changes live, audit log entry created" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
         <div class="img-placeholder">
-          <span class="ph-label">EF-07 · FINAL ACCEPTANCE</span>
+          <span class="ph-label">EF-08 · FINAL ACCEPTANCE</span>
           <span class="ph-desc">Final acceptance, changes live, audit log entry created</span>
         </div>
       </div>
