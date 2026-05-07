@@ -592,45 +592,45 @@
       flex: 0 0 auto;
     }
 
-    /* IMAGE FIGURE — 1440:1024 + soft halo + top-corner brackets */
+    /* IMAGE FIGURE — 1440:1024 with prominent gradient frame */
     .cs-figure {
       display: block;
-      margin: 48px 0 0;
-      padding: 18px;
+      margin: 56px 0 0;
+      padding: 28px;
       width: 100%;
       position: relative;
       background:
-        radial-gradient(ellipse 100% 80% at 50% 0%, rgba(32, 87, 241, 0.07), transparent 70%),
-        radial-gradient(ellipse 90% 70% at 50% 100%, rgba(235, 241, 255, 0.6), transparent 75%);
-      border-radius: 24px;
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(32, 87, 241, 0.18), transparent 70%),
+        radial-gradient(ellipse 60% 40% at 0% 50%, rgba(32, 87, 241, 0.10), transparent 65%),
+        radial-gradient(ellipse 60% 40% at 100% 50%, rgba(32, 87, 241, 0.10), transparent 65%),
+        linear-gradient(180deg, #EBF1FF 0%, #F5F8FF 50%, #FFFFFF 100%);
+      border-radius: 28px;
       isolation: isolate;
-    }
-    .cs-figure::before,
-    .cs-figure::after {
-      content: '';
-      position: absolute;
-      width: 28px; height: 28px;
-      border: 1.5px solid var(--blue);
-      opacity: 0.32;
-      pointer-events: none;
-      z-index: 2;
+      box-shadow:
+        0 0 0 1px rgba(32, 87, 241, 0.06),
+        0 30px 80px -20px rgba(32, 87, 241, 0.18);
     }
     .cs-figure::before {
-      top: 6px; left: 6px;
-      border-right: none; border-bottom: none;
-    }
-    .cs-figure::after {
-      top: 6px; right: 6px;
-      border-left: none; border-bottom: none;
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border-radius: 18px;
+      background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
     }
     .cs-figure-block {
       position: relative;
+      z-index: 1;
       width: 100%;
       aspect-ratio: 1440 / 1024;
-      border-radius: 14px;
+      border-radius: 16px;
       overflow: hidden;
-      background: var(--blue-light);
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08), 0 4px 12px rgba(15, 23, 42, 0.04);
+      background: var(--white);
+      box-shadow:
+        0 1px 0 rgba(15, 23, 42, 0.04),
+        0 8px 24px rgba(15, 23, 42, 0.06),
+        0 32px 64px -12px rgba(15, 23, 42, 0.12);
     }
     .cs-figure-block img {
       position: absolute;
@@ -936,11 +936,8 @@
       .end-actions { padding: 24px 22px 80px; flex-direction: column; }
       .end-actions .btn { width: 100%; justify-content: center; }
       .bottom-line { font-size: 18px; padding-left: 18px; }
-      .cs-figure { padding: 12px; margin-top: 36px; }
-      .cs-figure::before,
-      .cs-figure::after { width: 18px; height: 18px; top: 4px; }
-      .cs-figure::before { left: 4px; }
-      .cs-figure::after { right: 4px; }
+      .cs-figure { padding: 14px; margin-top: 40px; border-radius: 20px; }
+      .cs-figure::before { inset: 6px; border-radius: 14px; }
       footer {
         padding: 24px 22px;
         flex-direction: column;
