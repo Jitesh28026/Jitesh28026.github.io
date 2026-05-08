@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>When Read-Only Wasn't Good Enough, Jitesh Thakker</title>
+  <meta name="description" content="A two-role edit and review workflow for a B2B Digital Catalogue, because AI can't fix bad data at the source. Designing structured human input within a read-only system." />
+  <meta property="og:title" content="When Read-Only Wasn't Good Enough, Jitesh Thakker" />
+  <meta property="og:description" content="A two-role edit & review workflow for a B2B catalogue. Designing structured human input where AI enrichment couldn't fix bad source data." />
+  <meta property="og:type" content="article" />
+  <meta property="og:image" content="/assets/ef-og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="When Read-Only Wasn't Good Enough, Jitesh Thakker" />
+  <meta name="twitter:description" content="A two-role edit & review workflow for a B2B catalogue. Designing structured human input where AI enrichment couldn't fix bad source data." />
+  <meta name="twitter:image" content="/assets/ef-og.png" />
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blue: #2057F1;
+      --blue-light: #EBF1FF;
+      --blue-deeper: #1A47C9;
+      --dark: #111318;
+      --mid: #4A4F5E;
+      --light: #8A8F9E;
+      --border: #E4E6EC;
+      --bg: #FAFAFA;
+      --white: #FFFFFF;
+      --mono: 'DM Mono', monospace;
+      --sans: 'DM Sans', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--dark);
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: clip;
+    }
+    html { overflow-x: clip; }
+
+    /* Scroll progress */
+    .scroll-progress-track {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      z-index: 200;
+      background: transparent;
+      pointer-events: none;
+    }
+    .scroll-progress {
+      height: 100%;
+      width: 100%;
+      background: var(--blue);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.05s linear;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(250, 250, 250, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--blue);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+    .nav-back {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--light);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--blue); }
+    .nav-back-short { display: none; }
+
+    /* HERO */
+    .hero-zone {
+      position: relative;
+      background:
+        linear-gradient(to bottom, #EBF1FF 0%, #F5F8FF 55%, var(--bg) 100%);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .hero-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.45;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-glow-1 {
+      width: 520px; height: 520px;
+      top: -140px; right: -100px;
+      background: radial-gradient(circle, #FFFFFF 0%, rgba(235,241,255,0) 70%);
+    }
+    .hero-glow-2 {
+      width: 380px; height: 380px;
+      bottom: -120px; left: -70px;
+      background: radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(245,248,255,0) 70%);
+    }
+    .hero {
+      position: relative;
+      z-index: 1;
+      padding: 160px 40px 120px;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+    .hero-frame { position: relative; }
+
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--blue);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      font-weight: 500;
+    }
+    .hero h1 {
+      font-size: clamp(40px, 6.4vw, 68px);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      color: var(--dark);
+      margin-bottom: 28px;
+    }
+    .hero h1 em { font-style: italic; color: var(--blue); }
+    .hero-sub {
+      font-size: 19px;
+      color: var(--mid);
+      font-weight: 300;
+      max-width: 620px;
+      margin-bottom: 36px;
+      line-height: 1.55;
+    }
+    .meta-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .meta-chip {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 7px 14px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+      background: rgba(255, 255, 255, 0.6);
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--sans);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 14px 26px;
+      border-radius: 10px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .btn-primary {
+      background: var(--blue);
+      color: var(--white);
+      border: 1px solid var(--blue);
+      box-shadow: 0 6px 18px rgba(32, 87, 241, 0.18);
+    }
+    .btn-primary:hover {
+      background: var(--blue-deeper);
+      border-color: var(--blue-deeper);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(32, 87, 241, 0.26);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--dark);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    /* BELIEF */
+    .belief-section {
+      padding: 80px 40px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .belief-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 56px;
+    }
+    .belief-lines { display: flex; flex-direction: column; gap: 32px; }
+    .belief-line {
+      font-family: var(--sans);
+      font-size: clamp(22px, 3.2vw, 30px);
+      font-weight: 300;
+      line-height: 1.4;
+      color: var(--dark);
+      letter-spacing: -0.01em;
+      font-style: italic;
+    }
+    .belief-line strong {
+      font-weight: 500;
+      font-style: normal;
+      color: var(--blue);
+    }
+
+    /* SECTION */
+    section {
+      padding: 90px 40px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    section + section { padding-top: 70px; }
+
+    h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 400;
+      letter-spacing: -0.025em;
+      line-height: 1.18;
+      margin-bottom: 28px;
+      color: var(--dark);
+    }
+    h2 em { font-style: italic; color: var(--blue); font-weight: 500; }
+
+    h3 {
+      font-size: 19px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--dark);
+      letter-spacing: -0.005em;
+    }
+
+    p {
+      color: var(--mid);
+      margin-bottom: 20px;
+      font-weight: 300;
+      font-size: 17px;
+    }
+    p:last-child { margin-bottom: 0; }
+
+    section p strong, .belief-section strong {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .bottom-line {
+      font-family: var(--sans);
+      font-size: clamp(20px, 2.6vw, 24px);
+      font-weight: 500;
+      color: var(--dark);
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      padding: 18px 0 18px 24px;
+      border-left: 4px solid var(--blue);
+      margin-top: 40px;
+      background: linear-gradient(to right, var(--blue-light), transparent 90%);
+      border-radius: 0 6px 6px 0;
+    }
+
+    /* CARDS */
+    .cards-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin: 48px 0 0;
+    }
+    .cards-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin: 32px 0 0;
+    }
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 26px;
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .card:hover {
+      border-color: rgba(32, 87, 241, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+    }
+    .card h3 { font-size: 16px; margin-bottom: 10px; }
+    .card p { font-size: 14px; line-height: 1.6; }
+
+    /* ROLE CARDS, same look as cards-2 with a tag */
+    .role-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin: 40px 0 0;
+    }
+    .role-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 30px;
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .role-card:hover {
+      border-color: rgba(32, 87, 241, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+    }
+    .role-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      background: var(--blue-light);
+      padding: 5px 12px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+    .role-card h3 { font-size: 18px; margin-bottom: 8px; }
+    .role-card p { font-size: 14px; line-height: 1.6; }
+
+    /* CONSTRAINTS */
+    .constraints-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin: 40px 0 0;
+    }
+    .constraint-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .constraint-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--blue);
+      flex-shrink: 0;
+      margin-top: 9px;
+    }
+    .constraint-item p { font-size: 14px; margin: 0; line-height: 1.55; }
+
+    /* BEFORE / AFTER */
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin: 40px 0 0;
+    }
+    .ba-block {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+    }
+    .ba-block.after {
+      border-color: var(--blue);
+      background: var(--blue-light);
+    }
+    .ba-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--light);
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+    .ba-block.after .ba-label { color: var(--blue); }
+    .ba-block ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .ba-block ul li {
+      font-size: 14px;
+      color: var(--mid);
+      font-weight: 400;
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.55;
+    }
+    .ba-block ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--light);
+    }
+    .ba-block.after ul li { color: var(--dark); font-weight: 500; }
+    .ba-block.after ul li::before { color: var(--blue); }
+
+    /* EDITABLE TABLE */
+    .editable-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin: 36px 0 0;
+    }
+    .editable-col {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .editable-col-header {
+      padding: 14px 22px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--mid);
+      font-family: var(--mono);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .editable-col.unlocked .editable-col-header {
+      background: var(--blue-light);
+      color: var(--blue);
+    }
+    .editable-col.locked { opacity: 0.65; }
+    .editable-item {
+      padding: 12px 22px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--mid);
+      font-weight: 400;
+    }
+    .editable-item:last-child { border-bottom: none; }
+    .editable-item.reason {
+      font-size: 11px;
+      color: var(--light);
+      font-family: var(--mono);
+      padding-top: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    /* OUTCOMES */
+    .outcomes-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin: 40px 0 0;
+    }
+    .outcome {
+      background: var(--white);
+      padding: 36px 22px;
+      text-align: center;
+    }
+    .outcome-num {
+      font-size: 56px;
+      font-weight: 300;
+      color: var(--blue);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 12px;
+      font-feature-settings: 'tnum' 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .outcome-label {
+      font-size: 13px;
+      color: var(--mid);
+      font-weight: 400;
+      line-height: 1.5;
+    }
+    .outcome-note {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--light);
+      margin-top: 8px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .outcomes-footnote {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--light);
+      margin-top: 18px;
+      letter-spacing: 0.02em;
+    }
+
+    /* FLOW DIAGRAM — wraps instead of horizontal scroll */
+    .flow-diagram {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      justify-content: center;
+      gap: 10px;
+      margin: 40px 0 0;
+    }
+    .flow-step {
+      flex: 1 1 calc(20% - 10px);
+      min-width: 130px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 16px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .flow-step.live {
+      border-color: var(--blue);
+      background: linear-gradient(180deg, var(--blue-light), #F5F8FF);
+    }
+    .flow-step-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--light);
+      margin-bottom: 6px;
+      letter-spacing: 0.08em;
+    }
+    .flow-step.live .flow-step-num { color: var(--blue); }
+    .flow-step-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .flow-step.live .flow-step-label { color: var(--blue); }
+    .flow-step-sub {
+      font-size: 12px;
+      color: var(--light);
+      margin-top: 4px;
+    }
+    .flow-arrow {
+      font-size: 18px;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    /* IMAGE FIGURE — 1440:1024 with prominent gradient frame */
+    .cs-figure {
+      display: block;
+      margin: 56px 0 0;
+      padding: 28px;
+      width: 100%;
+      position: relative;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% -10%, rgba(32, 87, 241, 0.18), transparent 70%),
+        radial-gradient(ellipse 60% 40% at 0% 50%, rgba(32, 87, 241, 0.10), transparent 65%),
+        radial-gradient(ellipse 60% 40% at 100% 50%, rgba(32, 87, 241, 0.10), transparent 65%),
+        linear-gradient(180deg, #EBF1FF 0%, #F5F8FF 50%, #FFFFFF 100%);
+      border-radius: 28px;
+      isolation: isolate;
+      box-shadow:
+        0 0 0 1px rgba(32, 87, 241, 0.06),
+        0 30px 80px -20px rgba(32, 87, 241, 0.18);
+    }
+    .cs-figure::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border-radius: 18px;
+      background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.6), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .cs-figure-block {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      aspect-ratio: 1440 / 1024;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--white);
+      box-shadow:
+        0 1px 0 rgba(15, 23, 42, 0.04),
+        0 8px 24px rgba(15, 23, 42, 0.06),
+        0 32px 64px -12px rgba(15, 23, 42, 0.12);
+    }
+    .cs-figure-block img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cs-figure-block .img-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px dashed #93B4F8;
+      border-radius: 14px;
+    }
+    .cs-figure .img-placeholder { display: none; }
+    .cs-figure.is-fallback .cs-figure-block img { display: none; }
+    .cs-figure.is-fallback .img-placeholder { display: flex; }
+    .img-placeholder .ph-label {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--blue);
+      letter-spacing: 0.08em;
+      font-weight: 500;
+    }
+    .img-placeholder .ph-desc {
+      font-size: 13px;
+      color: var(--light);
+      text-align: center;
+      padding: 0 24px;
+      max-width: 80%;
+    }
+    .cs-caption {
+      display: block;
+      font-family: var(--sans);
+      font-style: italic;
+      font-size: 13px;
+      color: var(--light);
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    .step-block { margin-top: 56px; }
+    .step-block:first-of-type { margin-top: 36px; }
+    .step-block h3 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .step-block .step-lead {
+      font-size: 14px;
+      color: var(--mid);
+      margin-bottom: 0;
+    }
+    .step-block .cs-figure { margin-top: 16px; }
+
+    /* CHAPTER-BREAK */
+    .chapter-break {
+      background: var(--blue);
+      color: var(--white);
+      padding: 140px 40px;
+      text-align: center;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      overflow: hidden;
+      position: relative;
+    }
+    .chapter-break::before,
+    .chapter-break::after {
+      content: '';
+      position: absolute;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      filter: blur(110px);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .chapter-break::before {
+      top: -100px; left: -80px;
+      background: rgba(255, 255, 255, 0.4);
+    }
+    .chapter-break::after {
+      bottom: -120px; right: -80px;
+      background: rgba(255, 255, 255, 0.25);
+    }
+    .chapter-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 920px;
+      margin: 0 auto;
+      will-change: transform;
+    }
+    .chapter-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 22px;
+    }
+    .chapter-break h2 {
+      color: var(--white);
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 300;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin: 0 auto;
+      max-width: 760px;
+    }
+    .chapter-break h2 em {
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.88);
+      font-weight: 400;
+    }
+
+    /* REFLECTION dark */
+    .reflection-section { padding: 90px 40px; max-width: 860px; margin: 0 auto; }
+    .reflection {
+      background: var(--dark);
+      color: var(--white);
+      border-radius: 18px;
+      padding: 64px 56px;
+    }
+    .reflection p {
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 19px;
+      font-weight: 300;
+      line-height: 1.75;
+      margin-bottom: 22px;
+    }
+    .reflection p:last-child { margin: 0; }
+    .reflection em { color: #93B4F8; font-style: italic; }
+    .reflection strong { color: var(--white); font-weight: 600; }
+
+    /* NEXT-CASE */
+    .next-case-section {
+      padding: 0 40px 30px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .next-case {
+      display: block;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 36px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      position: relative;
+    }
+    .next-case:hover {
+      border-color: var(--blue);
+      transform: translateY(-3px);
+      box-shadow: 0 22px 40px rgba(32, 87, 241, 0.10);
+      background: linear-gradient(to right, var(--white), var(--blue-light));
+    }
+    .next-case-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--light);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .next-case-label::after {
+      content: '→';
+      font-family: var(--sans);
+      color: var(--blue);
+      font-size: 14px;
+      transition: transform 0.25s ease;
+    }
+    .next-case:hover .next-case-label::after { transform: translateX(6px); }
+    .next-case-title {
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: var(--dark);
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+    .next-case-title em { color: var(--blue); }
+    .next-case-teaser {
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 1.6;
+      max-width: 600px;
+      font-weight: 300;
+    }
+
+    /* END BUTTONS */
+    .end-actions {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 30px 40px 110px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    footer {
+      padding: 32px 40px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer span {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--light);
+      letter-spacing: 0.04em;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html.js .scroll-fade {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 600ms ease-out, transform 600ms ease-out;
+        will-change: opacity, transform;
+      }
+      html.js .scroll-fade.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      html.js .scroll-stagger > * {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 600ms ease-out, transform 600ms ease-out;
+        transition-delay: calc(var(--i, 0) * 70ms);
+      }
+      html.js .scroll-stagger.is-visible > * {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      html.js .chapter-break.scroll-fade,
+      html.js .chapter-break.scroll-fade.is-visible {
+        transform: none;
+        transition: opacity 800ms ease-out;
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      nav { padding: 14px 28px; }
+      .hero { padding: 140px 28px 100px; max-width: 760px; }
+      section, .reflection-section { padding: 80px 28px; }
+      .belief-section { padding: 70px 28px; }
+      .cards-3 { grid-template-columns: 1fr 1fr; }
+      .cards-2 { grid-template-columns: 1fr 1fr; }
+      .role-cards { grid-template-columns: 1fr 1fr; }
+      .constraints-grid { grid-template-columns: 1fr 1fr; }
+      .editable-table { grid-template-columns: 1fr 1fr; }
+      .outcomes-row { grid-template-columns: 1fr 1fr 1fr; }
+      .before-after { grid-template-columns: 1fr 1fr; }
+      .chapter-break { padding: 110px 28px; }
+      .reflection { padding: 52px 38px; }
+      .next-case-section { padding: 0 28px 28px; }
+      .end-actions { padding: 28px 28px 90px; }
+      footer { padding: 28px; }
+    }
+
+    @media (max-width: 767px) {
+      nav { padding: 14px 18px; }
+      .nav-logo { font-size: 12px; letter-spacing: 0.04em; }
+      .nav-back { font-size: 11px; }
+      .nav-back-full { display: none; }
+      .nav-back-short { display: inline; }
+      .flow-diagram { flex-direction: column; align-items: stretch; }
+      .flow-step { flex: 1 1 100%; width: 100%; min-width: 0; }
+      .flow-arrow { transform: rotate(90deg); margin: 2px auto; }
+      .hero { padding: 130px 22px 80px; max-width: 100%; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+      section { padding: 64px 22px; }
+      section + section { padding-top: 56px; }
+      .belief-section { padding: 56px 22px; }
+      .reflection-section { padding: 64px 22px; }
+      .cards-3 { grid-template-columns: 1fr; }
+      .cards-2 { grid-template-columns: 1fr; }
+      .role-cards { grid-template-columns: 1fr; }
+      .constraints-grid { grid-template-columns: 1fr; }
+      .editable-table { grid-template-columns: 1fr; }
+      .outcomes-row { grid-template-columns: 1fr; }
+      .before-after { grid-template-columns: 1fr; }
+      .chapter-break { padding: 90px 22px; }
+      .reflection { padding: 44px 26px; }
+      .reflection p { font-size: 17px; }
+      .next-case-section { padding: 0 22px 24px; }
+      .next-case { padding: 26px 24px; }
+      .end-actions { padding: 24px 22px 80px; flex-direction: column; }
+      .end-actions .btn { width: 100%; justify-content: center; }
+      .bottom-line { font-size: 18px; padding-left: 18px; }
+      .cs-figure { padding: 14px; margin-top: 40px; border-radius: 20px; }
+      .cs-figure::before { inset: 6px; border-radius: 14px; }
+      footer {
+        padding: 24px 22px;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scroll-progress-track" aria-hidden="true">
+    <div class="scroll-progress"></div>
+  </div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">JITESH.EXE_</a>
+    <a href="index.html#work" class="nav-back">
+      <span class="nav-back-full">← Back to work</span>
+      <span class="nav-back-short">← Back</span>
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero-zone">
+    <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+
+    <div class="hero">
+      <div class="hero-frame">
+        <div class="hero-tag">> CASE_STUDY · DATAX.AI · 2025</div>
+        <h1>When read-only<br><em>wasn't good enough.</em></h1>
+        <p class="hero-sub">Designing a two-role edit and review workflow for the B2B Digital Catalogue, because AI can't fix bad data at the source.</p>
+        <div class="meta-row">
+          <span class="meta-chip">Role: Product Designer</span>
+          <span class="meta-chip">Tool: Figma</span>
+          <span class="meta-chip">Status: In Development</span>
+        </div>
+        <div class="hero-actions">
+          <a href="#full-case-study" class="btn btn-primary" target="_blank" rel="noopener">View full case study →</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BELIEF -->
+  <div class="belief-section scroll-fade">
+    <div class="belief-divider" aria-hidden="true"></div>
+    <div class="belief-lines">
+      <div class="belief-line">The best products don't fight their constraints. <strong>They design within them.</strong></div>
+      <div class="belief-line">When AI can't fix a problem, the answer isn't a smarter algorithm.</div>
+      <div class="belief-line"><strong>It's giving humans the right tools.</strong></div>
+    </div>
+  </div>
+
+  <!-- THE PROBLEM -->
+  <section class="scroll-fade">
+    <h2>Better AI couldn't solve<br><em>a data quality problem at the source.</em></h2>
+    <p>The B2B Digital Catalogue relied on AI enrichment to populate product attributes. But enrichment was only as good as the source data. Data coming in from client funnels was incomplete, inconsistent, and often wrong. The result: catalogue records full of bad data, and no way for anyone to fix it.</p>
+    <div class="cards-3 scroll-stagger">
+      <div class="card">
+        <h3>AI enrichment failed.</h3>
+        <p>The model could only work with what it was given. Bad input meant bad output, consistently.</p>
+      </div>
+      <div class="card">
+        <h3>Source data was poor.</h3>
+        <p>Data arrived from multiple client funnels, incomplete, inconsistent, missing key attributes.</p>
+      </div>
+      <div class="card">
+        <h3>Clients had no way to fix it.</h3>
+        <p>Attributes on the PDP were read-only. No edit button. No escalation path. No self-serve correction.</p>
+      </div>
+    </div>
+    <p class="bottom-line">We could've trained a better model. None of it would've worked. The problem wasn't the AI.</p>
+  </section>
+
+  <!-- WHY NOT AI -->
+  <section class="scroll-fade">
+    <h2>The fix wasn't smarter automation.<br><em>It was structured human input.</em></h2>
+    <p>Retraining the model, adding data sources, tweaking thresholds, none of it addressed the root cause. No human could correct what the AI got wrong. The data entered the system incorrect and stayed incorrect. The solution required giving clients the ability to fix attributes directly, with governance to ensure quality and a review layer to prevent new errors.</p>
+  </section>
+
+  <!-- USERS -->
+  <section class="scroll-fade">
+    <h2>One product. Two roles.<br><em>One shared outcome.</em></h2>
+    <p>Both roles are client-side, this is a self-serve workflow. The separation ensures no single user can submit and approve their own changes, maintaining data integrity without requiring internal oversight.</p>
+
+    <div class="role-cards scroll-stagger">
+      <div class="role-card">
+        <div class="role-tag">EDITOR</div>
+        <h3>Makes the edits.</h3>
+        <p>Client-side user who identifies incorrect attributes and submits corrections. Works inline on the PDP.</p>
+      </div>
+      <div class="role-card">
+        <div class="role-tag">REVIEWER</div>
+        <h3>Approves or rejects.</h3>
+        <p>Reviews submitted edits with full context. Can approve all or reject with field-level comments explaining exactly what needs fixing.</p>
+      </div>
+    </div>
+
+    <p class="bottom-line">Separation of roles. Shared accountability for cleaner data.</p>
+  </section>
+
+  <!-- CONSTRAINTS -->
+  <section class="scroll-fade">
+    <h2>The constraints weren't obstacles.<br><em>They were the design brief.</em></h2>
+    <p>Before touching Figma, I mapped every backend constraint, every system boundary, and every edge case. The edit feature sat at the intersection of multiple products, each with their own data ownership rules.</p>
+
+    <div class="constraints-grid scroll-stagger">
+      <div class="constraint-item">
+        <div class="constraint-dot" aria-hidden="true"></div>
+        <p><strong>Specifications</strong>, owned by MMA (separate product). Cannot be edited here.</p>
+      </div>
+      <div class="constraint-item">
+        <div class="constraint-dot" aria-hidden="true"></div>
+        <p><strong>Classification path</strong>, owned by Taxonomy (another product). Read-only in this flow.</p>
+      </div>
+      <div class="constraint-item">
+        <div class="constraint-dot" aria-hidden="true"></div>
+        <p><strong>Adding new attributes</strong>, introduces data governance issues. Not in Phase 1 scope.</p>
+      </div>
+      <div class="constraint-item">
+        <div class="constraint-dot" aria-hidden="true"></div>
+        <p><strong>Partial acceptance</strong>, backend limitation. Reviewer must accept all or reject all in Phase 1.</p>
+      </div>
+    </div>
+
+    <p class="bottom-line">Phase 1 ships what's safe. Phase 2 expands what's possible.</p>
+  </section>
+
+  <!-- KEY ITERATION -->
+  <section class="scroll-fade">
+    <h2>The decision that changed<br><em>after client feedback.</em></h2>
+    <p>The reviewer experience went through multiple iterations. Early designs allowed reviewers to accept or reject a submission as a whole with a single comment. After a client demo the feedback was clear: <em>"How will the editor know what specifically to change?"</em> Editors were re-submitting with the same issues because they couldn't tell which fields were wrong.</p>
+
+    <div class="before-after scroll-stagger">
+      <div class="ba-block">
+        <div class="ba-label">BEFORE, Single rejection</div>
+        <ul>
+          <li>Single accept/reject on entire submission</li>
+          <li>One comment field for reviewer notes</li>
+          <li>Editor receives vague feedback</li>
+          <li>Multiple re-submission loops with same errors</li>
+        </ul>
+      </div>
+      <div class="ba-block after">
+        <div class="ba-label">AFTER, Field-level rejection</div>
+        <ul>
+          <li>Reject checkbox per field</li>
+          <li>Comment box reveals only when field is flagged</li>
+          <li>Editor knows exactly which field to fix</li>
+          <li>Fewer re-submission cycles</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="bottom-line">The best iterations come from real users, not internal reviews. Good rejections teach.</p>
+  </section>
+
+  <!-- CHAPTER 1 -->
+  <div class="chapter-break scroll-fade">
+    <div class="chapter-inner">
+      <div class="chapter-num">> CHAPTER · EDITOR FLOW</div>
+      <h2>Inline editing. <em>Field-level control.</em><br>Within boundaries.</h2>
+    </div>
+  </div>
+
+  <!-- TRIGGER -->
+  <section class="scroll-fade">
+    <h2>From read-only to editable<br><em>in one click.</em></h2>
+    <p>The edit flow begins on the Product Details Page, the same page where incorrect data lives. No navigation to a separate editing interface, no context switch. The edit button lives where the problem is visible.</p>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="assets/case-studies/ef-01.png" alt="PDP page, Edit button triggered from product details, permission-aware" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-01 · PDP TRIGGER</span>
+          <span class="ph-desc">PDP page, Edit button triggered from product details, permission-aware</span>
+        </div>
+      </div>
+      <span class="cs-caption">PDP page, Edit button triggered from product details, permission-aware.</span>
+    </figure>
+
+    <p class="bottom-line">Editing lives where the data lives.</p>
+  </section>
+
+  <!-- INLINE EDIT -->
+  <section class="scroll-fade">
+    <h2>Inline editing. Field-level control.<br><em>Within boundaries.</em></h2>
+    <p>Not all attributes can be edited here. Backend constraints, data ownership across products, and governance requirements all shape the scope. Clear boundaries reduce error surface, and tell users exactly where to go when something can't be fixed here.</p>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="assets/case-studies/ef-02.png" alt="Edit attributes screen, editable fields inline, locked fields clearly marked" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-02 · EDIT ATTRIBUTES</span>
+          <span class="ph-desc">Edit attributes screen, editable fields inline, locked fields clearly marked</span>
+        </div>
+      </div>
+      <span class="cs-caption">Edit attributes screen, editable fields inline, locked fields clearly marked.</span>
+    </figure>
+
+    <div class="editable-table">
+      <div class="editable-col unlocked">
+        <div class="editable-col-header">✓ Editable in this flow</div>
+        <div class="editable-item">Manufacturer</div>
+        <div class="editable-item">Brand</div>
+        <div class="editable-item">Pack size</div>
+        <div class="editable-item">Country of sale</div>
+        <div class="editable-item">SKU ID</div>
+        <div class="editable-item">Product images</div>
+      </div>
+      <div class="editable-col locked">
+        <div class="editable-col-header">✗ Locked, why</div>
+        <div class="editable-item">Specifications</div>
+        <div class="editable-item reason">Owned by MMA product</div>
+        <div class="editable-item">Classification path</div>
+        <div class="editable-item reason">Owned by Taxonomy product</div>
+        <div class="editable-item">Custom attributes</div>
+        <div class="editable-item reason">Governance issues</div>
+        <div class="editable-item">Adding new fields</div>
+        <div class="editable-item reason">Not in Phase 1 scope</div>
+      </div>
+    </div>
+
+    <p class="bottom-line">Boundaries are a feature, not a limitation.</p>
+
+    <div class="step-block">
+      <h3>Review your own work first.</h3>
+      <p class="step-lead">The reviewer reviews the result, not the typos.</p>
+      <figure class="cs-figure">
+        <div class="cs-figure-block">
+          <img src="assets/case-studies/ef-03.png" alt="Preview edits, original vs edited values side by side before submission" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+          <div class="img-placeholder">
+            <span class="ph-label">EF-03 · PREVIEW EDITS</span>
+            <span class="ph-desc">Preview edits, original vs edited values side by side before submission</span>
+          </div>
+        </div>
+        <span class="cs-caption">Preview edits, original vs edited values side by side before submission.</span>
+      </figure>
+    </div>
+  </section>
+
+  <!-- REVIEWER FLOW -->
+  <section class="scroll-fade">
+    <h2>Approve, reject,<br><em>or guide.</em></h2>
+    <p>The reviewer sees a queue of pending edit tickets, SKU ID, status, supplier, and timestamp. One click opens the full submission. Every pending edit is visible, nothing gets lost in email threads or support tickets.</p>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="assets/case-studies/ef-04.png" alt="Manage Edits queue, pending submissions with status and supplier context" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-04 · MANAGE EDITS QUEUE</span>
+          <span class="ph-desc">Manage Edits queue, pending submissions with status and supplier context</span>
+        </div>
+      </div>
+      <span class="cs-caption">Manage Edits queue, pending submissions with status and supplier context.</span>
+    </figure>
+
+    <p style="margin-top: 40px;">The review screen shows current value vs new value side by side for every attribute, images, documents, and all editable fields. The reviewer works through each field individually, not the submission as a whole.</p>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="assets/case-studies/ef-05.png" alt="Review Edits screen, current vs new value side by side, Reject checkbox per field" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-05 · REVIEW EDITS</span>
+          <span class="ph-desc">Review Edits screen, current vs new value side by side, Reject checkbox per field</span>
+        </div>
+      </div>
+      <span class="cs-caption">Review Edits screen, current vs new value side by side, Reject checkbox per field.</span>
+    </figure>
+
+    <p style="margin-top: 40px;">Checking <strong>'Reject this edit'</strong> on any field reveals a comment box, the reviewer explains exactly what's wrong with that specific field. Multiple fields can be rejected with separate comments. The global Reject button only activates once at least one field is flagged, you can't accidentally reject without flagging something first.</p>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="assets/case-studies/ef-06.png" alt="Field-level rejection, comment box reveals on checkbox, specific feedback per attribute" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-06 · FIELD REJECTION</span>
+          <span class="ph-desc">Field-level rejection, comment box reveals on checkbox, specific feedback per attribute</span>
+        </div>
+      </div>
+      <span class="cs-caption">Field-level rejection, comment box reveals on checkbox, specific feedback per attribute.</span>
+    </figure>
+
+    <div class="cards-2 scroll-stagger" style="margin-top: 48px;">
+      <div class="card">
+        <h3>Accept</h3>
+        <p>All non-rejected fields go live immediately. Audit log captures the decision.</p>
+      </div>
+      <div class="card">
+        <h3>Reject</h3>
+        <p>Submission sent back to editor with field-level comments. Editor knows exactly what to fix and where.</p>
+      </div>
+    </div>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="assets/case-studies/ef-07.png" alt="Accepted and Rejected confirmation states, clear outcome, Manage Edits CTA" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-07 · CONFIRMATION</span>
+          <span class="ph-desc">Accepted and Rejected confirmation states, clear outcome, Manage Edits CTA</span>
+        </div>
+      </div>
+      <span class="cs-caption">Accepted and Rejected confirmation states, clear outcome, Manage Edits CTA.</span>
+    </figure>
+
+    <p class="bottom-line">The reviewer doesn't reject submissions. They reject specific fields, and tell the editor exactly why.</p>
+  </section>
+
+  <!-- THE LOOP -->
+  <section class="scroll-fade">
+    <h2>Linear by design.<br><em>Until the data is right.</em></h2>
+    <p>The flow is deliberately linear, no branching, no parallel paths. If rejected, it loops back to step 1. The editor re-edits based on field-level feedback and resubmits. The loop ends when the data is right, not when patience runs out.</p>
+
+    <div class="flow-diagram">
+      <div class="flow-step">
+        <div class="flow-step-num">01</div>
+        <div class="flow-step-label">Editor edits</div>
+        <div class="flow-step-sub">Inline on PDP</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">02</div>
+        <div class="flow-step-label">Preview</div>
+        <div class="flow-step-sub">Self-review</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">03</div>
+        <div class="flow-step-label">Submit</div>
+        <div class="flow-step-sub">To reviewer</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">04</div>
+        <div class="flow-step-label">Review</div>
+        <div class="flow-step-sub">Accept or reject</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step live">
+        <div class="flow-step-num">05</div>
+        <div class="flow-step-label">Live</div>
+        <div class="flow-step-sub">On accept</div>
+      </div>
+    </div>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="assets/case-studies/ef-08.png" alt="Final acceptance, changes live, audit log entry created" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-08 · FINAL ACCEPTANCE</span>
+          <span class="ph-desc">Final acceptance, changes live, audit log entry created</span>
+        </div>
+      </div>
+      <span class="cs-caption">Final acceptance, changes live, audit log entry created.</span>
+    </figure>
+
+    <p class="bottom-line">A multi-team escalation became a 2-role self-serve workflow.</p>
+  </section>
+
+  <!-- CHAPTER 2 -->
+  <div class="chapter-break scroll-fade">
+    <div class="chapter-inner">
+      <div class="chapter-num">> CHAPTER · OUTCOMES</div>
+      <h2>What this design <em>replaces.</em></h2>
+    </div>
+  </div>
+
+  <!-- OUTCOMES -->
+  <section class="scroll-fade">
+    <h2>What this design<br><em>replaces.</em></h2>
+    <div class="before-after scroll-stagger">
+      <div class="ba-block">
+        <div class="ba-label">BEFORE</div>
+        <ul>
+          <li>No edit access on PDP</li>
+          <li>~5 days to correct a single record</li>
+          <li>40+ steps across 3 internal teams</li>
+          <li>No accountability trail</li>
+        </ul>
+      </div>
+      <div class="ba-block after">
+        <div class="ba-label">AFTER</div>
+        <ul>
+          <li>Edit button on every PDP</li>
+          <li>~30 minutes per submission (projected)</li>
+          <li>4 steps across 2 client roles</li>
+          <li>Full audit log per change</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="outcomes-row scroll-stagger">
+      <div class="outcome">
+        <div class="outcome-num">40%</div>
+        <div class="outcome-label">Reduction in time to fix bad data</div>
+        <div class="outcome-note">Projected</div>
+      </div>
+      <div class="outcome">
+        <div class="outcome-num">60%</div>
+        <div class="outcome-label">Faster review cycles with field-level comments</div>
+        <div class="outcome-note">Projected</div>
+      </div>
+      <div class="outcome">
+        <div class="outcome-num">3x</div>
+        <div class="outcome-label">Improvement in AI enrichment accuracy</div>
+        <div class="outcome-note">Projected</div>
+      </div>
+    </div>
+
+    <p class="outcomes-footnote">* In development. Metrics updated post-launch.</p>
+  </section>
+
+  <!-- LIMITATIONS -->
+  <section class="scroll-fade">
+    <h2>What we didn't<br><em>get to solve, yet.</em></h2>
+    <div class="cards-3 scroll-stagger">
+      <div class="card">
+        <h3>No partial acceptance.</h3>
+        <p>Reviewer must accept all or send all back. Backend limitation, granular field-level acceptance is a Phase 2 problem.</p>
+      </div>
+      <div class="card">
+        <h3>No bulk editing.</h3>
+        <p>Power users managing hundreds of products will need bulk correction tools. Single-product editing doesn't scale.</p>
+      </div>
+      <div class="card">
+        <h3>Field expansion owned elsewhere.</h3>
+        <p>Adding new attribute types still requires Taxonomy team involvement. Not in Phase 1 scope.</p>
+      </div>
+    </div>
+    <p class="bottom-line">Phase 1 ships. Phase 2 learns. That's how good products grow.</p>
+  </section>
+
+  <!-- REFLECTION -->
+  <div class="reflection-section scroll-fade">
+    <div class="reflection">
+      <p>Designing within constraints isn't compromising, <em>it's collaborating with reality.</em></p>
+      <p>The best designers don't ask for the perfect canvas. They ask: <em>what's the smallest, sharpest version of this that solves a real problem today?</em></p>
+      <p>This won't win design awards. But it'll quietly improve thousands of catalogue records, and make the AI that depends on them actually useful.</p>
+      <p><strong>That matters more.</strong></p>
+    </div>
+  </div>
+
+  <!-- NEXT CASE -->
+  <div class="next-case-section scroll-fade">
+    <a href="supplier-master.html" class="next-case">
+      <div class="next-case-label">Next case study</div>
+      <div class="next-case-title">Making data consolidation <em>feel safe.</em></div>
+      <p class="next-case-teaser">A four-step governed merge & split flow for an AI-powered supplier MDM, designed so nothing in an enterprise system moves silently.</p>
+    </a>
+  </div>
+
+  <!-- END BUTTONS -->
+  <div class="end-actions">
+    <a href="#full-case-study" class="btn btn-primary" target="_blank" rel="noopener">View full case study →</a>
+    <a href="index.html#work" class="btn btn-secondary">← All work</a>
+  </div>
+
+  <footer>
+    <span>JITESH.EXE_ · 2025</span>
+    <span>Made with lots of overthinking and black coffee ☕</span>
+  </footer>
+
+  <script src="assets/case-study.js" defer></script>
+</body>
+</html>
