@@ -926,6 +926,14 @@
         text-align: center;
       }
     }
+
+    /* ----- Page-to-page cross-fade transition ----- */
+    @media (prefers-reduced-motion: no-preference) {
+      body { animation: pageFadeIn 320ms ease-out both; }
+      body.is-leaving { animation: pageFadeOut 220ms ease-in forwards; }
+      @keyframes pageFadeIn  { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes pageFadeOut { from { opacity: 1; } to { opacity: 0; } }
+    }
   </style>
 </head>
 <body>
@@ -1384,5 +1392,30 @@
   </footer>
 
   <script src="assets/case-study.js" defer></script>
+
+  <!-- Page transition: subtle fade when navigating to internal HTML pages -->
+  <script>
+    (function () {
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      document.addEventListener('click', function (e) {
+        if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        var a = e.target.closest && e.target.closest('a');
+        if (!a) return;
+        var href = a.getAttribute('href');
+        if (!href) return;
+        if (a.target === '_blank' || a.hasAttribute('download')) return;
+        if (!/\.html(\?|#|$)/.test(href)) return;
+        if (/^https?:\/\//i.test(href)) {
+          try { if (new URL(href).origin !== window.location.origin) return; } catch (err) { return; }
+        }
+        e.preventDefault();
+        document.body.classList.add('is-leaving');
+        setTimeout(function () { window.location.href = href; }, 220);
+      });
+      window.addEventListener('pageshow', function (e) {
+        if (e.persisted) document.body.classList.remove('is-leaving');
+      });
+    })();
+  </script>
 </body>
 </html>
