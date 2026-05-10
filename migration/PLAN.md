@@ -3,7 +3,7 @@
 **Owner:** Jitesh Thakker
 **Site:** https://jitesh28026.github.io
 **Repo:** Jitesh28026.github.io (user-site, root-served)
-**Source:** hand-written `index.html` (3482 lines), `blog.html` (1737 lines), inline CSS+JS, CDN-loaded AOS / vanilla-tilt / three.js, raw images in `assets/`.
+**Source:** the live Firebase-hosted portfolio at `C:\Users\Jitesh\Desktop\Jitesh28026.github.io\` (one folder up from this repo). Files: `index.html` (3779 lines, two `<style>` blocks including a "polish pass" with prominent Three.js opacity), `about.html` (1837 lines), `edit-feature.html` (1418 lines), `supplier-master.html` (1314 lines), `404.html`, `assets/` (33 files). Inline CSS+JS, CDN-loaded AOS / vanilla-tilt / three.js. Note: the github.io repo originally had stale older versions — Stage 4.5 swapped them out for the live ones.
 **Target:** Astro 4+ with TypeScript strict, content collections for case studies + blog, image optimization via `astro:assets`, deployed via GitHub Actions to GitHub Pages.
 
 > Read this whole document before starting any stage. The agent working on a stage **only** does that stage; it does not read ahead and skip work.
@@ -22,9 +22,12 @@
 [x] Stage 2  — CSS foundation (tokens, global, BaseLayout)
 [x] Stage 3  — Navbar + Footer + Loader components
 [x] Stage 4  — Hero section
+[x] Stage 4.5— Source-of-truth swap (jitesht.com → public/legacy/)
 [ ] Stage 5  — Work section (data-driven)
 [ ] Stage 6  — Gallery + Process + Contact
-[ ] Stage 7  — Blog page port
+[ ] Stage 7  — About page port (replaces blog port)
+[ ] Stage 7.5— Edit Feature case study page port
+[ ] Stage 7.6— Supplier Master case study page port
 [ ] Stage 8  — Content collections (work, blog) + dynamic routes
 [ ] Stage 9  — Image pipeline (rename, move, <Image>)
 [ ] Stage 10 — JS cleanup (replace AOS, decide tilt/three)

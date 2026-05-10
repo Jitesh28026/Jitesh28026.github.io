@@ -1,5 +1,8 @@
 ---
-// Site footer — markup + accent links only, no JS.
+// Site footer — markup, accent links, and a small fade-in observer.
+// The legacy polish CSS (`footer.footer-reveal { ... }`) only kicks in once
+// the `footer-reveal` class is on the element; the script below adds it
+// progressively so users without JS still see a static footer.
 ---
 
 <footer>
@@ -18,3 +21,22 @@
     </div>
   </div>
 </footer>
+
+<script>
+  const footerEl = document.querySelector<HTMLElement>('footer');
+  if (footerEl) {
+    footerEl.classList.add('footer-reveal');
+    const footerObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            footerObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+    footerObserver.observe(footerEl);
+  }
+</script>

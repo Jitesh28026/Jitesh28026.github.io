@@ -86,6 +86,14 @@ Currently included verbatim in `legacy.css` (to be pruned per stage):
 - Hero, work, gallery, process, contact, marquee — pending Stages 4-6.
 - Blog page styles — pending Stage 7.
 
+### Stage 4.5 source swap aftermath (LOW — already handled)
+
+- The github.io repo we were migrating from had **stale** versions of `index.html` and `blog.html` (Apr–May, smaller line counts). The real portfolio lives in the parent folder (Firebase-hosted). Stage 4.5 swapped `public/legacy/` to the real source.
+- New legacy.css = 2953 lines (was 2737) — the extra ~213 lines are a "POLISH PASS" block with: prominent Three.js opacity (the user's main complaint), hero gradient backdrop, terminal cursor blink, headline glitch on hover, "Currently" sequential fade-in, faster marquee, refined card hover, nav-link underline, footer fade-in observer, scrollbar-overflow fix, page-cross-fade transition.
+- `blog.html` (renamed `about.html` in source) → still served at `/legacy/about.html`. Stage 7 ports it to `/about`.
+- New pages added to `public/legacy/`: `about.html`, `edit-feature.html`, `supplier-master.html`, `404.html`. Plus assets folder grew from 28 → 33 files (added `case-studies/` subfolder, `case-study.js`, `edit feature.png`, `Offer rollout (4).png`, `Supplier master (2).png`).
+- Polish JS hooks ported: footer fade-in observer (in `Footer.astro`). Pending: page-cross-fade transition (only applies to `.html` links, not Astro routes — defer to Stage 13 or use Astro view transitions). Touch-device tilt disable: not yet ported (waits for Stage 10 tilt decision).
+
 ## Deferred decisions
 
 - **Stage 10:** keep or drop the three.js hero canvas? Visual: a particle field plus a rotating icosahedron sculpture behind the hero copy. If kept → ~50–100 KB extra JS, lazy-loaded. If dropped → page is faster but the hero loses its background motion.
