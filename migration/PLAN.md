@@ -17,7 +17,7 @@
 - [x] done
 
 ```
-[ ] Stage 0  — Audit & branch
+[x] Stage 0  — Audit & branch
 [ ] Stage 1  — Scaffold Astro in place
 [ ] Stage 2  — CSS foundation (tokens, global, BaseLayout)
 [ ] Stage 3  — Navbar + Footer + Loader components
