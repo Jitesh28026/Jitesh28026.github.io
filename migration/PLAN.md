@@ -18,7 +18,7 @@
 
 ```
 [x] Stage 0  — Audit & branch
-[ ] Stage 1  — Scaffold Astro in place
+[x] Stage 1  — Scaffold Astro in place
 [ ] Stage 2  — CSS foundation (tokens, global, BaseLayout)
 [ ] Stage 3  — Navbar + Footer + Loader components
 [ ] Stage 4  — Hero section
@@ -264,7 +264,8 @@ Update this checklist at the end of each stage by editing this file.
 **Goal:** route used images through Astro's optimization pipeline. Rename to clean kebab-case.
 
 **Tasks:**
-- Identify which files in `assets/` are referenced by any `.astro` component or content collection (use the orphaned-asset list from stage 0 as the inverse).
+- Source location for all images is `public/legacy/assets/` (relocated in Stage 1 so the legacy preview at `/legacy/index.html` resolves correctly during migration).
+- Identify which files in `public/legacy/assets/` are referenced by any `.astro` component or content collection (use the orphaned-asset list from stage 0 as the inverse).
 - For each used image:
   - Move to `src/assets/work/` or `src/assets/<section>/` based on usage.
   - Rename to lowercase kebab-case, no spaces, no parentheses (e.g., `Supplier master (1).png` → `supplier-master.png`). Keep file extension.
@@ -277,7 +278,7 @@ Update this checklist at the end of each stage by editing this file.
   <Image src={supplierMaster} alt="Supplier Master case study" widths={[400, 800, 1200]} sizes="(max-width: 768px) 100vw, 600px" />
   ```
 - For images that must remain in `public/` (favicon, OG image): rename them too and update references.
-- Delete orphaned files from `assets/` per the stage-0 list. The `assets/` folder itself can be removed if fully empty.
+- Delete orphaned files from `public/legacy/assets/` per the stage-0 list. The folder itself is removed during Stage 12 cleanup along with the rest of `public/legacy/`.
 
 **Allowed dependency changes:** none beyond what's already installed (Astro ships `astro:assets` built in).
 
@@ -285,7 +286,7 @@ Update this checklist at the end of each stage by editing this file.
 - No `<img>` tags pointing to `/legacy/` or `/assets/` remain in `src/`.
 - `npm run build` exits 0 and `dist/` contains optimized variants under `_astro/`.
 - Visual check: images render with same aspect ratios and crispness; Network tab shows AVIF/WebP served to modern browsers.
-- `assets/` directory is either removed or contains only files that `migration/TODO.md` documents as deferred.
+- `public/legacy/assets/` contains only files documented as deferred in `migration/TODO.md` (or is empty if all are migrated).
 
 **Commit message:** `feat(migration): route images through astro:assets and rename to kebab-case`
 
