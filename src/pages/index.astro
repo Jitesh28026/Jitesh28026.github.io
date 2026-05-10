@@ -1,37 +1,25 @@
 ---
-// Placeholder homepage during migration. The real homepage is built section-by-section
-// across stages 3-6 of migration/PLAN.md. The legacy site is preserved at /legacy/index.html.
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex" />
-    <title>Migration in progress — Jitesh</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <style>
-      body {
-        font-family: system-ui, -apple-system, sans-serif;
-        max-width: 480px;
-        margin: 8rem auto;
-        padding: 0 1.5rem;
-        color: #0f172a;
-        line-height: 1.6;
-      }
-      h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-      p { color: #64748b; margin-bottom: 1.5rem; }
-      a {
-        color: #c8a96e;
-        text-decoration: none;
-        font-weight: 500;
-        border-bottom: 1px solid currentColor;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Migration in progress.</h1>
-    <p>This site is being rebuilt on Astro. The previous version is still available at the link below.</p>
-    <p><a href="/legacy/index.html">View the legacy portfolio &rarr;</a></p>
-  </body>
-</html>
+<BaseLayout
+  title="Jitesh — Product Designer"
+  description="Jitesh is a product designer based in Bengaluru, crafting thoughtful B2B experiences. Portfolio showcasing UX design, prototyping, and design systems work."
+  noindex
+>
+  <main style="max-width: 480px; margin: 8rem auto; padding: 0 1.5rem;">
+    <h1 style="font-family: 'Instrument Serif', serif; font-size: 2rem; font-style: italic; color: var(--text-primary); margin-bottom: 0.75rem;">
+      Migration in progress.
+    </h1>
+    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+      This site is being rebuilt on Astro. The previous version is still
+      available at the link below.
+    </p>
+    <a
+      href="/legacy/index.html"
+      style="color: var(--accent); text-decoration: none; font-weight: 500; border-bottom: 1px solid currentColor;"
+    >
+      View the legacy portfolio &rarr;
+    </a>
+  </main>
+</BaseLayout>

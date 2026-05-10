@@ -68,6 +68,12 @@ URLs survive these via percent-encoding, but they're ugly and error-prone. Stage
 
 `old_index.html` and `target_index.html` (4 MB combined) are committed to the repo and unreferenced. Stage 12 deletes them; their history remains in git.
 
+### Body font mismatch in legacy CSS (LOW — user-decision)
+
+The legacy `index.html` declared `font-family: 'Syne', sans-serif;` for `body` but the Google Fonts URL only loads DM Mono, Instrument Serif, and Space Grotesk. So the live site has been silently falling back to the visitor's system sans (e.g. Segoe UI on Windows, Helvetica/SF on macOS).
+
+Stage 2 changed the body to `'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif` to make rendering deterministic with the fonts that actually load. **Confirm with Jitesh:** is Space Grotesk for body the intended look, or did he want Syne loaded too? If Syne, add `&family=Syne:wght@400;500;700` to the Google Fonts URL in `BaseLayout.astro` and revert the body font in `global.css`.
+
 ## Deferred decisions
 
 - **Stage 10:** keep or drop the three.js hero canvas? Visual: a particle field plus a rotating icosahedron sculpture behind the hero copy. If kept → ~50–100 KB extra JS, lazy-loaded. If dropped → page is faster but the hero loses its background motion.
