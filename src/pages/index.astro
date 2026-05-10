@@ -1,29 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
 ---
 
 <BaseLayout
   title="Jitesh — Product Designer"
   description="Jitesh is a product designer based in Bengaluru, crafting thoughtful B2B experiences. Portfolio showcasing UX design, prototyping, and design systems work."
-  noindex
 >
   <Navbar />
-  <main style="max-width: 480px; margin: 8rem auto; padding: 4rem 1.5rem;">
-    <h1
-      style="font-family: 'Instrument Serif', serif; font-size: 2.4rem; font-style: italic; color: var(--text-primary); margin-bottom: 0.75rem; line-height: 1.1;"
-    >
-      Migration in progress.
-    </h1>
-    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-      This site is being rebuilt on Astro, section by section. The previous
-      version is preserved at the link below.
-    </p>
-    <a
-      href="/legacy/index.html"
-      style="color: var(--accent); text-decoration: none; font-weight: 500; border-bottom: 1px solid currentColor;"
-    >
-      View the legacy portfolio &rarr;
-    </a>
-  </main>
+  <Hero />
+  <Marquee />
 </BaseLayout>

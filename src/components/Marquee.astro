@@ -1,0 +1,30 @@
+---
+// Horizontally scrolling tag strip between the hero and work sections.
+// Pure CSS animation, no JS. The list is duplicated in markup so the loop
+// appears continuous when translateX(-50%) wraps.
+//
+// Items are derived from a single data array to keep the duplication in sync.
+const tags = [
+  'Product Design',
+  'AI-Augmented UX',
+  'UX Research',
+  'Prototyping',
+  'B2B Interfaces',
+  'Agentic Workflows',
+  'Design Systems',
+  'Information Architecture',
+  'User Flows',
+  'Interaction Design',
+] as const;
+---
+
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-inner">
+    {[...tags, ...tags].map((tag) => (
+      <>
+        <span>{tag}</span>
+        <span class="diamond">◆</span>
+      </>
+    ))}
+  </div>
+</div>

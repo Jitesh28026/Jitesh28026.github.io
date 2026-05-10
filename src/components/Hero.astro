@@ -1,0 +1,83 @@
+---
+// Hero section. Text-driven; the visual side is a card-stack with floating
+// accent shapes. The Three.js canvas is kept in the markup but its script
+// wiring is deferred to Stage 10 — until then the canvas is invisible
+// (transparent), which is fine.
+//
+// The data-tilt-* attributes on .hero-card-main are no-ops without
+// vanilla-tilt loaded; Stage 10 decides whether to lazy-load the lib or
+// strip the attributes.
+---
+
+<section class="hero" id="home">
+  <canvas id="global-three-canvas" aria-hidden="true"></canvas>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Product Designer · Bengaluru
+      </div>
+      <h1 class="hero-title">
+        I work on the<br />
+        <span class="highlight">hard things.</span>
+      </h1>
+      <p class="hero-desc">
+        I craft B2B product experiences — turning complex workflows into
+        intuitive, scalable interfaces. 2 years in, still obsessed with the
+        details.
+      </p>
+      <div class="currently-block" aria-label="Currently">
+        <div class="currently-label">Currently</div>
+        <div class="currently-grid">
+          <span>Designing</span><strong>catalogue systems + data workflows</strong>
+          <span>Listening</span><strong>dark industrial techno</strong>
+          <span>Playing</span><strong>story-driven games</strong>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <a href="#work" class="btn-solid" id="hero-cta-work">View Work ↓</a>
+        <a href="#contact" class="btn-outline" id="hero-cta-contact">Say Hello</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card-stack">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div
+          class="hero-card-main"
+          data-tilt
+          data-tilt-glare
+          data-tilt-max-glare="0.5"
+          data-tilt-speed="400"
+          data-tilt-perspective="1000"
+          data-tilt-max="10"
+        >
+          <div class="card-header">
+            <div class="card-avatar">J</div>
+            <div class="card-meta">
+              <div class="card-name">Jitesh</div>
+              <div class="card-role">Product Designer</div>
+            </div>
+          </div>
+          <div class="card-stats">
+            <div class="stat-box">
+              <div class="stat-number">2+</div>
+              <div class="stat-label">Years</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">B2B</div>
+              <div class="stat-label">Focus</div>
+            </div>
+          </div>
+          <div class="card-skills">
+            <span class="card-skill">UX Design</span>
+            <span class="card-skill">Prototyping</span>
+            <span class="card-skill">Systems</span>
+            <span class="card-skill">AI-Augmented UX</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
