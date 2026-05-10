@@ -1,31 +1,46 @@
-/* Design tokens — single source of truth for colors, radii, and shadows.
-   Mirrors the :root block in the legacy index.html. Add new tokens here
-   rather than scattering custom-property declarations across components. */
+/* Design tokens — single source of truth for colors, radii, shadows, layout.
+   These are the *applied* token values from the legacy index.html. The legacy
+   file had two :root blocks; the second one (dark theme) overrode the first
+   in CSS cascade order, so the live site has always been dark-themed.
+   Add new tokens here rather than scattering custom-property declarations
+   across components. */
 
 :root {
-  /* Surface colors */
-  --white: #FFFFFF;
-  --off-white: #F8FAFC;
-  --light-gray: #F1F5F9;
-  --mid-gray: #E2E8F0;
+  /* Surface colors (dark theme) */
+  --white: #141414;
+  --off-white: #0d0d0d;
+  --light-gray: #1b1b1b;
+  --mid-gray: #2d2a24;
+  --surface: #111111;
+  --surface-2: #171717;
 
   /* Text */
-  --text-secondary: #64748B;
-  --text-primary: #0F172A;
+  --text-primary: #f0eadf;
+  --text-secondary: #9b958a;
 
   /* Accent (warm gold) */
   --accent: #c8a96e;
   --accent-dark: #9f8350;
   --accent-light: rgba(200, 169, 110, 0.12);
-  --accent-glow: rgba(200, 169, 110, 0.15);
+  --accent-glow: rgba(200, 169, 110, 0.18);
 
-  /* Radii */
-  --radius: 16px;
-  --radius-sm: 8px;
+  /* Borders */
+  --border: rgba(200, 169, 110, 0.22);
+  --border-muted: rgba(240, 234, 223, 0.12);
 
-  /* Shadows */
-  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 12px 36px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 24px 64px rgba(15, 23, 42, 0.12);
-  --shadow-hover: 0 32px 72px rgba(200, 169, 110, 0.16);
+  /* Radii (sharp, near-square) */
+  --radius: 2px;
+  --radius-sm: 2px;
+
+  /* Shadows — flat, with a single accent ring on hover */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-hover: 0 0 0 1px rgba(200, 169, 110, 0.45);
+
+  /* Layout */
+  --content-max: 1240px;
+  --space-desktop: 4rem;
+  --space-tablet: 2rem;
+  --space-phone: 1.25rem;
 }

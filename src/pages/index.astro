@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
 ---
 
 <BaseLayout
@@ -7,13 +8,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="Jitesh is a product designer based in Bengaluru, crafting thoughtful B2B experiences. Portfolio showcasing UX design, prototyping, and design systems work."
   noindex
 >
-  <main style="max-width: 480px; margin: 8rem auto; padding: 0 1.5rem;">
-    <h1 style="font-family: 'Instrument Serif', serif; font-size: 2rem; font-style: italic; color: var(--text-primary); margin-bottom: 0.75rem;">
+  <Navbar />
+  <main style="max-width: 480px; margin: 8rem auto; padding: 4rem 1.5rem;">
+    <h1
+      style="font-family: 'Instrument Serif', serif; font-size: 2.4rem; font-style: italic; color: var(--text-primary); margin-bottom: 0.75rem; line-height: 1.1;"
+    >
       Migration in progress.
     </h1>
     <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
-      This site is being rebuilt on Astro. The previous version is still
-      available at the link below.
+      This site is being rebuilt on Astro, section by section. The previous
+      version is preserved at the link below.
     </p>
     <a
       href="/legacy/index.html"

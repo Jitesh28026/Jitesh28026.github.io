@@ -1,0 +1,91 @@
+---
+// Top navigation. Hides on scroll-down, reappears on scroll-up. Mobile menu
+// toggles via a hamburger button. Active section highlighting based on
+// scroll position.
+//
+// The About link points at /legacy/blog.html during migration. Stage 7 swaps
+// it to /blog once the Astro blog page is live.
+---
+
+<nav class="navbar" id="navbar">
+  <div class="navbar-inner">
+    <a href="#" class="nav-logo">Jitesh.</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#work">Work</a>
+      <a href="/legacy/blog.html">About</a>
+      <a href="#process">Process</a>
+      <a href="#gallery">UI Gallery</a>
+      <a href="#contact" class="nav-cta">Contact</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</nav>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  if (navbar) {
+    let lastScroll = 0;
+    window.addEventListener(
+      'scroll',
+      () => {
+        const currentScroll = window.pageYOffset;
+        if (currentScroll > lastScroll && currentScroll > 120) {
+          navbar.classList.add('hidden');
+        } else {
+          navbar.classList.remove('hidden');
+        }
+        lastScroll = currentScroll;
+      },
+      { passive: true },
+    );
+  }
+
+  if (navToggle && navLinks) {
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('active');
+      navLinks.classList.toggle('open');
+    });
+
+    navLinks.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        navToggle.classList.remove('active');
+        navLinks.classList.remove('open');
+      });
+    });
+  }
+
+  // Active section highlight based on scroll position
+  const sections = document.querySelectorAll<HTMLElement>('section[id]');
+  const navLinkEls = document.querySelectorAll<HTMLAnchorElement>(
+    '.nav-links a[href^="#"]',
+  );
+
+  const updateActiveNav = () => {
+    let current = '';
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop - 120;
+      if (window.pageYOffset >= sectionTop) {
+        current = section.getAttribute('id') ?? '';
+      }
+    });
+
+    navLinkEls.forEach((link) => {
+      link.style.color = '';
+      link.style.background = '';
+      if (link.getAttribute('href') === '#' + current) {
+        link.style.color = 'var(--text-primary)';
+        link.style.background = 'var(--light-gray)';
+      }
+    });
+  };
+
+  window.addEventListener('scroll', updateActiveNav, { passive: true });
+  updateActiveNav();
+</script>

@@ -1,0 +1,111 @@
+---
+// Site loader + custom cursor. Mirrors the loader behavior from legacy index.html.
+// On first visit: loader shows for ~2.8s with cycling status messages, then slides
+// up. On subsequent visits in the same tab (sessionStorage flag set): loader is
+// skipped entirely with no flash.
+//
+// The synchronous skip-check below MUST run before paint to avoid a one-frame
+// flash of the loader on revisit. That's why it's `is:inline` — Astro otherwise
+// hoists/bundles scripts and they run too late.
+---
+
+<script is:inline>
+  if (sessionStorage.getItem('jitesh_loader_shown')) {
+    document.body.classList.remove('is-loading');
+    document.body.classList.add('loader-skipped');
+  }
+</script>
+
+<div class="site-loader" id="siteLoader" aria-live="polite" aria-label="Loading portfolio">
+  <div class="loader-scanlines" aria-hidden="true"></div>
+  <div class="loader-core">
+    <div class="loader-logo">JITESH.EXE<span class="loader-cursor">_</span></div>
+    <div class="loader-bar" aria-hidden="true"><span></span></div>
+    <div class="loader-status" id="loaderStatus">&gt; LOADING PORTFOLIO...</div>
+  </div>
+  <div class="loader-corner loader-corner-left">&copy; INSERT COIN</div>
+  <div class="loader-corner loader-corner-right">2YRS EXP &middot; BLR &middot; v2.0</div>
+</div>
+
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
+
+<script>
+  const FIRST_LOAD_KEY = 'jitesh_loader_shown';
+  const skipLoader = !!sessionStorage.getItem(FIRST_LOAD_KEY);
+  const loader = document.getElementById('siteLoader');
+  const loaderStatus = document.getElementById('loaderStatus');
+  const loaderStatuses = [
+    '> LOADING PORTFOLIO...',
+    '> READING PROBLEM SPACE...',
+    '> MAPPING USER FLOWS...',
+    '> CALIBRATING COMPLEXITY...',
+    '> SYSTEM READY.',
+  ];
+
+  if (skipLoader) {
+    document.body.classList.remove('is-loading');
+    if (loader) loader.setAttribute('aria-hidden', 'true');
+  } else if (loader && loaderStatus) {
+    let loaderIndex = 0;
+    const statusTimer = window.setInterval(() => {
+      loaderIndex = Math.min(loaderIndex + 1, loaderStatuses.length - 1);
+      loaderStatus.textContent = loaderStatuses[loaderIndex] ?? '';
+    }, 400);
+
+    window.setTimeout(() => {
+      window.clearInterval(statusTimer);
+      loaderStatus.textContent = loaderStatuses[loaderStatuses.length - 1] ?? '';
+      loader.classList.add('is-exiting');
+
+      window.setTimeout(() => {
+        document.body.classList.remove('is-loading');
+        loader.setAttribute('aria-hidden', 'true');
+        try {
+          sessionStorage.setItem(FIRST_LOAD_KEY, '1');
+        } catch {
+          /* sessionStorage unavailable (private mode, embedded contexts); ignore */
+        }
+      }, 500);
+    }, 2800);
+  } else {
+    document.body.classList.remove('is-loading');
+    try {
+      sessionStorage.setItem(FIRST_LOAD_KEY, '1');
+    } catch {
+      /* ignore */
+    }
+  }
+
+  // Custom pointer cursor (desktop only)
+  const cursorDot = document.querySelector<HTMLElement>('.cursor-dot');
+  const cursorRing = document.querySelector<HTMLElement>('.cursor-ring');
+  const canUseCursor =
+    cursorDot && cursorRing && window.matchMedia('(pointer: fine)').matches;
+
+  if (canUseCursor) {
+    let dotX = window.innerWidth / 2;
+    let dotY = window.innerHeight / 2;
+    let ringX = dotX;
+    let ringY = dotY;
+
+    window.addEventListener(
+      'mousemove',
+      (event) => {
+        dotX = event.clientX;
+        dotY = event.clientY;
+        cursorDot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate(-50%, -50%)`;
+      },
+      { passive: true },
+    );
+
+    const renderCursor = () => {
+      ringX += (dotX - ringX) * 0.18;
+      ringY += (dotY - ringY) * 0.18;
+      cursorRing.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+      window.requestAnimationFrame(renderCursor);
+    };
+
+    renderCursor();
+  }
+</script>

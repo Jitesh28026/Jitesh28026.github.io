@@ -74,6 +74,18 @@ The legacy `index.html` declared `font-family: 'Syne', sans-serif;` for `body` b
 
 Stage 2 changed the body to `'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif` to make rendering deterministic with the fonts that actually load. **Confirm with Jitesh:** is Space Grotesk for body the intended look, or did he want Syne loaded too? If Syne, add `&family=Syne:wght@400;500;700` to the Google Fonts URL in `BaseLayout.astro` and revert the body font in `global.css`.
 
+### Legacy CSS kitchen-sink import (MEDIUM — performance)
+
+Stage 3 imports the entire legacy `<style>` block as `src/styles/legacy.css` (2737 lines, ~80 KB unminified) so the dark-theme styling carries over without surgically extracting per-component rules. Trade-off accepted to preserve fidelity and avoid extraction errors.
+
+**Cleanup plan:** as each section component is built (stages 4-7), move only its scoped rules into the component's `<style>` block and delete those rules from `legacy.css`. By the end of Stage 7 most of `legacy.css` should be gone; Stage 10 finishes the prune. Track ongoing progress here.
+
+Currently included verbatim in `legacy.css` (to be pruned per stage):
+- Lines for `:root`, `*`, `html`, `body`, `body::before`, `body.is-loading`, scroll, scrollbars, reveal — already duplicated in `tokens.css` + `global.css`. Keep both for now to avoid premature edits; remove duplicates during Stage 10.
+- Navbar, footer, loader, cursor styles — covered by Stage 3 components (markup ported, styles still live in `legacy.css`).
+- Hero, work, gallery, process, contact, marquee — pending Stages 4-6.
+- Blog page styles — pending Stage 7.
+
 ## Deferred decisions
 
 - **Stage 10:** keep or drop the three.js hero canvas? Visual: a particle field plus a rotating icosahedron sculpture behind the hero copy. If kept → ~50–100 KB extra JS, lazy-loaded. If dropped → page is faster but the hero loses its background motion.

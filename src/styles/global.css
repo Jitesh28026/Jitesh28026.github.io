@@ -10,25 +10,101 @@
   padding: 0;
 }
 
+* {
+  letter-spacing: 0;
+}
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  scrollbar-color: var(--accent) #080808;
+  scrollbar-width: thin;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080808;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent);
 }
 
 body {
-  background-color: var(--white);
+  min-height: 100vh;
+  background: #0d0d0d;
   color: var(--text-primary);
-  /* The legacy site declared 'Syne' as the body font but never loaded it,
-     so the live site has been falling back to the system sans. Use the font
-     that actually loads (Space Grotesk) to make rendering deterministic. */
   font-family: 'Space Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-weight: 400;
   line-height: 1.6;
   letter-spacing: 0.01em;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  /* The legacy site uses a custom cursor; the Stage 3 cursor implementation
+     hides this `none` on coarse-pointer devices. */
+  cursor: none;
 }
 
+/* Subtle noise texture overlay, mirrors body::before from legacy index.html */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.025;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* Loader-aware: while the site loader is visible, hide the rest of the page
+   to avoid a flash of un-positioned content. */
+body.is-loading {
+  overflow: hidden;
+}
+
+body.is-loading .navbar,
+body.is-loading .hero,
+body.is-loading .marquee-strip,
+body.is-loading main,
+body.is-loading section,
+body.is-loading footer {
+  opacity: 0;
+}
+
+body.loader-skipped .site-loader {
+  display: none !important;
+}
+
+.navbar,
+.hero,
+.marquee-strip,
+main,
+section,
+footer {
+  transition: opacity 0.4s ease;
+}
+
+/* Scroll reveal — used by data-revealed elements observed in src/scripts.
+   Element starts hidden + offset; .visible removes both. */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Honor user's reduced-motion preference */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -39,5 +115,17 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* On coarse-pointer devices (touch), the custom cursor is meaningless and
+   the body cursor:none would hide the system cursor. */
+@media (pointer: coarse) {
+  body {
+    cursor: auto;
   }
 }

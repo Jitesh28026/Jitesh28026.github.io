@@ -20,7 +20,7 @@
 [x] Stage 0  — Audit & branch
 [x] Stage 1  — Scaffold Astro in place
 [x] Stage 2  — CSS foundation (tokens, global, BaseLayout)
-[ ] Stage 3  — Navbar + Footer + Loader components
+[x] Stage 3  — Navbar + Footer + Loader components
 [ ] Stage 4  — Hero section
 [ ] Stage 5  — Work section (data-driven)
 [ ] Stage 6  — Gallery + Process + Contact
