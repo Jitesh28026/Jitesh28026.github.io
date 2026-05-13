@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import '../styles/about.css';
+
+const skills = [
+  'Figma',
+  'Prototyping',
+  'UX Research',
+  'Design Systems',
+  'Information Architecture',
+  'HTML/CSS',
+  'Product Strategy',
+  'Agentic Workflows',
+];
+---
+
+<BaseLayout
+  title="About — Jitesh"
+  description="Jitesh is a product designer based in Bengaluru. Learn about his process and approach to solving complex B2B problems."
+>
+  <Navbar />
+
+  <section id="about">
+    <div class="section-container">
+      <div class="about-grid">
+        <div class="about-visual reveal">
+          <div class="about-photo-frame">
+            <img
+              src="/legacy/assets/jitesh-photo.jpg"
+              alt="Jitesh - Product Designer"
+              style="width: 100%; height: 100%; object-fit: cover;"
+            />
+          </div>
+          <div class="about-stats-float">
+            <div class="stat-number">2+</div>
+            <div class="stat-label">Years designing B2B products</div>
+          </div>
+        </div>
+        <div class="about-text reveal">
+          <div class="section-label">About</div>
+          <h2 class="section-heading">
+            Designer who thinks <span class="muted">in systems.</span>
+          </h2>
+          <p class="about-body">
+            I'm Jitesh, a product designer based in Bengaluru. I untangle
+            complex B2B problems — the kind where the edge cases outnumber the
+            happy paths and stakeholders have opinions about everything except
+            the user.
+          </p>
+          <p class="about-body">
+            I think in systems. Not just on screen — if you hand me a
+            restaurant menu, I'm already questioning the information hierarchy.
+            Walking through an airport? I'm mentally redesigning the
+            wayfinding. I can't help it.
+          </p>
+          <p class="about-body">
+            My work sits at the intersection of systems thinking, enterprise
+            complexity, and AI-augmented workflows — I use whatever tool gets
+            me to the right answer faster, whether that's Figma, a whiteboard,
+            or an AI that does the boring parts so I can focus on the hard
+            ones.
+          </p>
+          <p class="about-body">
+            When I'm not pushing pixels, I'm either planning a trip I probably
+            won't take or losing ranked matches and blaming the matchmaking.
+          </p>
+          <div class="skills-grid">
+            {skills.map((skill) => (
+              <span class="skill-chip">{skill}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="aim-lab reveal">
+        <div class="aim-lab-grid">
+          <div class="aim-lab-copy">
+            <div class="section-label">AIM LAB</div>
+            <p>
+              When I'm not designing, I'm probably in a deathmatch. This is a
+              15-second aim trainer. Don't embarrass yourself.
+            </p>
+          </div>
+          <div class="aim-lab-panel">
+            <div class="aim-lab-shell" id="aimLab" data-state="idle">
+              <div class="aim-lab-head">
+                <div>SCORE <strong id="aimScore">0</strong></div>
+                <div>TIME <strong id="aimTime">15.0</strong></div>
+              </div>
+              <div class="aim-lab-stage" id="aimStage">
+                <canvas class="aim-lab-canvas" id="aimCanvas" width="720" height="460"></canvas>
+                <div class="aim-lab-overlay" id="aimOverlay">
+                  <div class="aim-lab-overlay-card">
+                    <h3>Range Ready</h3>
+                    <p>One target at a time. Fifteen seconds. Clean clicks only.</p>
+                    <button class="aim-lab-button primary" id="aimStartButton" type="button">Start</button>
+                  </div>
+                </div>
+                <div class="aim-lab-results" id="aimResults" hidden>
+                  <div class="aim-lab-results-card">
+                    <h3>Match Report</h3>
+                    <div class="aim-lab-results-grid">
+                      <div class="aim-lab-stat">
+                        <span class="aim-lab-stat-label">Score</span>
+                        <span class="aim-lab-stat-value" id="aimResultScore">0</span>
+                      </div>
+                      <div class="aim-lab-stat">
+                        <span class="aim-lab-stat-label">Accuracy</span>
+                        <span class="aim-lab-stat-value" id="aimResultAccuracy">0%</span>
+                      </div>
+                      <div class="aim-lab-stat">
+                        <span class="aim-lab-stat-label">Avg Reaction</span>
+                        <span class="aim-lab-stat-value" id="aimResultReaction">0ms</span>
+                      </div>
+                    </div>
+                    <div class="aim-lab-verdict" id="aimVerdict">Needs warmup</div>
+                    <button class="aim-lab-button" id="aimReplayButton" type="button">Play Again</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import '../scripts/aim-lab';
+  </script>
+</BaseLayout>
