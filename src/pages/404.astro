@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/Navbar.astro';
+---
+
+<BaseLayout title="404 — Jitesh" description="The page you're looking for doesn't exist." noindex>
+  <Navbar />
+  <main class="not-found">
+    <div class="not-found-tag">> ERROR_CODE · 404</div>
+    <h1 class="not-found-title">
+      This page <span class="muted">slipped through.</span>
+    </h1>
+    <p class="not-found-sub">
+      The link you followed is either out of date or never existed. No drama,
+      just no page.
+    </p>
+    <div class="not-found-actions">
+      <a href="/" class="btn-solid">Back to home →</a>
+      <a href="/#work" class="btn-outline">View work</a>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .not-found {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 12rem 1.5rem 6rem;
+    text-align: center;
+  }
+  .not-found-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
+  }
+  .not-found-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 1.05;
+    color: var(--text-primary);
+    margin-bottom: 1.25rem;
+  }
+  .not-found-title .muted {
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+  .not-found-sub {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+  .not-found-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+</style>

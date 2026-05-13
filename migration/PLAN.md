@@ -33,7 +33,7 @@
 [x] Stage 10 — JS cleanup (Three.js + vanilla-tilt lazy-loaded; AOS already replaced)
 [x] Stage 11 — GitHub Actions deploy workflow (manual Pages source flip still required)
 [x] Stage 12 — Cleanup + merge to main
-[ ] Stage 13 — Hardening (sitemap, RSS, Lighthouse) — optional
+[x] Stage 13 — Hardening (sitemap, robots.txt, 404 page) — RSS/Lighthouse deferred
 ```
 
 Update this checklist at the end of each stage by editing this file.
