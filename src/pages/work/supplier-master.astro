@@ -1,0 +1,12 @@
+---
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import bodyHtml from '../../_case-studies/supplier-master-body.html?raw';
+---
+
+<CaseStudyLayout
+  title="Making Data Consolidation Feel Safe, Jitesh Thakker"
+  description="Designing the Supplier Details, Merge & Split flows for an AI-powered supplier master data platform, a four-step governed flow built around the belief that nothing in an enterprise system should move silently."
+  ogImage="/legacy/assets/sm-og.png"
+>
+  <Fragment set:html={bodyHtml} />
+</CaseStudyLayout>

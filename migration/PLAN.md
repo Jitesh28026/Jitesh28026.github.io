@@ -26,8 +26,8 @@
 [x] Stage 5  — Work section (data-driven)
 [x] Stage 6  — Gallery + Process + Contact
 [x] Stage 7  — About page port (replaces blog port)
-[ ] Stage 7.5— Edit Feature case study page port
-[ ] Stage 7.6— Supplier Master case study page port
+[x] Stage 7.5— Edit Feature case study page port
+[x] Stage 7.6— Supplier Master case study page port
 [ ] Stage 8  — Content collections (work, blog) + dynamic routes
 [ ] Stage 9  — Image pipeline (rename, move, <Image>)
 [ ] Stage 10 — JS cleanup (replace AOS, decide tilt/three)

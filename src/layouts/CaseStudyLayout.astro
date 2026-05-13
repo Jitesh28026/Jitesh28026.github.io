@@ -1,0 +1,72 @@
+---
+import '../styles/case-study.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap"
+    />
+  </head>
+  <body>
+    <div class="scroll-progress-track" aria-hidden="true">
+      <div class="scroll-progress"></div>
+    </div>
+
+    <nav>
+      <a href="/" class="nav-logo">JITESH.EXE_</a>
+      <a href="/#work" class="nav-back">
+        <span class="nav-back-full">← Back to work</span>
+        <span class="nav-back-short">← Back</span>
+      </a>
+    </nav>
+
+    <slot />
+
+    <div class="end-actions">
+      <a href="/#work" class="btn btn-secondary">← All work</a>
+    </div>
+
+    <footer>
+      <span>JITESH.EXE_ · 2025</span>
+      <span>Made with lots of overthinking and black coffee ☕</span>
+    </footer>
+
+    <script>
+      import '../scripts/case-study';
+    </script>
+  </body>
+</html>

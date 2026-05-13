@@ -1,0 +1,429 @@
+
+  <!-- HERO -->
+  <header class="hero-zone">
+    <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+
+    <div class="hero">
+      <div class="hero-frame">
+        <div class="hero-tag">> CASE_STUDY · DATAX.AI · 2025</div>
+        <h1>When read-only<br><em>wasn't good enough.</em></h1>
+        <p class="hero-sub">Designing a two-role edit and review workflow for the B2B Digital Catalogue, because AI can't fix bad data at the source.</p>
+        <div class="meta-row">
+          <span class="meta-chip">Role: Product Designer</span>
+          <span class="meta-chip">Tool: Figma</span>
+          <span class="meta-chip">Status: In Development</span>
+        </div>
+        <div class="hero-actions"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BELIEF -->
+  <div class="belief-section scroll-fade">
+    <div class="belief-divider" aria-hidden="true"></div>
+    <div class="belief-lines">
+      <div class="belief-line">The best products don't fight their constraints. <strong>They design within them.</strong></div>
+      <div class="belief-line">When AI can't fix a problem, the answer isn't a smarter algorithm.</div>
+      <div class="belief-line"><strong>It's giving humans the right tools.</strong></div>
+    </div>
+  </div>
+
+  <!-- THE PROBLEM -->
+  <section class="scroll-fade">
+    <h2>Better AI couldn't solve<br><em>a data quality problem at the source.</em></h2>
+    <p>The B2B Digital Catalogue relied on AI enrichment to populate product attributes. But enrichment was only as good as the source data. Data coming in from client funnels was incomplete, inconsistent, and often wrong. The result: catalogue records full of bad data, and no way for anyone to fix it.</p>
+    <div class="cards-3 scroll-stagger">
+      <div class="card">
+        <h3>AI enrichment failed.</h3>
+        <p>The model could only work with what it was given. Bad input meant bad output, consistently.</p>
+      </div>
+      <div class="card">
+        <h3>Source data was poor.</h3>
+        <p>Data arrived from multiple client funnels, incomplete, inconsistent, missing key attributes.</p>
+      </div>
+      <div class="card">
+        <h3>Clients had no way to fix it.</h3>
+        <p>Attributes on the PDP were read-only. No edit button. No escalation path. No self-serve correction.</p>
+      </div>
+    </div>
+    <p class="bottom-line">We could've trained a better model. None of it would've worked. The problem wasn't the AI.</p>
+  </section>
+
+  <!-- WHY NOT AI -->
+  <section class="scroll-fade">
+    <h2>The fix wasn't smarter automation.<br><em>It was structured human input.</em></h2>
+    <p>Retraining the model, adding data sources, tweaking thresholds, none of it addressed the root cause. No human could correct what the AI got wrong. The data entered the system incorrect and stayed incorrect. The solution required giving clients the ability to fix attributes directly, with governance to ensure quality and a review layer to prevent new errors.</p>
+  </section>
+
+  <!-- USERS -->
+  <section class="scroll-fade">
+    <h2>One product. Two roles.<br><em>One shared outcome.</em></h2>
+    <p>Both roles are client-side, this is a self-serve workflow. The separation ensures no single user can submit and approve their own changes, maintaining data integrity without requiring internal oversight.</p>
+
+    <div class="role-cards scroll-stagger">
+      <div class="role-card">
+        <div class="role-tag">EDITOR</div>
+        <h3>Makes the edits.</h3>
+        <p>Client-side user who identifies incorrect attributes and submits corrections. Works inline on the PDP.</p>
+      </div>
+      <div class="role-card">
+        <div class="role-tag">REVIEWER</div>
+        <h3>Approves or rejects.</h3>
+        <p>Reviews submitted edits with full context. Can approve all or reject with field-level comments explaining exactly what needs fixing.</p>
+      </div>
+    </div>
+
+    <p class="bottom-line">Separation of roles. Shared accountability for cleaner data.</p>
+  </section>
+
+  <!-- CONSTRAINTS -->
+  <section class="scroll-fade">
+    <h2>The constraints weren't obstacles.<br><em>They were the design brief.</em></h2>
+    <p>Before touching Figma, I mapped every backend constraint, every system boundary, and every edge case. The edit feature sat at the intersection of multiple products, each with their own data ownership rules.</p>
+
+    <div class="constraints-grid scroll-stagger">
+      <div class="constraint-item">
+        <div class="constraint-dot" aria-hidden="true"></div>
+        <p><strong>Specifications</strong>, owned by MMA (separate product). Cannot be edited here.</p>
+      </div>
+      <div class="constraint-item">
+        <div class="constraint-dot" aria-hidden="true"></div>
+        <p><strong>Classification path</strong>, owned by Taxonomy (another product). Read-only in this flow.</p>
+      </div>
+      <div class="constraint-item">
+        <div class="constraint-dot" aria-hidden="true"></div>
+        <p><strong>Adding new attributes</strong>, introduces data governance issues. Not in Phase 1 scope.</p>
+      </div>
+      <div class="constraint-item">
+        <div class="constraint-dot" aria-hidden="true"></div>
+        <p><strong>Partial acceptance</strong>, backend limitation. Reviewer must accept all or reject all in Phase 1.</p>
+      </div>
+    </div>
+
+    <p class="bottom-line">Phase 1 ships what's safe. Phase 2 expands what's possible.</p>
+  </section>
+
+  <!-- KEY ITERATION -->
+  <section class="scroll-fade">
+    <h2>The decision that changed<br><em>after client feedback.</em></h2>
+    <p>The reviewer experience went through multiple iterations. Early designs allowed reviewers to accept or reject a submission as a whole with a single comment. After a client demo the feedback was clear: <em>"How will the editor know what specifically to change?"</em> Editors were re-submitting with the same issues because they couldn't tell which fields were wrong.</p>
+
+    <div class="before-after scroll-stagger">
+      <div class="ba-block">
+        <div class="ba-label">BEFORE, Single rejection</div>
+        <ul>
+          <li>Single accept/reject on entire submission</li>
+          <li>One comment field for reviewer notes</li>
+          <li>Editor receives vague feedback</li>
+          <li>Multiple re-submission loops with same errors</li>
+        </ul>
+      </div>
+      <div class="ba-block after">
+        <div class="ba-label">AFTER, Field-level rejection</div>
+        <ul>
+          <li>Reject checkbox per field</li>
+          <li>Comment box reveals only when field is flagged</li>
+          <li>Editor knows exactly which field to fix</li>
+          <li>Fewer re-submission cycles</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="bottom-line">The best iterations come from real users, not internal reviews. Good rejections teach.</p>
+  </section>
+
+  <!-- CHAPTER 1 -->
+  <div class="chapter-break scroll-fade">
+    <div class="chapter-inner">
+      <div class="chapter-num">> CHAPTER · EDITOR FLOW</div>
+      <h2>Inline editing. <em>Field-level control.</em><br>Within boundaries.</h2>
+    </div>
+  </div>
+
+  <!-- TRIGGER -->
+  <section class="scroll-fade">
+    <h2>From read-only to editable<br><em>in one click.</em></h2>
+    <p>The edit flow begins on the Product Details Page, the same page where incorrect data lives. No navigation to a separate editing interface, no context switch. The edit button lives where the problem is visible.</p>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="/legacy/assets/case-studies/ef-01.png" alt="PDP page, Edit button triggered from product details, permission-aware" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-01 · PDP TRIGGER</span>
+          <span class="ph-desc">PDP page, Edit button triggered from product details, permission-aware</span>
+        </div>
+      </div>
+      <span class="cs-caption">PDP page, Edit button triggered from product details, permission-aware.</span>
+    </figure>
+
+    <p class="bottom-line">Editing lives where the data lives.</p>
+  </section>
+
+  <!-- INLINE EDIT -->
+  <section class="scroll-fade">
+    <h2>Inline editing. Field-level control.<br><em>Within boundaries.</em></h2>
+    <p>Not all attributes can be edited here. Backend constraints, data ownership across products, and governance requirements all shape the scope. Clear boundaries reduce error surface, and tell users exactly where to go when something can't be fixed here.</p>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="/legacy/assets/case-studies/ef-02.png" alt="Edit attributes screen, editable fields inline, locked fields clearly marked" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-02 · EDIT ATTRIBUTES</span>
+          <span class="ph-desc">Edit attributes screen, editable fields inline, locked fields clearly marked</span>
+        </div>
+      </div>
+      <span class="cs-caption">Edit attributes screen, editable fields inline, locked fields clearly marked.</span>
+    </figure>
+
+    <div class="editable-table">
+      <div class="editable-col unlocked">
+        <div class="editable-col-header">✓ Editable in this flow</div>
+        <div class="editable-item">Manufacturer</div>
+        <div class="editable-item">Brand</div>
+        <div class="editable-item">Pack size</div>
+        <div class="editable-item">Country of sale</div>
+        <div class="editable-item">SKU ID</div>
+        <div class="editable-item">Product images</div>
+      </div>
+      <div class="editable-col locked">
+        <div class="editable-col-header">✗ Locked, why</div>
+        <div class="editable-item">Specifications</div>
+        <div class="editable-item reason">Owned by MMA product</div>
+        <div class="editable-item">Classification path</div>
+        <div class="editable-item reason">Owned by Taxonomy product</div>
+        <div class="editable-item">Custom attributes</div>
+        <div class="editable-item reason">Governance issues</div>
+        <div class="editable-item">Adding new fields</div>
+        <div class="editable-item reason">Not in Phase 1 scope</div>
+      </div>
+    </div>
+
+    <p class="bottom-line">Boundaries are a feature, not a limitation.</p>
+
+    <div class="step-block">
+      <h3>Review your own work first.</h3>
+      <p class="step-lead">The reviewer reviews the result, not the typos.</p>
+      <figure class="cs-figure">
+        <div class="cs-figure-block">
+          <img src="/legacy/assets/case-studies/ef-03.png" alt="Preview edits, original vs edited values side by side before submission" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+          <div class="img-placeholder">
+            <span class="ph-label">EF-03 · PREVIEW EDITS</span>
+            <span class="ph-desc">Preview edits, original vs edited values side by side before submission</span>
+          </div>
+        </div>
+        <span class="cs-caption">Preview edits, original vs edited values side by side before submission.</span>
+      </figure>
+    </div>
+  </section>
+
+  <!-- REVIEWER FLOW -->
+  <section class="scroll-fade">
+    <h2>Approve, reject,<br><em>or guide.</em></h2>
+    <p>The reviewer sees a queue of pending edit tickets, SKU ID, status, supplier, and timestamp. One click opens the full submission. Every pending edit is visible, nothing gets lost in email threads or support tickets.</p>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="/legacy/assets/case-studies/ef-04.png" alt="Manage Edits queue, pending submissions with status and supplier context" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-04 · MANAGE EDITS QUEUE</span>
+          <span class="ph-desc">Manage Edits queue, pending submissions with status and supplier context</span>
+        </div>
+      </div>
+      <span class="cs-caption">Manage Edits queue, pending submissions with status and supplier context.</span>
+    </figure>
+
+    <p style="margin-top: 40px;">The review screen shows current value vs new value side by side for every attribute, images, documents, and all editable fields. The reviewer works through each field individually, not the submission as a whole.</p>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="/legacy/assets/case-studies/ef-05.png" alt="Review Edits screen, current vs new value side by side, Reject checkbox per field" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-05 · REVIEW EDITS</span>
+          <span class="ph-desc">Review Edits screen, current vs new value side by side, Reject checkbox per field</span>
+        </div>
+      </div>
+      <span class="cs-caption">Review Edits screen, current vs new value side by side, Reject checkbox per field.</span>
+    </figure>
+
+    <p style="margin-top: 40px;">Checking <strong>'Reject this edit'</strong> on any field reveals a comment box, the reviewer explains exactly what's wrong with that specific field. Multiple fields can be rejected with separate comments. The global Reject button only activates once at least one field is flagged, you can't accidentally reject without flagging something first.</p>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="/legacy/assets/case-studies/ef-06.png" alt="Field-level rejection, comment box reveals on checkbox, specific feedback per attribute" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-06 · FIELD REJECTION</span>
+          <span class="ph-desc">Field-level rejection, comment box reveals on checkbox, specific feedback per attribute</span>
+        </div>
+      </div>
+      <span class="cs-caption">Field-level rejection, comment box reveals on checkbox, specific feedback per attribute.</span>
+    </figure>
+
+    <div class="cards-2 scroll-stagger" style="margin-top: 48px;">
+      <div class="card">
+        <h3>Accept</h3>
+        <p>All non-rejected fields go live immediately. Audit log captures the decision.</p>
+      </div>
+      <div class="card">
+        <h3>Reject</h3>
+        <p>Submission sent back to editor with field-level comments. Editor knows exactly what to fix and where.</p>
+      </div>
+    </div>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="/legacy/assets/case-studies/ef-07.png" alt="Accepted and Rejected confirmation states, clear outcome, Manage Edits CTA" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-07 · CONFIRMATION</span>
+          <span class="ph-desc">Accepted and Rejected confirmation states, clear outcome, Manage Edits CTA</span>
+        </div>
+      </div>
+      <span class="cs-caption">Accepted and Rejected confirmation states, clear outcome, Manage Edits CTA.</span>
+    </figure>
+
+    <p class="bottom-line">The reviewer doesn't reject submissions. They reject specific fields, and tell the editor exactly why.</p>
+  </section>
+
+  <!-- THE LOOP -->
+  <section class="scroll-fade">
+    <h2>Linear by design.<br><em>Until the data is right.</em></h2>
+    <p>The flow is deliberately linear, no branching, no parallel paths. If rejected, it loops back to step 1. The editor re-edits based on field-level feedback and resubmits. The loop ends when the data is right, not when patience runs out.</p>
+
+    <div class="flow-diagram">
+      <div class="flow-step">
+        <div class="flow-step-num">01</div>
+        <div class="flow-step-label">Editor edits</div>
+        <div class="flow-step-sub">Inline on PDP</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">02</div>
+        <div class="flow-step-label">Preview</div>
+        <div class="flow-step-sub">Self-review</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">03</div>
+        <div class="flow-step-label">Submit</div>
+        <div class="flow-step-sub">To reviewer</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">04</div>
+        <div class="flow-step-label">Review</div>
+        <div class="flow-step-sub">Accept or reject</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step live">
+        <div class="flow-step-num">05</div>
+        <div class="flow-step-label">Live</div>
+        <div class="flow-step-sub">On accept</div>
+      </div>
+    </div>
+
+    <figure class="cs-figure">
+      <div class="cs-figure-block">
+        <img src="/legacy/assets/case-studies/ef-08.png" alt="Final acceptance, changes live, audit log entry created" onerror="this.closest('.cs-figure').classList.add('is-fallback')">
+        <div class="img-placeholder">
+          <span class="ph-label">EF-08 · FINAL ACCEPTANCE</span>
+          <span class="ph-desc">Final acceptance, changes live, audit log entry created</span>
+        </div>
+      </div>
+      <span class="cs-caption">Final acceptance, changes live, audit log entry created.</span>
+    </figure>
+
+    <p class="bottom-line">A multi-team escalation became a 2-role self-serve workflow.</p>
+  </section>
+
+  <!-- CHAPTER 2 -->
+  <div class="chapter-break scroll-fade">
+    <div class="chapter-inner">
+      <div class="chapter-num">> CHAPTER · OUTCOMES</div>
+      <h2>What this design <em>replaces.</em></h2>
+    </div>
+  </div>
+
+  <!-- OUTCOMES -->
+  <section class="scroll-fade">
+    <h2>What this design<br><em>replaces.</em></h2>
+    <div class="before-after scroll-stagger">
+      <div class="ba-block">
+        <div class="ba-label">BEFORE</div>
+        <ul>
+          <li>No edit access on PDP</li>
+          <li>~5 days to correct a single record</li>
+          <li>40+ steps across 3 internal teams</li>
+          <li>No accountability trail</li>
+        </ul>
+      </div>
+      <div class="ba-block after">
+        <div class="ba-label">AFTER</div>
+        <ul>
+          <li>Edit button on every PDP</li>
+          <li>~30 minutes per submission (projected)</li>
+          <li>4 steps across 2 client roles</li>
+          <li>Full audit log per change</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="outcomes-row scroll-stagger">
+      <div class="outcome">
+        <div class="outcome-num">40%</div>
+        <div class="outcome-label">Reduction in time to fix bad data</div>
+        <div class="outcome-note">Projected</div>
+      </div>
+      <div class="outcome">
+        <div class="outcome-num">60%</div>
+        <div class="outcome-label">Faster review cycles with field-level comments</div>
+        <div class="outcome-note">Projected</div>
+      </div>
+      <div class="outcome">
+        <div class="outcome-num">3x</div>
+        <div class="outcome-label">Improvement in AI enrichment accuracy</div>
+        <div class="outcome-note">Projected</div>
+      </div>
+    </div>
+
+    <p class="outcomes-footnote">* In development. Metrics updated post-launch.</p>
+  </section>
+
+  <!-- LIMITATIONS -->
+  <section class="scroll-fade">
+    <h2>What we didn't<br><em>get to solve, yet.</em></h2>
+    <div class="cards-3 scroll-stagger">
+      <div class="card">
+        <h3>No partial acceptance.</h3>
+        <p>Reviewer must accept all or send all back. Backend limitation, granular field-level acceptance is a Phase 2 problem.</p>
+      </div>
+      <div class="card">
+        <h3>No bulk editing.</h3>
+        <p>Power users managing hundreds of products will need bulk correction tools. Single-product editing doesn't scale.</p>
+      </div>
+      <div class="card">
+        <h3>Field expansion owned elsewhere.</h3>
+        <p>Adding new attribute types still requires Taxonomy team involvement. Not in Phase 1 scope.</p>
+      </div>
+    </div>
+    <p class="bottom-line">Phase 1 ships. Phase 2 learns. That's how good products grow.</p>
+  </section>
+
+  <!-- REFLECTION -->
+  <div class="reflection-section scroll-fade">
+    <div class="reflection">
+      <p>Designing within constraints isn't compromising, <em>it's collaborating with reality.</em></p>
+      <p>The best designers don't ask for the perfect canvas. They ask: <em>what's the smallest, sharpest version of this that solves a real problem today?</em></p>
+      <p>This won't win design awards. But it'll quietly improve thousands of catalogue records, and make the AI that depends on them actually useful.</p>
+      <p><strong>That matters more.</strong></p>
+    </div>
+  </div>
+
+  <!-- NEXT CASE -->
+  <div class="next-case-section scroll-fade">
+    <a href="/work/supplier-master" class="next-case">
+      <div class="next-case-label">Next case study</div>
+      <div class="next-case-title">Making data consolidation <em>feel safe.</em></div>
+      <p class="next-case-teaser">A four-step governed merge & split flow for an AI-powered supplier MDM, designed so nothing in an enterprise system moves silently.</p>
+    </a>
+  </div>
+

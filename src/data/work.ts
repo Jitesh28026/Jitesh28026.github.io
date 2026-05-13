@@ -4,9 +4,8 @@
  * Each entry mirrors a card in the live jitesht.com index. Order in this array
  * is the order shown on the page; `displayNumber` is the printed numeral.
  *
- * The Edit Feature and Supplier Master cards link to /legacy/ during the
- * migration. Stages 7.5 and 7.6 swap those to /work/edit-feature and
- * /work/supplier-master once the Astro routes ship.
+ * The Edit Feature and Supplier Master cards link to the Astro routes at
+ * /work/edit-feature and /work/supplier-master (ported in Stages 7.5/7.6).
  */
 
 export type WorkCard = {
@@ -43,7 +42,7 @@ export const workCards: readonly WorkCard[] = [
     thumbnailAlt: 'Edit Feature case study hero',
     displayNumber: '01',
     thumbClass: 'thumb-4',
-    href: '/legacy/edit-feature.html',
+    href: '/work/edit-feature',
     external: false,
   },
   {
@@ -56,7 +55,7 @@ export const workCards: readonly WorkCard[] = [
     thumbnailAlt: 'Supplier Master case study hero',
     displayNumber: '02',
     thumbClass: 'thumb-1',
-    href: '/legacy/supplier-master.html',
+    href: '/work/supplier-master',
     external: false,
   },
   {

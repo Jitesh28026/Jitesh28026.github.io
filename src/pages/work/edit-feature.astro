@@ -1,0 +1,12 @@
+---
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import bodyHtml from '../../_case-studies/edit-feature-body.html?raw';
+---
+
+<CaseStudyLayout
+  title="When Read-Only Wasn't Good Enough, Jitesh Thakker"
+  description="A two-role edit and review workflow for a B2B Digital Catalogue, because AI can't fix bad data at the source. Designing structured human input within a read-only system."
+  ogImage="/legacy/assets/ef-og.png"
+>
+  <Fragment set:html={bodyHtml} />
+</CaseStudyLayout>
