@@ -23,7 +23,7 @@
 [x] Stage 3  — Navbar + Footer + Loader components
 [x] Stage 4  — Hero section
 [x] Stage 4.5— Source-of-truth swap (jitesht.com → public/legacy/)
-[ ] Stage 5  — Work section (data-driven)
+[x] Stage 5  — Work section (data-driven)
 [ ] Stage 6  — Gallery + Process + Contact
 [ ] Stage 7  — About page port (replaces blog port)
 [ ] Stage 7.5— Edit Feature case study page port
