@@ -139,3 +139,5 @@ if (!prefersReducedMotion && 'IntersectionObserver' in window) {
     counters.forEach((el) => countIO.observe(el));
   }
 }
+
+export {};

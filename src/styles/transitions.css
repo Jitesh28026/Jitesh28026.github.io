@@ -1,65 +1,37 @@
-/* Page-to-page parallax transitions, driven by Astro's View Transitions API.
-   The outgoing page drifts up + scales down + softens; the incoming page rises
-   from below with a slight overshoot easing. Combined with the asymmetric
-   translate distances (-15vh out, +40vh in) and the blur, the effect reads as
-   genuine depth rather than a flat slide. */
+/* Cross-fade between pages — pure CSS for the fade-IN on every load, JS
+   handler at src/scripts/page-transitions.ts adds the .is-leaving class
+   on internal link clicks so the outgoing page can fade-OUT before navigating.
 
-@keyframes parallax-old-out {
-  from {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-    filter: blur(0);
-  }
-  to {
-    transform: translateY(-15vh) scale(0.94);
-    opacity: 0;
-    filter: blur(6px);
-  }
-}
+   Total feel: ~540ms (220ms fade-out + 320ms fade-in). Combined with the
+   hover-prefetch elsewhere, navigation feels deliberate and smooth without
+   needing the View Transitions API or per-script re-init.
 
-@keyframes parallax-new-in {
-  from {
-    transform: translateY(40vh) scale(0.94);
-    opacity: 0;
-    filter: blur(6px);
-  }
-  to {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-    filter: blur(0);
-  }
-}
+   Reduced-motion users get a hard-cut. */
 
-/* Slow layer — chrome (navbar, footer): smaller movement, less blur, makes
-   the foreground feel like it's moving faster against a steadier background. */
-@keyframes parallax-old-out-slow {
-  from {
-    transform: translateY(0);
-    opacity: 1;
+@media (prefers-reduced-motion: no-preference) {
+  body {
+    animation: pageFadeIn 320ms ease-out both;
   }
-  to {
-    transform: translateY(-6vh);
-    opacity: 0;
-  }
-}
 
-@keyframes parallax-new-in-slow {
-  from {
-    transform: translateY(12vh);
-    opacity: 0;
+  body.is-leaving {
+    animation: pageFadeOut 220ms ease-in forwards;
   }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
 
-/* Respect reduced motion: skip the choreography, just hard-cut between pages. */
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root),
-  ::view-transition-new(root),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation: none !important;
+  @keyframes pageFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes pageFadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
   }
 }
