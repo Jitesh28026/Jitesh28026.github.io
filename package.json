@@ -14,10 +14,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.3.1"
+    "astro": "^6.3.1",
+    "three": "^0.184.0",
+    "vanilla-tilt": "^1.8.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "@types/three": "^0.184.1",
     "typescript": "^6.0.3"
   }
 }

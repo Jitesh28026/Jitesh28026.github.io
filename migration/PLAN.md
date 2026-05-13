@@ -30,7 +30,7 @@
 [x] Stage 7.6— Supplier Master case study page port
 [~] Stage 8  — Content collections (deferred — page-per-file approach chosen)
 [x] Stage 9  — Image pipeline (homepage/About; case-study images deferred)
-[ ] Stage 10 — JS cleanup (replace AOS, decide tilt/three)
+[x] Stage 10 — JS cleanup (Three.js + vanilla-tilt lazy-loaded; AOS already replaced)
 [ ] Stage 11 — GitHub Actions deploy + Pages settings
 [ ] Stage 12 — Cleanup + merge to main
 [ ] Stage 13 — Hardening (sitemap, RSS, Lighthouse) — optional

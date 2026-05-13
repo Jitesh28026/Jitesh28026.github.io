@@ -1,12 +1,8 @@
 ---
-// Hero section. Text-driven; the visual side is a card-stack with floating
-// accent shapes. The Three.js canvas is kept in the markup but its script
-// wiring is deferred to Stage 10 — until then the canvas is invisible
-// (transparent), which is fine.
-//
-// The data-tilt-* attributes on .hero-card-main are no-ops without
-// vanilla-tilt loaded; Stage 10 decides whether to lazy-load the lib or
-// strip the attributes.
+// Hero section. The Three.js canvas and vanilla-tilt hero card are wired up
+// in companion scripts at the bottom of this file. Both are lazy-loaded so
+// the homepage first-paint stays small. Three.js boots on intersection +
+// reduced-motion check; tilt boots on idle + pointer:fine check.
 ---
 
 <section class="hero" id="home">
@@ -81,3 +77,8 @@
     </div>
   </div>
 </section>
+
+<script>
+  import '../scripts/hero-canvas';
+  import '../scripts/tilt';
+</script>
