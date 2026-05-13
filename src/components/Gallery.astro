@@ -1,0 +1,64 @@
+---
+import type { GalleryItem } from '../data/gallery';
+import { galleryTrackLeft, galleryTrackRight } from '../data/gallery';
+
+// Each track renders its items twice so the CSS marquee loop is seamless.
+// The duplicates carry aria-hidden so screen readers don't read them.
+const renderItem = (item: GalleryItem, duplicate: boolean) => ({ item, duplicate });
+const trackLeft = [
+  ...galleryTrackLeft.map((i) => renderItem(i, false)),
+  ...galleryTrackLeft.map((i) => renderItem(i, true)),
+];
+const trackRight = [
+  ...galleryTrackRight.map((i) => renderItem(i, false)),
+  ...galleryTrackRight.map((i) => renderItem(i, true)),
+];
+---
+
+<header class="gallery-header" id="gallery">
+  <div class="section-label">Playground</div>
+  <h1 class="gallery-title">Visual Explorations</h1>
+  <p class="gallery-subtitle">
+    A collection of UI snippets, high-fidelity mockups, and micro-interactions —
+    small experiments from the side of the desk.
+  </p>
+</header>
+
+<div class="gallery-container">
+  <div class="carousel-track-container" id="masonryGrid">
+    <div class="carousel-track left">
+      {trackLeft.map(({ item, duplicate }) => (
+        <div class="gallery-item" aria-hidden={duplicate ? 'true' : undefined}>
+          <img
+            src={item.src}
+            alt={duplicate ? '' : item.alt}
+            loading="lazy"
+            decoding="async"
+            style={item.style}
+          />
+          <div class="gallery-caption">
+            <div class="caption-title">{item.title}</div>
+            <div class="caption-tag">{item.tag}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+    <div class="carousel-track right">
+      {trackRight.map(({ item, duplicate }) => (
+        <div class="gallery-item" aria-hidden={duplicate ? 'true' : undefined}>
+          <img
+            src={item.src}
+            alt={duplicate ? '' : item.alt}
+            loading="lazy"
+            decoding="async"
+            style={item.style}
+          />
+          <div class="gallery-caption">
+            <div class="caption-title">{item.title}</div>
+            <div class="caption-tag">{item.tag}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>

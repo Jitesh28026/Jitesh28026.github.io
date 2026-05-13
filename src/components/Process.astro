@@ -1,0 +1,54 @@
+---
+const steps = [
+  {
+    icon: '🔍',
+    num: '01',
+    title: 'I start with the constraint, not the canvas',
+    desc: "Most problems aren't unsolved, they're unseen. I spend the first phase finding what's actually blocking users, not what they say is blocking them. Usually those are different things.",
+  },
+  {
+    icon: '📍',
+    num: '02',
+    title: 'I design for the person who hates reading instructions',
+    desc: "Enterprise users are busy and context-switching constantly. If a flow needs explanation, it's not done yet.",
+  },
+  {
+    icon: '⚡',
+    num: '03',
+    title: 'I treat "coming soon" as a design failure',
+    desc: "Shipped is better than perfect, but shipping something nobody uses is worse than waiting. I push for small real releases so I'm always learning from actual behavior.",
+  },
+  {
+    icon: '♻️',
+    num: '04',
+    title: 'I document the decisions, not just the outcome',
+    desc: "The file isn't the work. The reasoning behind every tradeoff is.",
+  },
+] as const;
+---
+
+<section class="process-section" id="process">
+  <div class="process-blob blob-1"></div>
+  <div class="process-blob blob-2"></div>
+  <div class="process-container">
+    <div class="process-header reveal">
+      <div class="section-label">Process</div>
+      <h2 class="section-heading">
+        How I tackle <br /><span class="muted">complex problems.</span>
+      </h2>
+    </div>
+
+    <div class="process-grid">
+      {steps.map((step, idx) => (
+        <div class="process-step reveal" style={`transition-delay: ${idx * 0.1}s;`}>
+          <div class="step-content">
+            <span class="step-icon">{step.icon}</span>
+            <span class="step-num">{step.num}</span>
+            <h3 class="step-title">{step.title}</h3>
+            <p class="step-desc">{step.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

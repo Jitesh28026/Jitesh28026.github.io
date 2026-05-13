@@ -1,0 +1,60 @@
+---
+const buttons = [
+  {
+    label: '↗ Send a message',
+    href: 'mailto:thakker.jitesh04@gmail.com',
+    id: 'contact-email',
+    primary: true,
+    external: false,
+  },
+  {
+    label: 'LinkedIn',
+    href: 'https://www.linkedin.com/in/jitesh-thakker/',
+    id: 'contact-linkedin',
+    primary: false,
+    external: true,
+  },
+  {
+    label: 'Behance',
+    href: 'https://www.behance.net/jiteshthakker',
+    id: 'contact-behance',
+    primary: false,
+    external: true,
+  },
+  {
+    label: 'Resume ↓',
+    href: 'https://drive.google.com/file/d/15AH3HTxJ9vHeyDap04SnbKBIBpdmB1nb/view?usp=sharing',
+    id: 'contact-resume',
+    primary: false,
+    external: true,
+  },
+] as const;
+---
+
+<section class="contact-section" id="contact">
+  <div class="contact-inner reveal">
+    <div class="section-label">Get in touch</div>
+    <h2 class="section-heading contact-heading">
+      <span class="contact-heading-line">Let's build</span>
+      <span class="contact-heading-line">something</span>
+      <span class="muted contact-heading-line">worth using.</span>
+    </h2>
+    <p class="contact-sub">
+      Open to new opportunities, collaborations, and interesting problems. If
+      you're building a product that matters, I'd love to hear about it.
+    </p>
+    <div class="contact-buttons">
+      {buttons.map((btn) => (
+        <a
+          href={btn.href}
+          class={`contact-btn${btn.primary ? ' primary' : ''}`}
+          id={btn.id}
+          target={btn.external ? '_blank' : undefined}
+          rel={btn.external ? 'noopener noreferrer' : undefined}
+        >
+          {btn.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
