@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "astro": "^6.3.1",
-    "three": "^0.184.0",
+    "three": "^0.136.0",
     "vanilla-tilt": "^1.8.1"
   },
   "devDependencies": {
