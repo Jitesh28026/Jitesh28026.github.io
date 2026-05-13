@@ -328,63 +328,8 @@
       transform: translateY(-2px);
     }
 
-    /* ==========================================
-       FOOTER
-    ========================================== */
-    footer {
-      background: var(--off-white);
-      border-top: 1px solid var(--light-gray);
-    }
-    footer .footer-inner {
-      padding: 2.5rem 4rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .footer-logo {
-      font-family: 'Instrument Serif', serif;
-      font-size: 1.1rem;
-      color: var(--text-primary);
-      letter-spacing: -0.01em;
-    }
-
-    .footer-copy {
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-    }
-
-    .footer-copy-text {
-      display: inline-flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 0.45ch;
-      max-width: 100%;
-    }
-
-    .footer-copy-emoji {
-      white-space: nowrap;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 2rem;
-    }
-
-    .footer-links a {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      text-decoration: none;
-      letter-spacing: 0.03em;
-      transition: color 0.2s;
-    }
-
-    .footer-links a:hover {
-      color: var(--accent);
-    }
+    /* Footer rules removed — about page now uses the shared legacy.css
+       footer styles so heights and layout match the homepage. */
 
     @media (max-width: 1024px) {
       .about-grid { grid-template-columns: 1fr; gap: 3rem; }
@@ -952,20 +897,8 @@
       text-transform: uppercase;
     }
 
-    footer .footer-inner {
-      display: flex;
-      max-width: var(--content-max);
-      margin: 0 auto;
-      padding: 2.5rem var(--space-desktop);
-      justify-content: space-between;
-      align-items: center;
-      border-left: 1px solid var(--border-muted);
-      border-right: 1px solid var(--border-muted);
-    }
-
-    .footer-links a:hover {
-      color: var(--accent);
-    }
+    /* Footer overrides removed — about page now uses the shared
+       legacy.css footer styles so heights and layout match the homepage. */
 
     .reveal {
       opacity: 0;
@@ -1008,10 +941,6 @@
 
       .about-grid {
         grid-template-columns: 1fr;
-      }
-
-      footer .footer-inner {
-        padding: 2rem var(--space-tablet);
       }
 
       .aim-lab-grid {
@@ -1161,17 +1090,8 @@
         width: 100%;
       }
 
-      footer .footer-inner {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-        padding: 2rem var(--space-phone);
-      }
-
-      .footer-links {
-        justify-content: center;
-        flex-wrap: wrap;
-      }
+      /* Footer responsive overrides removed — legacy.css handles
+         responsive footer layout uniformly across pages. */
     }
 
     @media (max-width: 479px) {
