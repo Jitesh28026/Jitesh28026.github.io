@@ -1,5 +1,7 @@
 ---
 import '../styles/case-study.css';
+import '../styles/transitions.css';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title: string;
@@ -10,6 +12,28 @@ interface Props {
 const { title, description, ogImage } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined;
+
+const parallaxFast = {
+  forwards: {
+    old: { name: 'parallax-old-out', duration: '0.55s', easing: 'cubic-bezier(0.65, 0, 0.35, 1)' },
+    new: { name: 'parallax-new-in', duration: '0.6s', easing: 'cubic-bezier(0.16, 1, 0.3, 1)', delay: '0.15s' },
+  },
+  backwards: {
+    old: { name: 'parallax-old-out', duration: '0.55s', easing: 'cubic-bezier(0.65, 0, 0.35, 1)' },
+    new: { name: 'parallax-new-in', duration: '0.6s', easing: 'cubic-bezier(0.16, 1, 0.3, 1)', delay: '0.15s' },
+  },
+};
+
+const parallaxSlow = {
+  forwards: {
+    old: { name: 'parallax-old-out-slow', duration: '0.55s', easing: 'cubic-bezier(0.65, 0, 0.35, 1)' },
+    new: { name: 'parallax-new-in-slow', duration: '0.55s', easing: 'cubic-bezier(0.16, 1, 0.3, 1)', delay: '0.2s' },
+  },
+  backwards: {
+    old: { name: 'parallax-old-out-slow', duration: '0.55s', easing: 'cubic-bezier(0.65, 0, 0.35, 1)' },
+    new: { name: 'parallax-new-in-slow', duration: '0.55s', easing: 'cubic-bezier(0.16, 1, 0.3, 1)', delay: '0.2s' },
+  },
+};
 ---
 
 <!doctype html>
@@ -40,30 +64,37 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).toString() : undefined
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300;1,9..40,400&display=swap"
     />
+    <ClientRouter />
   </head>
   <body>
     <div class="scroll-progress-track" aria-hidden="true">
       <div class="scroll-progress"></div>
     </div>
 
-    <nav>
-      <a href="/" class="nav-logo">JITESH.EXE_</a>
-      <a href="/#work" class="nav-back">
-        <span class="nav-back-full">← Back to work</span>
-        <span class="nav-back-short">← Back</span>
-      </a>
-    </nav>
-
-    <slot />
-
-    <div class="end-actions">
-      <a href="/#work" class="btn btn-secondary">← All work</a>
+    <div transition:animate={parallaxSlow}>
+      <nav>
+        <a href="/" class="nav-logo">JITESH.EXE_</a>
+        <a href="/#work" class="nav-back">
+          <span class="nav-back-full">← Back to work</span>
+          <span class="nav-back-short">← Back</span>
+        </a>
+      </nav>
     </div>
 
-    <footer>
-      <span>JITESH.EXE_ · 2025</span>
-      <span>Made with lots of overthinking and black coffee ☕</span>
-    </footer>
+    <div transition:animate={parallaxFast}>
+      <slot />
+
+      <div class="end-actions">
+        <a href="/#work" class="btn btn-secondary">← All work</a>
+      </div>
+    </div>
+
+    <div transition:animate={parallaxSlow}>
+      <footer>
+        <span>JITESH.EXE_ · 2025</span>
+        <span>Made with lots of overthinking and black coffee ☕</span>
+      </footer>
+    </div>
 
     <script>
       import '../scripts/case-study';
