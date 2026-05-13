@@ -32,7 +32,7 @@
 [x] Stage 9  — Image pipeline (homepage/About; case-study images deferred)
 [x] Stage 10 — JS cleanup (Three.js + vanilla-tilt lazy-loaded; AOS already replaced)
 [x] Stage 11 — GitHub Actions deploy workflow (manual Pages source flip still required)
-[ ] Stage 12 — Cleanup + merge to main
+[x] Stage 12 — Cleanup + merge to main
 [ ] Stage 13 — Hardening (sitemap, RSS, Lighthouse) — optional
 ```
 
