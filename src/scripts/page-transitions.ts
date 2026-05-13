@@ -37,19 +37,31 @@ if (!reducedMotionForTransitions) {
     if (!href) return;
     if (link.target === '_blank' || link.hasAttribute('download')) return;
 
-    // Skip pure hash anchors (in-page scroll). Hash + path (/#work) is fine.
+    // Skip pure hash anchors (in-page scroll only)
     if (href.startsWith('#')) return;
 
     // Skip non-http schemes
     if (href.startsWith('mailto:') || href.startsWith('tel:')) return;
 
+    // Resolve to a full URL so we can compare it with the current location
+    let destination: URL;
+    try {
+      destination = new URL(href, window.location.href);
+    } catch {
+      return;
+    }
+
     // Skip cross-origin links
-    if (/^https?:\/\//i.test(href)) {
-      try {
-        if (new URL(href).origin !== window.location.origin) return;
-      } catch {
-        return;
-      }
+    if (destination.origin !== window.location.origin) return;
+
+    // Skip same-page hash changes (e.g. clicking /#work while already on /).
+    // The browser handles the scroll; intercepting would fade body to 0 and
+    // then never actually navigate because the pathname didn't change.
+    if (
+      destination.pathname === window.location.pathname &&
+      destination.search === window.location.search
+    ) {
+      return;
     }
 
     e.preventDefault();
@@ -57,6 +69,12 @@ if (!reducedMotionForTransitions) {
     window.setTimeout(() => {
       window.location.href = href;
     }, 220);
+
+    // Safety: if navigation somehow doesn't fire (e.g., service worker
+    // intercepts), clear is-leaving so the page isn't permanently invisible.
+    window.setTimeout(() => {
+      document.body.classList.remove('is-leaving');
+    }, 1500);
   });
 
   // Clear leaving state if user comes back via bfcache
