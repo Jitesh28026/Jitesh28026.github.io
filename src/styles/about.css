@@ -331,6 +331,74 @@
     /* Footer rules removed — about page now uses the shared legacy.css
        footer styles so heights and layout match the homepage. */
 
+    /* ==========================================
+       ABOUT MICRO-ANIMATIONS (Phase 2)
+       Gated on prefers-reduced-motion at the bottom.
+    ========================================== */
+
+    /* 1. Word-by-word reveal for the section heading.
+          Each .word starts hidden + nudged down; .is-revealed cascades the
+          fade-in via --word-index. */
+    [data-reveal-words] .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(0.6em);
+      transition:
+        opacity 0.55s cubic-bezier(0.2, 0.7, 0.2, 1),
+        transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+      transition-delay: calc(var(--word-index, 0) * 80ms);
+    }
+    [data-reveal-words].is-revealed .word {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 2. Skill-chip stagger with overshoot — uses cubic-bezier(0.34,1.56,0.64,1)
+          for a tiny bounce as each chip settles in. */
+    [data-stagger-children] > * {
+      opacity: 0;
+      transform: translateY(14px) scale(0.94);
+      transition:
+        opacity 0.5s ease-out,
+        transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition-delay: calc(var(--stagger, 0) * 55ms);
+    }
+    [data-stagger-children].is-revealed > * {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* 3. Bigger reveal for the Aim Lab block — more dramatic than the
+          generic .reveal (which is opacity + 30px). */
+    .aim-lab-reveal {
+      transition-duration: 0.95s !important;
+    }
+    .aim-lab-reveal.reveal {
+      transform: translateY(60px);
+    }
+    .aim-lab-reveal.reveal.visible {
+      transform: none;
+    }
+
+    /* 4. Photo container — vanilla-tilt needs a perspective container.
+          Subtle inner glow already exists; preserve transform-style for tilt. */
+    .about-photo-frame {
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-reveal-words] .word,
+      [data-stagger-children] > * {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .aim-lab-reveal.reveal {
+        transform: none !important;
+      }
+    }
+
     @media (max-width: 1024px) {
       .about-grid { grid-template-columns: 1fr; gap: 3rem; }
       .about-visual { max-width: 360px; }

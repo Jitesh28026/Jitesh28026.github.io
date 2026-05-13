@@ -27,7 +27,15 @@ const skills = [
     <div class="section-container">
       <div class="about-grid">
         <div class="about-visual reveal">
-          <div class="about-photo-frame">
+          <div
+            class="about-photo-frame"
+            data-tilt
+            data-tilt-max="6"
+            data-tilt-speed="600"
+            data-tilt-perspective="1200"
+            data-tilt-glare
+            data-tilt-max-glare="0.18"
+          >
             <Image
               src={jiteshPhoto}
               alt="Jitesh - Product Designer"
@@ -45,33 +53,29 @@ const skills = [
         </div>
         <div class="about-text reveal">
           <div class="section-label">About</div>
-          <h2 class="section-heading">
+          <h2 class="section-heading" data-reveal-words>
             Designer who thinks <span class="muted">in systems.</span>
           </h2>
           <p class="about-body">
-            I'm Jitesh, a product designer based in Bengaluru. I untangle
-            complex B2B problems — the kind where the edge cases outnumber the
-            happy paths and stakeholders have opinions about everything except
-            the user.
+            I'm Jitesh — a product designer in Bengaluru. I work on hard B2B
+            problems where edge cases outnumber happy paths and stakeholders
+            have opinions about everything except the user.
           </p>
           <p class="about-body">
-            I think in systems. Not just on screen — if you hand me a
-            restaurant menu, I'm already questioning the information hierarchy.
-            Walking through an airport? I'm mentally redesigning the
-            wayfinding. I can't help it.
+            I think in systems. Hand me a restaurant menu and I'm already
+            questioning the hierarchy. Walking through an airport, I'm
+            redesigning the wayfinding. Can't help it.
           </p>
           <p class="about-body">
-            My work sits at the intersection of systems thinking, enterprise
-            complexity, and AI-augmented workflows — I use whatever tool gets
-            me to the right answer faster, whether that's Figma, a whiteboard,
-            or an AI that does the boring parts so I can focus on the hard
-            ones.
+            My work lives where systems thinking, enterprise complexity, and
+            AI-augmented workflows meet — Figma, whiteboard, AI doing the
+            boring parts so I can focus on the hard ones.
           </p>
           <p class="about-body">
-            When I'm not pushing pixels, I'm either planning a trip I probably
-            won't take or losing ranked matches and blaming the matchmaking.
+            Off the clock: planning trips I won't take, losing ranked matches,
+            blaming the matchmaking.
           </p>
-          <div class="skills-grid">
+          <div class="skills-grid" data-stagger-children>
             {skills.map((skill) => (
               <span class="skill-chip">{skill}</span>
             ))}
@@ -79,7 +83,7 @@ const skills = [
         </div>
       </div>
 
-      <div class="aim-lab reveal">
+      <div class="aim-lab reveal aim-lab-reveal">
         <div class="aim-lab-grid">
           <div class="aim-lab-copy">
             <div class="section-label">AIM LAB</div>
@@ -134,5 +138,7 @@ const skills = [
 
   <script>
     import '../scripts/aim-lab';
+    import '../scripts/about-animations';
+    import '../scripts/tilt';
   </script>
 </BaseLayout>
