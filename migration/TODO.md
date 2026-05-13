@@ -94,6 +94,20 @@ Currently included verbatim in `legacy.css` (to be pruned per stage):
 - New pages added to `public/legacy/`: `about.html`, `edit-feature.html`, `supplier-master.html`, `404.html`. Plus assets folder grew from 28 → 33 files (added `case-studies/` subfolder, `case-study.js`, `edit feature.png`, `Offer rollout (4).png`, `Supplier master (2).png`).
 - Polish JS hooks ported: footer fade-in observer (in `Footer.astro`). Pending: page-cross-fade transition (only applies to `.html` links, not Astro routes — defer to Stage 13 or use Astro view transitions). Touch-device tilt disable: not yet ported (waits for Stage 10 tilt decision).
 
+### Stage 9 image optimization (DONE for homepage / About, partial for case studies)
+
+Used homepage + About images are now in `src/assets/` (kebab-case) and rendered through Astro's `<Image>` (responsive AVIF/WebP at 400/800/1200w). Sample reductions logged during build:
+- products-table: 3940 KB → 50 KB (small) / 353 KB (large)
+- macbook-desktop: 2425 KB → 454 KB / 570 KB
+- pdp-screen-config: 2122 KB → 56 KB / 420 KB
+- homepage-catalog: 1448 KB → 220 KB
+
+Case-study page images (`/legacy/assets/case-studies/ef-01..08.png` and `sm-01..10.png`) are still served raw because they sit inside `set:html` partials that Astro's image pipeline can't reach. **Follow-up:** Stage 12 or a separate refactor could rewrite the case study bodies as `.astro` components and route the images through `<Image>`. Each case study has 8-10 mid-weight PNGs; rough total ~5 MB.
+
+### Stage 8 (Content Collections) deferred
+
+User explicitly chose page-per-file case studies over MDX content collections (see /work/edit-feature and /work/supplier-master). The `@astrojs/mdx` integration and `src/content/{work,blog}/` collection are not installed. If future blog posts or many more case studies are added, revisit then.
+
 ## Deferred decisions
 
 - **Stage 10:** keep or drop the three.js hero canvas? Visual: a particle field plus a rotating icosahedron sculpture behind the hero copy. If kept → ~50–100 KB extra JS, lazy-loaded. If dropped → page is faster but the hero loses its background motion.

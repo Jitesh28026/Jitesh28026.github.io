@@ -1,33 +1,28 @@
 /**
  * Work cards rendered in the Work section of the homepage.
+ * Each entry mirrors a card in the live jitesht.com index.
  *
- * Each entry mirrors a card in the live jitesht.com index. Order in this array
- * is the order shown on the page; `displayNumber` is the printed numeral.
- *
- * The Edit Feature and Supplier Master cards link to the Astro routes at
- * /work/edit-feature and /work/supplier-master (ported in Stages 7.5/7.6).
+ * Thumbnails are imported as Astro `ImageMetadata` so the image pipeline
+ * generates AVIF/WebP at multiple widths automatically.
  */
 
+import type { ImageMetadata } from 'astro';
+
+import editFeatureThumb from '../assets/work/edit-feature.png';
+import supplierMasterThumb from '../assets/work/supplier-master.png';
+import offerRolloutThumb from '../assets/work/offer-rollout.png';
+import artxThumb from '../assets/work/artx.png';
+
 export type WorkCard = {
-  /** DOM id mirrored from the legacy source (analytics + deep-linking) */
   htmlId: string;
-  /** Display title */
   title: string;
-  /** Short description */
   summary: string;
-  /** Filter / category tags shown above the title */
   tags: readonly string[];
-  /** Image src (currently legacy path; Stage 9 swaps to imported assets) */
-  thumbnail: string;
-  /** Alt text */
+  thumbnail: ImageMetadata;
   thumbnailAlt: string;
-  /** Visual numeral printed on the thumbnail (01, 02, …) */
   displayNumber: string;
-  /** Decorative gradient class from the legacy theme (thumb-1 … thumb-4) */
   thumbClass: 'thumb-1' | 'thumb-2' | 'thumb-3' | 'thumb-4';
-  /** Where the card links to */
   href: string;
-  /** True → external link, opens in new tab with rel=noopener */
   external: boolean;
 };
 
@@ -38,7 +33,7 @@ export const workCards: readonly WorkCard[] = [
     summary:
       'Identified and resolved a permission asymmetry in the B2B catalogue that was blocking data quality and AI enrichment.',
     tags: ['B2B', 'CATALOGUE', 'UX PROBLEM'],
-    thumbnail: '/legacy/assets/edit feature.png',
+    thumbnail: editFeatureThumb,
     thumbnailAlt: 'Edit Feature case study hero',
     displayNumber: '01',
     thumbClass: 'thumb-4',
@@ -51,7 +46,7 @@ export const workCards: readonly WorkCard[] = [
     summary:
       'Designing the Supplier Details, Merge & Split flows for an AI-powered supplier master data platform.',
     tags: ['B2B', 'ENTERPRISE', 'DATA MANAGEMENT'],
-    thumbnail: '/legacy/assets/Supplier master (1).png',
+    thumbnail: supplierMasterThumb,
     thumbnailAlt: 'Supplier Master case study hero',
     displayNumber: '02',
     thumbClass: 'thumb-1',
@@ -64,7 +59,7 @@ export const workCards: readonly WorkCard[] = [
     summary:
       'End-to-end UX design for the offer rollout process within Vasitum, streamlining complex HR workflows and candidate interactions.',
     tags: ['HR Tech', 'B2B', 'Workflow'],
-    thumbnail: '/legacy/assets/Offer rollout (3).png',
+    thumbnail: offerRolloutThumb,
     thumbnailAlt: 'Vasitum Offer Rollout Design',
     displayNumber: '03',
     thumbClass: 'thumb-2',
@@ -77,7 +72,7 @@ export const workCards: readonly WorkCard[] = [
     summary:
       'My very first design project. A personal exploration of layout, aesthetics, and mobile interactions for an artist biography application.',
     tags: ['Personal', 'App Design', 'UI/UX'],
-    thumbnail: '/legacy/assets/Artx (1).png',
+    thumbnail: artxThumb,
     thumbnailAlt: 'ArtX Artist Bio App Design',
     displayNumber: '04',
     thumbClass: 'thumb-3',

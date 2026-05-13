@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { workCards } from '../data/work';
 ---
 
@@ -23,9 +24,13 @@ import { workCards } from '../data/work';
         >
           <div class="project-thumb">
             <div class={`project-thumb-inner ${card.thumbClass}`} style="background: none;">
-              <img
+              <Image
                 src={card.thumbnail}
                 alt={card.thumbnailAlt}
+                widths={[400, 800, 1200]}
+                sizes="(max-width: 768px) 100vw, 600px"
+                loading="lazy"
+                decoding="async"
                 style="width: 100%; height: 100%; object-fit: cover; object-position: left top;"
               />
               <span class="thumb-number">{card.displayNumber}</span>

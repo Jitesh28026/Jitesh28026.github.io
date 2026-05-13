@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import type { GalleryItem } from '../data/gallery';
 import { galleryTrackLeft, galleryTrackRight } from '../data/gallery';
 
@@ -29,9 +30,11 @@ const trackRight = [
     <div class="carousel-track left">
       {trackLeft.map(({ item, duplicate }) => (
         <div class="gallery-item" aria-hidden={duplicate ? 'true' : undefined}>
-          <img
+          <Image
             src={item.src}
             alt={duplicate ? '' : item.alt}
+            widths={[400, 800, 1200]}
+            sizes="(max-width: 768px) 100vw, 600px"
             loading="lazy"
             decoding="async"
             style={item.style}
@@ -46,9 +49,11 @@ const trackRight = [
     <div class="carousel-track right">
       {trackRight.map(({ item, duplicate }) => (
         <div class="gallery-item" aria-hidden={duplicate ? 'true' : undefined}>
-          <img
+          <Image
             src={item.src}
             alt={duplicate ? '' : item.alt}
+            widths={[400, 800, 1200]}
+            sizes="(max-width: 768px) 100vw, 600px"
             loading="lazy"
             decoding="async"
             style={item.style}
