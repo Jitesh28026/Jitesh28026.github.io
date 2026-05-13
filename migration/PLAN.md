@@ -31,7 +31,7 @@
 [~] Stage 8  — Content collections (deferred — page-per-file approach chosen)
 [x] Stage 9  — Image pipeline (homepage/About; case-study images deferred)
 [x] Stage 10 — JS cleanup (Three.js + vanilla-tilt lazy-loaded; AOS already replaced)
-[ ] Stage 11 — GitHub Actions deploy + Pages settings
+[x] Stage 11 — GitHub Actions deploy workflow (manual Pages source flip still required)
 [ ] Stage 12 — Cleanup + merge to main
 [ ] Stage 13 — Hardening (sitemap, RSS, Lighthouse) — optional
 ```
