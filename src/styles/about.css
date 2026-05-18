@@ -1790,6 +1790,195 @@
       .ah-arc-track { height: 40px; }
     }
 
+    /* ==========================================
+       OUT OF OFFICE — auto-scrolling polaroid marquee
+       Cream cards float in the dark, looping right-to-left.
+       Pauses on hover so a single photo can be studied.
+    ========================================== */
+    .out-of-office {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid var(--border-muted);
+      padding: 0 !important;
+      overflow: hidden;
+    }
+
+    .out-of-office .oo-container {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: 5rem var(--space-desktop) 2rem;
+    }
+
+    .out-of-office .oo-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* Marquee viewport — clips the doubled track. Full-bleed so
+       cards can drift in/out beyond the container edge. */
+    .oo-marquee {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      padding: 1rem 0 4.5rem;
+      /* Fade the left and right edges so cards dissolve rather than
+         chop off at the viewport border. */
+      -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        #000 80px,
+        #000 calc(100% - 80px),
+        transparent 100%
+      );
+              mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        #000 80px,
+        #000 calc(100% - 80px),
+        transparent 100%
+      );
+    }
+
+    /* Track — holds two copies of the card list back-to-back; animates
+       translateX from 0 to -50%, then loops. Because the second half is
+       an identical clone, the wrap-around is seamless. */
+    .oo-track {
+      display: flex;
+      gap: 28px;
+      width: max-content;
+      padding: 0 14px;
+      animation: ooMarqueeScroll 55s linear infinite;
+      will-change: transform;
+    }
+    .oo-marquee:hover .oo-track,
+    .oo-marquee:focus-within .oo-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes ooMarqueeScroll {
+      from { transform: translate3d(0, 0, 0); }
+      to   { transform: translate3d(-50%, 0, 0); }
+    }
+
+    /* Card — symmetric polaroid frame (no caption underneath now).
+       Fixed height across all cards, width follows the photo's native
+       aspect so portraits stay portraits. */
+    .oo-card {
+      --oo-photo-h: 380px;
+      flex: 0 0 auto;
+      display: block;
+      margin: 0;
+      padding: 14px;
+      background: #f0eadf;
+      border: 1px solid rgba(13, 13, 13, 0.08);
+      box-shadow:
+        0 18px 36px rgba(0, 0, 0, 0.45),
+        0 2px 4px rgba(0, 0, 0, 0.25);
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .oo-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .oo-frame {
+      height: var(--oo-photo-h);
+      background: #0d0d0d;
+      overflow: hidden;
+      position: relative;
+    }
+    .oo-img {
+      height: 100% !important;
+      width: auto !important;
+      max-width: none !important;
+      display: block;
+      object-fit: cover;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    /* Tablet — smaller cards, faster cycle so it still feels alive. */
+    @media (max-width: 1024px) {
+      .out-of-office .oo-container {
+        padding: 4rem var(--space-tablet) 1.5rem;
+      }
+      .oo-marquee {
+        padding: 1rem 0 3.5rem;
+      }
+      .oo-card {
+        --oo-photo-h: 320px;
+        padding: 12px;
+      }
+      .oo-track {
+        gap: 22px;
+        animation-duration: 48s;
+      }
+    }
+
+    /* Phone — compact cards, slightly faster. */
+    @media (max-width: 778px) {
+      .out-of-office .oo-container {
+        padding: 3rem var(--space-phone) 1rem;
+      }
+      .oo-marquee {
+        padding: 0.75rem 0 2.75rem;
+        -webkit-mask-image: linear-gradient(
+          90deg,
+          transparent 0,
+          #000 32px,
+          #000 calc(100% - 32px),
+          transparent 100%
+        );
+                mask-image: linear-gradient(
+          90deg,
+          transparent 0,
+          #000 32px,
+          #000 calc(100% - 32px),
+          transparent 100%
+        );
+      }
+      .oo-card {
+        --oo-photo-h: 260px;
+        padding: 10px;
+        box-shadow:
+          0 10px 24px rgba(0, 0, 0, 0.4),
+          0 2px 3px rgba(0, 0, 0, 0.2);
+      }
+      .oo-track {
+        gap: 16px;
+        animation-duration: 38s;
+      }
+    }
+
+    @media (max-width: 479px) {
+      .oo-card {
+        --oo-photo-h: 220px;
+      }
+      .oo-track {
+        animation-duration: 32s;
+      }
+    }
+
+    /* Reduced motion — stop the marquee, drop the hover lift. */
+    @media (prefers-reduced-motion: reduce) {
+      .oo-track {
+        animation: none !important;
+        transform: none !important;
+      }
+      .oo-card { transition: none !important; }
+      .oo-card:hover { transform: none !important; }
+    }
+
     /* Quiet break before Aim Lab — long pause, then a single hairline. */
     .ah-quiet-break {
       position: relative;

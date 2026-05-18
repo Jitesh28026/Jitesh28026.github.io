@@ -3,7 +3,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Navbar from '../components/Navbar.astro';
 import { Image } from 'astro:assets';
 import jiteshPhoto from '../assets/about/jitesh-photo.jpg';
+import oo01 from '../assets/about/20221225_070815.jpg';
+import oo02 from '../assets/about/20240531_123240.jpg';
+import oo03 from '../assets/about/20240601_191229.jpg';
+import oo04 from '../assets/about/20240602_164725.jpg';
+import oo05 from '../assets/about/20240603_161640.jpg';
+import oo06 from '../assets/about/20240604_175951.jpg';
+import oo07 from '../assets/about/20240605_113742.jpg';
+import oo08 from '../assets/about/20240815_163722.jpg';
+import oo09 from '../assets/about/20240816_173945.jpg';
+import oo10 from '../assets/about/20250219_062728.jpg';
+import oo11 from '../assets/about/20250515_184532.jpg';
 import '../styles/about.css';
+
+const polaroids = [
+  { src: oo01, alt: 'Sitting by a hill-lined reservoir at dawn' },
+  { src: oo02, alt: 'A plate of maggi held above a forest stream' },
+  { src: oo03, alt: 'Sunset over a Himalayan campsite' },
+  { src: oo04, alt: 'Snow peaks from a car window' },
+  { src: oo05, alt: 'Terraced fields against distant mountains' },
+  { src: oo06, alt: 'A white dog watching the hills' },
+  { src: oo07, alt: 'On a wooden deck above the deodar pines' },
+  { src: oo08, alt: 'Forested ridge under heavy clouds' },
+  { src: oo09, alt: 'Power lines through misty hills' },
+  { src: oo10, alt: 'A tall tower against a foggy dusk' },
+  { src: oo11, alt: 'Bright sunburst behind dark clouds' },
+];
 
 const skills = [
   { label: 'Figma',                    gloss: 'home address.' },
@@ -129,6 +154,32 @@ const skills = [
       <span class="ah-arc-time">00:00</span>
     </div>
 
+    <section class="out-of-office" aria-labelledby="oo-label">
+      <div class="oo-container">
+        <h2 class="oo-label" id="oo-label" data-exhale>/ OUT OF OFFICE</h2>
+      </div>
+
+      <div class="oo-marquee" aria-label="Gallery of trip photographs">
+        <div class="oo-track">
+          {[...polaroids, ...polaroids].map((p, i) => (
+            <figure class="oo-card" aria-hidden={i >= polaroids.length ? 'true' : 'false'}>
+              <div class="oo-frame">
+                <Image
+                  src={p.src}
+                  alt={i >= polaroids.length ? '' : p.alt}
+                  widths={[280, 420, 560]}
+                  sizes="(max-width: 778px) 200px, 280px"
+                  loading="lazy"
+                  decoding="async"
+                  class="oo-img"
+                />
+              </div>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <div class="ah-quiet-break" aria-hidden="true"></div>
 
     <div class="aim-lab reveal aim-lab-reveal">
@@ -189,4 +240,5 @@ const skills = [
     import '../scripts/after-hours-canvas';
     import '../scripts/tilt';
   </script>
+
 </BaseLayout>
