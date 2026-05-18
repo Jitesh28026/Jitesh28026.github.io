@@ -6,14 +6,14 @@ import jiteshPhoto from '../assets/about/jitesh-photo.jpg';
 import '../styles/about.css';
 
 const skills = [
-  'Figma',
-  'Prototyping',
-  'UX Research',
-  'Design Systems',
-  'Information Architecture',
-  'HTML/CSS',
-  'Product Strategy',
-  'Agentic Workflows',
+  { label: 'Figma',                    gloss: 'home address.' },
+  { label: 'Prototyping',              gloss: 'proof I wasn\'t lying.' },
+  { label: 'UX Research',              gloss: 'asking until it gets uncomfortable.' },
+  { label: 'Design Systems',           gloss: 'the part I\'d do for free.' },
+  { label: 'Information Architecture', gloss: 'the closet I keep tidy.' },
+  { label: 'HTML/CSS',                 gloss: 'reading the menu in its own language.' },
+  { label: 'Product Strategy',         gloss: 'arguing my way to a smaller scope.' },
+  { label: 'Agentic Workflows',        gloss: 'letting the bot have the boring half.' },
 ];
 ---
 
@@ -23,110 +23,157 @@ const skills = [
 >
   <Navbar />
 
-  <section id="about">
-    <div class="section-container">
-      <div class="about-grid">
-        <div class="about-visual reveal">
-          <div
-            class="about-photo-frame"
-            data-tilt
-            data-tilt-max="6"
-            data-tilt-speed="600"
-            data-tilt-perspective="1200"
-            data-tilt-glare
-            data-tilt-max-glare="0.18"
+  <section id="about" class="after-hours">
+    <canvas class="ah-bg-canvas" data-ah-bg-canvas aria-hidden="true"></canvas>
+    <div class="ah-headlights" data-headlights aria-hidden="true"></div>
+    <div class="ah-timestamps" data-timestamps aria-hidden="true"></div>
+
+    <div class="ah-container">
+      <div class="ah-label" data-exhale>/ ABOUT</div>
+
+      <h2 class="ah-heading" data-exhale data-exhale-delay="120">
+        Designer who thinks <em class="ah-italic">in systems.</em>
+      </h2>
+
+      <div class="ah-body">
+        <div class="ah-text-col">
+          <p
+            class="ah-paragraph"
+            data-exhale
+            data-exhale-delay="280"
+            data-inner-voice="I do my best thinking when the Slack notifications stop."
           >
+            I'm Jitesh — a product designer in Bengaluru, mostly working
+            after everyone else has logged off.
+          </p>
+
+          <p
+            class="ah-paragraph"
+            data-exhale
+            data-exhale-delay="420"
+            data-inner-voice="I'm scared the easy problems would bore me."
+          >
+            I work on B2B problems where the edge cases outnumber the happy
+            paths, and the stakeholders have opinions about everything
+            except the user.
+          </p>
+
+          <p
+            class="ah-paragraph"
+            data-exhale
+            data-exhale-delay="560"
+            data-inner-voice="Hospitality with a cursor."
+          >
+            I think in systems the same way I think about hosting people —
+            what makes someone feel welcomed, oriented, safe to look around.
+            Most of design, for me, is just that.
+          </p>
+
+          <p
+            class="ah-paragraph"
+            data-exhale
+            data-exhale-delay="700"
+            data-inner-voice="Mostly the matchmaking."
+          >
+            Off the clock: planning trips I won't take, losing ranked
+            matches, blaming the matchmaking.
+          </p>
+        </div>
+
+        <aside class="ah-portrait-col" data-exhale data-exhale-delay="200">
+          <div class="ah-portrait">
             <Image
               src={jiteshPhoto}
-              alt="Jitesh - Product Designer"
+              alt="Jitesh — Product Designer"
               widths={[320, 640, 960]}
-              sizes="(max-width: 768px) 80vw, 360px"
+              sizes="(max-width: 768px) 70vw, 320px"
               loading="eager"
               decoding="sync"
-              style="width: 100%; height: 100%; object-fit: cover;"
+              class="ah-portrait-img"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;"
             />
           </div>
-          <div class="about-stats-float">
-            <div class="stat-number">2+</div>
-            <div class="stat-label">Years designing B2B products</div>
-          </div>
-        </div>
-        <div class="about-text reveal">
-          <div class="section-label">About</div>
-          <h2 class="section-heading" data-reveal-words>
-            Designer who thinks <span class="muted">in systems.</span>
-          </h2>
-          <p class="about-body">
-            I'm Jitesh — a product designer in Bengaluru. I work on hard B2B
-            problems where edge cases outnumber happy paths and stakeholders
-            have opinions about everything except the user.
-          </p>
-          <p class="about-body">
-            I think in systems. Hand me a restaurant menu and I'm already
-            questioning the hierarchy. Walking through an airport, I'm
-            redesigning the wayfinding. Can't help it.
-          </p>
-          <p class="about-body">
-            My work lives where systems thinking, enterprise complexity, and
-            AI-augmented workflows meet — Figma, whiteboard, AI doing the
-            boring parts so I can focus on the hard ones.
-          </p>
-          <p class="about-body">
-            Off the clock: planning trips I won't take, losing ranked matches,
-            blaming the matchmaking.
-          </p>
-          <div class="skills-grid" data-stagger-children>
-            {skills.map((skill) => (
-              <span class="skill-chip">{skill}</span>
-            ))}
-          </div>
-        </div>
+
+          <dl class="ah-meta" data-idle-cursor>
+            <div class="ah-meta-row">
+              <dt>LOC</dt><dd>Bengaluru · 12.97° N</dd>
+            </div>
+            <div class="ah-meta-row">
+              <dt>SINCE</dt><dd>02Y designing B2B</dd>
+            </div>
+            <div class="ah-meta-row">
+              <dt>STATE</dt>
+              <dd><span data-idle-state>thinking</span><span class="ah-cursor" aria-hidden="true">_</span></dd>
+            </div>
+          </dl>
+        </aside>
       </div>
 
-      <div class="aim-lab reveal aim-lab-reveal">
-        <div class="aim-lab-grid">
-          <div class="aim-lab-copy">
-            <div class="section-label">AIM LAB</div>
-            <p>
-              When I'm not designing, I'm probably in a deathmatch. This is a
-              15-second aim trainer. Don't embarrass yourself.
-            </p>
-          </div>
-          <div class="aim-lab-panel">
-            <div class="aim-lab-shell" id="aimLab" data-state="idle">
-              <div class="aim-lab-head">
-                <div>SCORE <strong id="aimScore">0</strong></div>
-                <div>TIME <strong id="aimTime">15.0</strong></div>
-              </div>
-              <div class="aim-lab-stage" id="aimStage">
-                <canvas class="aim-lab-canvas" id="aimCanvas" width="720" height="460"></canvas>
-                <div class="aim-lab-overlay" id="aimOverlay">
-                  <div class="aim-lab-overlay-card">
-                    <h3>Range Ready</h3>
-                    <p>One target at a time. Fifteen seconds. Clean clicks only.</p>
-                    <button class="aim-lab-button primary" id="aimStartButton" type="button">Start</button>
-                  </div>
+      <div class="ah-skills" data-stagger-quiet data-exhale data-exhale-delay="820">
+        {skills.map((s) => (
+          <span class="ah-chip">
+            <span class="ah-chip-label">{s.label}</span>
+            <span class="ah-chip-gloss" aria-hidden="true">{s.gloss}</span>
+          </span>
+        ))}
+      </div>
+
+      <div class="ah-closing" data-exhale data-exhale-delay="1000">
+        <span class="ah-closing-time">01:47 — still here.</span>
+      </div>
+    </div>
+
+    <div class="ah-drive-arc" data-drive-arc aria-hidden="true">
+      <span class="ah-arc-label">DRIVE</span>
+      <span class="ah-arc-track"><span class="ah-arc-fill"></span></span>
+      <span class="ah-arc-time">00:00</span>
+    </div>
+
+    <div class="ah-quiet-break" aria-hidden="true"></div>
+
+    <div class="aim-lab reveal aim-lab-reveal">
+      <div class="aim-lab-grid">
+        <div class="aim-lab-copy">
+          <div class="section-label">AIM LAB</div>
+          <p>
+            When I'm not designing, I'm probably in a deathmatch. This is a
+            15-second aim trainer. Don't embarrass yourself.
+          </p>
+        </div>
+        <div class="aim-lab-panel">
+          <div class="aim-lab-shell" id="aimLab" data-state="idle">
+            <div class="aim-lab-head">
+              <div>SCORE <strong id="aimScore">0</strong></div>
+              <div>TIME <strong id="aimTime">15.0</strong></div>
+            </div>
+            <div class="aim-lab-stage" id="aimStage">
+              <canvas class="aim-lab-canvas" id="aimCanvas" width="720" height="460"></canvas>
+              <div class="aim-lab-overlay" id="aimOverlay">
+                <div class="aim-lab-overlay-card">
+                  <h3>Range Ready</h3>
+                  <p>One target at a time. Fifteen seconds. Clean clicks only.</p>
+                  <button class="aim-lab-button primary" id="aimStartButton" type="button">Start</button>
                 </div>
-                <div class="aim-lab-results" id="aimResults" hidden>
-                  <div class="aim-lab-results-card">
-                    <h3>Match Report</h3>
-                    <div class="aim-lab-results-grid">
-                      <div class="aim-lab-stat">
-                        <span class="aim-lab-stat-label">Score</span>
-                        <span class="aim-lab-stat-value" id="aimResultScore">0</span>
-                      </div>
-                      <div class="aim-lab-stat">
-                        <span class="aim-lab-stat-label">Accuracy</span>
-                        <span class="aim-lab-stat-value" id="aimResultAccuracy">0%</span>
-                      </div>
-                      <div class="aim-lab-stat">
-                        <span class="aim-lab-stat-label">Avg Reaction</span>
-                        <span class="aim-lab-stat-value" id="aimResultReaction">0ms</span>
-                      </div>
+              </div>
+              <div class="aim-lab-results" id="aimResults" hidden>
+                <div class="aim-lab-results-card">
+                  <h3>Match Report</h3>
+                  <div class="aim-lab-results-grid">
+                    <div class="aim-lab-stat">
+                      <span class="aim-lab-stat-label">Score</span>
+                      <span class="aim-lab-stat-value" id="aimResultScore">0</span>
                     </div>
-                    <div class="aim-lab-verdict" id="aimVerdict">Needs warmup</div>
-                    <button class="aim-lab-button" id="aimReplayButton" type="button">Play Again</button>
+                    <div class="aim-lab-stat">
+                      <span class="aim-lab-stat-label">Accuracy</span>
+                      <span class="aim-lab-stat-value" id="aimResultAccuracy">0%</span>
+                    </div>
+                    <div class="aim-lab-stat">
+                      <span class="aim-lab-stat-label">Avg Reaction</span>
+                      <span class="aim-lab-stat-value" id="aimResultReaction">0ms</span>
+                    </div>
                   </div>
+                  <div class="aim-lab-verdict" id="aimVerdict">Needs warmup</div>
+                  <button class="aim-lab-button" id="aimReplayButton" type="button">Play Again</button>
                 </div>
               </div>
             </div>
@@ -139,6 +186,7 @@ const skills = [
   <script>
     import '../scripts/aim-lab';
     import '../scripts/about-animations';
+    import '../scripts/after-hours-canvas';
     import '../scripts/tilt';
   </script>
 </BaseLayout>

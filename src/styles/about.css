@@ -752,10 +752,26 @@
       color: var(--accent);
     }
 
+    /* Aim Lab — same container treatment as the main About text so it
+       doesn't run edge-to-edge on wide screens. Wider max-width than
+       the body copy since the canvas is the main subject here. */
     .aim-lab {
-      margin-top: 4.5rem;
-      padding-top: 3rem;
+      position: relative;
+      z-index: 2;
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding: 4.5rem var(--space-desktop) 6rem;
       border-top: 1px solid var(--border-muted);
+    }
+    @media (max-width: 1024px) {
+      .aim-lab {
+        padding: 3.5rem var(--space-tablet) 4.5rem;
+      }
+    }
+    @media (max-width: 778px) {
+      .aim-lab {
+        padding: 3rem var(--space-phone) 3.5rem;
+      }
     }
 
     .aim-lab-grid {
@@ -1300,4 +1316,617 @@
         transform: none !important;
         transition: none !important;
       }
+    }
+
+    /* ==========================================
+       AFTER HOURS — About redesign
+       Cinematic, late-night-drive register.
+       All scoped under .after-hours so it doesn't
+       collide with the legacy About rules above.
+    ========================================== */
+
+    /* Lenis — override native smooth scroll while Lenis owns the wheel.
+       Only target html; touching body height changes the containing-block
+       for fixed elements (broke the hero canvas before this fix). */
+    html.lenis {
+      height: auto;
+    }
+    html.lenis.lenis-smooth {
+      scroll-behavior: auto !important;
+    }
+    html.lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+    html.lenis.lenis-stopped {
+      overflow: clip;
+    }
+
+    .after-hours {
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* WebGL background canvas — fills the section, sits below content.
+       Hidden until the script attaches; lazy fade-in avoids a black flash. */
+    .ah-bg-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      display: block;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+    }
+    body.ah-webgl-on .ah-bg-canvas {
+      opacity: 1;
+    }
+    /* Once WebGL is on, the CSS-only headlight pool is redundant — the
+       fog shader is doing the same job with a real light response. */
+    body.ah-webgl-on .ah-headlights {
+      opacity: 0 !important;
+    }
+
+    /* Portrait — image is the static fallback; canvas fades in once the
+       3D scene is ready and starts rendering. */
+    .after-hours .ah-portrait {
+      position: relative;
+    }
+    .after-hours .ah-portrait-img {
+      transition: opacity 0.6s ease;
+    }
+    .after-hours .ah-portrait-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      pointer-events: none;
+    }
+    .after-hours .ah-portrait.is-canvas-ready .ah-portrait-canvas {
+      opacity: 1;
+    }
+    .after-hours .ah-portrait.is-canvas-ready .ah-portrait-img {
+      opacity: 0;
+    }
+
+    /* Headlight glow — a soft warm pool that follows the cursor.
+       Fixed so it pans across the whole page, screen-blends so it
+       lifts the warmth of whatever sits underneath. Disabled on
+       touch / reduced-motion. */
+    .ah-headlights {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 560px;
+      height: 560px;
+      margin: -280px 0 0 -280px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9990;
+      background: radial-gradient(
+        circle at center,
+        rgba(200, 169, 110, 0.18) 0%,
+        rgba(200, 169, 110, 0.10) 28%,
+        rgba(200, 169, 110, 0.04) 52%,
+        transparent 70%
+      );
+      mix-blend-mode: screen;
+      opacity: 0;
+      transform: translate3d(-9999px, -9999px, 0);
+      transition: opacity 0.9s ease;
+      will-change: transform, opacity;
+    }
+    .ah-headlights.is-on {
+      opacity: 1;
+    }
+
+    /* Timestamps drift up and dissolve inside the section. */
+    .ah-timestamps {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .ah-timestamp {
+      position: absolute;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+      opacity: 0;
+      white-space: nowrap;
+      animation: ahTimestampDrift 5.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes ahTimestampDrift {
+      0%   { opacity: 0; transform: translateY(6px); }
+      18%  { opacity: 0.55; }
+      72%  { opacity: 0.42; }
+      100% { opacity: 0; transform: translateY(-26px); }
+    }
+
+    /* Container — replaces the old .section-container for this page.
+       The legacy CSS sets `section { padding: 0 !important; }` so we
+       carry our own spacing here. */
+    .after-hours .ah-container {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 168px var(--space-desktop) 6rem;
+    }
+
+    .after-hours .ah-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2.25rem;
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+
+    .after-hours .ah-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: clamp(2.4rem, 5vw, 4.2rem);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: var(--text-primary);
+      margin: 0 0 4.5rem;
+      max-width: 18ch;
+    }
+
+    /* Per-char z-depth parallax — perspective on the heading, each char
+       transforms in 3D space. JS computes per-char translateZ based on
+       cursor proximity. The .ah-word wrapper keeps characters together
+       so words can't break mid-token (no "systems" → "system" + "s"). */
+    .after-hours .ah-heading.is-split {
+      perspective: 900px;
+      perspective-origin: 50% 40%;
+    }
+    .after-hours .ah-word {
+      display: inline-block;
+      white-space: nowrap;
+    }
+    .after-hours .ah-char {
+      display: inline-block;
+      transform-style: preserve-3d;
+      transform-origin: 50% 50%;
+      will-change: transform;
+      transition: color 0.4s ease;
+    }
+
+    .after-hours .ah-italic {
+      font-family: inherit;
+      font-style: normal;
+      font-weight: inherit;
+      color: var(--accent);
+      letter-spacing: inherit;
+    }
+
+    /* Body — paragraphs left, portrait floating right.
+       Portrait drops below the headline and into the text flow. */
+    .after-hours .ah-body {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 5rem;
+      align-items: start;
+      margin-bottom: 4rem;
+    }
+
+    .after-hours .ah-text-col {
+      max-width: 56ch;
+    }
+
+    .after-hours .ah-paragraph {
+      position: relative;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.06rem;
+      line-height: 1.85;
+      letter-spacing: 0.005em;
+      color: var(--text-secondary);
+      margin: 0 0 1.85rem;
+      padding-bottom: 0;
+      transition: color 0.5s ease;
+    }
+    .after-hours .ah-paragraph:hover {
+      color: var(--text-primary);
+    }
+
+    /* Inner voice — DM Mono everywhere, sits in its own block with a thin
+       accent rule on the left so it reads as a deliberate inner-voice
+       terminal line, not a footnote. Reveals 500ms after hover (script
+       adds .is-voicing); always-visible on touch via the (hover: none)
+       block further down. */
+    .after-hours .ah-paragraph::after {
+      content: attr(data-inner-voice);
+      display: block;
+      margin-top: 1rem;
+      padding: 0.15rem 0 0.15rem 1rem;
+      border-left: 2px solid var(--accent);
+      font-family: 'DM Mono', monospace;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.55;
+      letter-spacing: 0.005em;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateY(6px);
+      transition:
+        opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+    }
+    .after-hours .ah-paragraph.is-voicing::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Portrait column — small, quiet, with DM Mono meta beneath. */
+    .after-hours .ah-portrait-col {
+      position: sticky;
+      top: 120px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .after-hours .ah-portrait {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #111;
+      border: 1px solid var(--border-muted);
+      overflow: hidden;
+    }
+
+    .after-hours .ah-meta {
+      margin: 0;
+      padding: 0;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.06em;
+    }
+    .after-hours .ah-meta-row {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 12px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--border-muted);
+    }
+    .after-hours .ah-meta-row:last-child { border-bottom: 0; }
+    .after-hours .ah-meta dt {
+      color: var(--accent);
+      opacity: 0.75;
+    }
+    .after-hours .ah-meta dd {
+      margin: 0;
+      color: var(--text-primary);
+    }
+    .after-hours .ah-cursor {
+      display: inline-block;
+      width: 0.5em;
+      margin-left: 0.15em;
+      color: var(--accent);
+      animation: ahCursorBlink 1.1s steps(1) infinite;
+    }
+    @keyframes ahCursorBlink {
+      0%, 49%   { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    /* Skill chips — quiet, with a tail-light streak on stagger reveal,
+       and an italic gloss that surfaces on hover. */
+    .after-hours .ah-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 5rem;
+      max-width: 56ch;
+    }
+    .after-hours .ah-chip {
+      position: relative;
+      display: inline-block;
+      padding: 8px 16px;
+      border: 1px solid var(--border-muted);
+      background: transparent;
+      color: var(--text-primary);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: default;
+      white-space: nowrap;
+      transition:
+        border-color 0.4s ease,
+        color 0.4s ease,
+        background 0.4s ease;
+    }
+    .after-hours .ah-chip-label {
+      white-space: nowrap;
+    }
+    .after-hours .ah-chip:hover {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      z-index: 2;
+    }
+    /* Gloss is an absolutely-positioned tooltip directly below the chip.
+       No layout shift on hover — keeps the parallax loop happy and avoids
+       jitter from .ah-skills bounding-rect changing every frame. */
+    .after-hours .ah-chip-gloss {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 50%;
+      padding: 6px 10px;
+      border: 1px solid var(--accent);
+      background: rgba(13, 13, 13, 0.96);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      font-family: 'DM Mono', monospace;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translate3d(-50%, 6px, 0);
+      transition:
+        opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+      z-index: 3;
+    }
+    .after-hours .ah-chip:hover .ah-chip-gloss {
+      opacity: 1;
+      transform: translate3d(-50%, 0, 0);
+    }
+
+    /* Stagger reveal — each chip drifts in with a tail-light blur.
+       Sibling index drives the delay. */
+    .after-hours [data-stagger-quiet] > * {
+      opacity: 0;
+      transform: translateY(8px);
+      filter: blur(3px);
+      transition:
+        opacity 0.7s ease,
+        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 0.7s ease;
+      transition-delay: calc(var(--stagger, 0) * 65ms + 200ms);
+    }
+    .after-hours [data-stagger-quiet].is-revealed > * {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    /* Long exhale reveal — slow, deliberate, no spring. Stretched to
+       1.7s for a longer breath. */
+    .after-hours [data-exhale] {
+      opacity: 0;
+      transform: translateY(10px);
+      transition:
+        opacity 1.7s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .after-hours [data-exhale].is-exhaled {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Closing line — the last quiet signal. */
+    .after-hours .ah-closing {
+      margin-top: 1.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+    .after-hours .ah-closing-time {
+      color: var(--accent);
+    }
+
+    /* Drive arc — fixed bottom-right odometer.
+       Vertical track fills downward as scroll progress builds; the time
+       readout interpolates from 00:00 to 01:47 across the section. */
+    .ah-drive-arc {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      z-index: 9991;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+      font-family: 'DM Mono', monospace;
+    }
+    .ah-arc-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      color: var(--text-secondary);
+    }
+    .ah-arc-track {
+      position: relative;
+      width: 2px;
+      height: 56px;
+      background: var(--border-muted);
+      overflow: hidden;
+    }
+    .ah-arc-fill {
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform-origin: top center;
+      transform: scaleY(0);
+      transition: none;
+    }
+    .ah-arc-time {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+    }
+    @media (max-width: 778px) {
+      .ah-drive-arc {
+        right: 16px;
+        bottom: 16px;
+      }
+      .ah-arc-track { height: 40px; }
+    }
+
+    /* Quiet break before Aim Lab — long pause, then a single hairline. */
+    .ah-quiet-break {
+      position: relative;
+      height: 220px;
+    }
+    .ah-quiet-break::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 1px;
+      height: 56px;
+      background: var(--border-muted);
+      transform: translate(-50%, -50%);
+    }
+
+    /* Tablet */
+    @media (max-width: 1024px) {
+      .after-hours .ah-container {
+        padding: 144px var(--space-tablet) 5rem;
+      }
+      .after-hours .ah-body {
+        grid-template-columns: minmax(0, 1fr) 220px;
+        gap: 3rem;
+      }
+      .after-hours .ah-portrait-col {
+        position: static;
+      }
+    }
+
+    /* Phone — stack, drop the headlights & inline the meta. */
+    @media (max-width: 778px) {
+      .after-hours .ah-container {
+        padding: 120px var(--space-phone) 3rem;
+        max-width: 100%;
+      }
+      .after-hours .ah-label {
+        margin-bottom: 1.5rem;
+      }
+      .after-hours .ah-heading {
+        font-size: clamp(2rem, 9vw, 2.8rem);
+        line-height: 1.08;
+        margin-bottom: 2.5rem;
+        max-width: 100%;
+      }
+      .after-hours .ah-body {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        margin-bottom: 3rem;
+      }
+      .after-hours .ah-text-col {
+        max-width: 100%;
+      }
+      .after-hours .ah-paragraph {
+        font-size: 1rem;
+        line-height: 1.75;
+        margin-bottom: 1.5rem;
+      }
+      .after-hours .ah-portrait-col {
+        order: -1;
+        flex-direction: column;
+        gap: 1.25rem;
+        max-width: 100%;
+      }
+      .after-hours .ah-portrait {
+        max-width: 240px;
+      }
+      .after-hours .ah-meta {
+        font-size: 0.68rem;
+      }
+      .after-hours .ah-meta-row {
+        grid-template-columns: 48px 1fr;
+        gap: 10px;
+      }
+      .after-hours .ah-skills {
+        max-width: 100%;
+        margin-bottom: 3rem;
+      }
+      .after-hours .ah-chip {
+        font-size: 0.7rem;
+        padding: 7px 12px;
+      }
+      .after-hours .ah-closing {
+        margin-top: 0;
+        font-size: 0.74rem;
+      }
+      .ah-quiet-break {
+        height: 140px;
+      }
+    }
+
+    @media (max-width: 479px) {
+      .after-hours .ah-container {
+        padding: 104px var(--space-phone) 2.5rem;
+      }
+      .after-hours .ah-heading {
+        font-size: clamp(1.85rem, 9vw, 2.4rem);
+      }
+    }
+
+    /* Touch / coarse pointers — headlights make no sense without a cursor,
+       chip tooltips can't trigger without hover, and inner-voice can't
+       wait for a hover-hold, so always reveal that one. */
+    @media (hover: none), (pointer: coarse) {
+      .ah-headlights { display: none !important; }
+      .after-hours .ah-chip-gloss { display: none !important; }
+      .after-hours .ah-paragraph::after {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* On phones the inner voice gets slightly smaller so it sits in the
+       column without overwhelming the body copy. */
+    @media (max-width: 778px) {
+      .after-hours .ah-paragraph::after {
+        margin-top: 0.85rem;
+        padding-left: 0.85rem;
+        font-size: 0.88rem;
+        line-height: 1.5;
+      }
+    }
+
+    /* Reduced motion — keep the layout, drop the movement. */
+    @media (prefers-reduced-motion: reduce) {
+      .after-hours [data-exhale],
+      .after-hours [data-stagger-quiet] > * {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+        transition: none !important;
+      }
+      .after-hours .ah-paragraph::after { display: none; }
+      .after-hours .ah-cursor { animation: none !important; }
+      .ah-headlights { display: none !important; }
+      .ah-timestamp { display: none !important; }
+      .after-hours .ah-char { transform: none !important; }
+      .ah-drive-arc { display: none !important; }
     }
