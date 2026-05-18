@@ -9,7 +9,7 @@
       --bg: #FAFAFA;
       --white: #FFFFFF;
       --mono: 'DM Mono', monospace;
-      --sans: 'DM Sans', sans-serif;
+      --sans: 'Space Grotesk', sans-serif;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }

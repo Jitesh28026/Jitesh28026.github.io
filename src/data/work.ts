@@ -32,7 +32,7 @@ export const workCards: readonly WorkCard[] = [
     title: "When Read-Only Wasn't Good Enough(dataX.ai)",
     summary:
       'Identified and resolved a permission asymmetry in the B2B catalogue that was blocking data quality and AI enrichment.',
-    tags: ['B2B', 'CATALOGUE', 'UX PROBLEM'],
+    tags: ['EDIT + REVIEW FLOW', 'PERMISSION ASYMMETRY', 'B2B CATALOGUE'],
     thumbnail: editFeatureThumb,
     thumbnailAlt: 'Edit Feature case study hero',
     displayNumber: '01',
@@ -45,7 +45,7 @@ export const workCards: readonly WorkCard[] = [
     title: 'Making Data Consolidation Feel Safe (dataX.ai)',
     summary:
       'Designing the Supplier Details, Merge & Split flows for an AI-powered supplier master data platform.',
-    tags: ['B2B', 'ENTERPRISE', 'DATA MANAGEMENT'],
+    tags: ['4-STEP MERGE FLOW', 'AI-POWERED MDM', 'ENTERPRISE GOVERNANCE'],
     thumbnail: supplierMasterThumb,
     thumbnailAlt: 'Supplier Master case study hero',
     displayNumber: '02',
@@ -58,7 +58,7 @@ export const workCards: readonly WorkCard[] = [
     title: 'Fixing Offer Approvals',
     summary:
       'End-to-end UX design for the offer rollout process within Vasitum, streamlining complex HR workflows and candidate interactions.',
-    tags: ['HR Tech', 'B2B', 'Workflow'],
+    tags: ['OFFER APPROVAL FLOW', 'HR TECH SAAS', 'CANDIDATE EXPERIENCE'],
     thumbnail: offerRolloutThumb,
     thumbnailAlt: 'Vasitum Offer Rollout Design',
     displayNumber: '03',
@@ -71,7 +71,7 @@ export const workCards: readonly WorkCard[] = [
     title: 'Designing for Independent Artists',
     summary:
       'My very first design project. A personal exploration of layout, aesthetics, and mobile interactions for an artist biography application.',
-    tags: ['Personal', 'App Design', 'UI/UX'],
+    tags: ['ARTIST PROFILES', 'MOBILE UI', 'FIRST PROJECT'],
     thumbnail: artxThumb,
     thumbnailAlt: 'ArtX Artist Bio App Design',
     displayNumber: '04',
