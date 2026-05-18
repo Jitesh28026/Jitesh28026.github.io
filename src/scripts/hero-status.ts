@@ -33,7 +33,7 @@ const updateClock = () => {
     });
     clockEl.textContent = `${time} IST`;
   } catch {
-    clockEl.textContent = '— IST';
+    clockEl.textContent = '··· IST';
   }
 };
 

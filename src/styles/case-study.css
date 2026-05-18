@@ -419,7 +419,7 @@
       line-height: 1.55;
     }
     .ba-block ul li::before {
-      content: '—';
+      content: '·';
       position: absolute;
       left: 0;
       color: var(--light);
