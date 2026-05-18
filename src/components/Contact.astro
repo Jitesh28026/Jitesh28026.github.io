@@ -33,12 +33,15 @@ const buttons = [
 
 <section class="contact-section" id="contact">
   <div class="contact-inner reveal">
-    <div class="section-label">Get in touch</div>
+    <div class="section-label">/ CONTACT</div>
     <h2 class="section-heading contact-heading">
       <span class="contact-heading-line">Let's build</span>
       <span class="contact-heading-line">something</span>
       <span class="muted contact-heading-line">worth using.</span>
     </h2>
+    <p class="contact-closing-time">
+      <span data-live-clock>--:--</span> IST &middot; still up, if you want to talk.
+    </p>
     <p class="contact-sub">
       Open to new opportunities, collaborations, and interesting problems. If
       you're building a product that matters, I'd love to hear about it.
@@ -58,3 +61,21 @@ const buttons = [
     </div>
   </div>
 </section>
+
+<style>
+  .contact-closing-time {
+    margin: 1.25rem 0 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
+  .contact-closing-time [data-live-clock] {
+    color: var(--accent);
+  }
+</style>
+
+<script>
+  import '../scripts/live-clock';
+</script>

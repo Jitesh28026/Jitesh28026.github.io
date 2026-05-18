@@ -3,14 +3,13 @@
  *
  *  1. Long-exhale reveal      [data-exhale]
  *  2. Quiet chip stagger      [data-stagger-quiet]
- *  3. Headlights              [data-headlights]            CSS-only fallback
- *  4. Idle state              [data-idle-cursor]
- *  5. Timestamp drift         [data-timestamps]
- *  6. Inner voice             .ah-paragraph[data-inner-voice]
- *  7. Lenis smooth scroll     (page-level, only on /about)
- *  8. Scroll progress         exposed on window.__ahScroll for the WebGL canvas
- *  9. Heading char parallax   per-glyph z-depth waved by cursor position
- * 10. Drive arc odometer      [data-drive-arc]             scroll-tied clock
+ *  3. Idle state              [data-idle-cursor]                STATE meta row
+ *  4. Inner voice             .ah-paragraph[data-inner-voice]
+ *  5. Scroll progress         exposed on window.__ahScroll for the WebGL canvas
+ *  6. Layered parallax        cursor head-tracking + per-element drift
+ *
+ * Headlight cursor lives globally in src/scripts/headlights.ts so it follows
+ * the visitor across every page, not just /about.
  */
 
 const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
@@ -73,47 +72,12 @@ if ('IntersectionObserver' in window) {
   document.querySelectorAll<HTMLElement>('[data-stagger-quiet]').forEach((el) => el.classList.add('is-revealed'));
 }
 
-/* ---------- 3. Headlights ------------------------------------------------ */
+/* ---------- 3. Idle state (STATE meta row rotates after inactivity) ----- */
+// Headlights themselves are wired globally in src/scripts/headlights.ts so
+// they follow the cursor on every page. Only the idle-state copy below is
+// /about-specific — STATE only renders inside the After Hours meta-rows.
 
-const headlights = document.querySelector<HTMLElement>('[data-headlights]');
-
-if (headlights && finePointer && !reducedMotion) {
-  let tx = window.innerWidth / 2;
-  let ty = window.innerHeight / 2;
-  let x = tx;
-  let y = ty;
-  let raf = 0;
-  let lastMove = performance.now();
-
-  const onMove = (e: PointerEvent) => {
-    tx = e.clientX;
-    ty = e.clientY;
-    lastMove = performance.now();
-    if (!headlights.classList.contains('is-on')) headlights.classList.add('is-on');
-  };
-
-  const loop = () => {
-    x += (tx - x) * 0.14;
-    y += (ty - y) * 0.14;
-    headlights.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    raf = requestAnimationFrame(loop);
-  };
-
-  window.addEventListener('pointermove', onMove, { passive: true });
-  // Pointer left the window — fade out (still alone).
-  window.addEventListener('pointerleave', () => headlights.classList.remove('is-on'));
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      cancelAnimationFrame(raf);
-    } else {
-      raf = requestAnimationFrame(loop);
-    }
-  });
-
-  raf = requestAnimationFrame(loop);
-
-  /* ---------- 4. Idle state ---------------------------------------------- */
-  // Shares pointer-move detection with the headlights so we don't bind twice.
+if (finePointer && !reducedMotion) {
   const idleStates = ['thinking', 'remembering', 'still here', 'drafting', 'listening'];
   const idleEls = document.querySelectorAll<HTMLElement>('[data-idle-state]');
 
@@ -156,50 +120,7 @@ if (headlights && finePointer && !reducedMotion) {
   }
 }
 
-/* ---------- 5. Timestamp drift ------------------------------------------ */
-
-const timestampLayer = document.querySelector<HTMLElement>('[data-timestamps]');
-
-if (timestampLayer && !reducedMotion && finePointer) {
-  const notes = [
-    '01:47',
-    '02:13',
-    '03:08',
-    '2am, still',
-    'after the meeting',
-    'before the deck',
-    'on the bus home',
-    'between iterations',
-    'one more pass',
-  ];
-
-  let spawnTimer = 0;
-  const spawn = () => {
-    const note = document.createElement('span');
-    note.className = 'ah-timestamp';
-    note.textContent = notes[Math.floor(Math.random() * notes.length)];
-    // Keep clear of the centre column where copy lives — bias to the gutters.
-    const side = Math.random() < 0.5 ? 'left' : 'right';
-    const lateral = 4 + Math.random() * 16;
-    if (side === 'left') note.style.left = `${lateral}%`;
-    else note.style.right = `${lateral}%`;
-    note.style.top = `${15 + Math.random() * 60}%`;
-    timestampLayer.appendChild(note);
-    window.setTimeout(() => note.remove(), 6000);
-
-    spawnTimer = window.setTimeout(spawn, 9000 + Math.random() * 5000);
-  };
-
-  // First note shows up after the page settles.
-  spawnTimer = window.setTimeout(spawn, 4200);
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) window.clearTimeout(spawnTimer);
-    else spawnTimer = window.setTimeout(spawn, 6000);
-  });
-}
-
-/* ---------- 6. Inner voice ----------------------------------------------- */
+/* ---------- 4. Inner voice ---------------------------------------------- */
 
 if (canHover && !reducedMotion) {
   const HOLD_MS = 500;
@@ -220,12 +141,7 @@ if (canHover && !reducedMotion) {
   });
 }
 
-/* ---------- 7. Lenis smooth scroll -------------------------------------- */
-// Lenis is now initialized globally in src/scripts/smooth-scroll.ts so the
-// homepage and case studies share the same butter scroll. Nothing to do
-// here — the global instance owns wheel events on /about too.
-
-/* ---------- 8. Scroll progress tracking --------------------------------- */
+/* ---------- 6. Scroll progress tracking --------------------------------- */
 
 (() => {
   const section = document.querySelector<HTMLElement>('.after-hours');
@@ -256,102 +172,7 @@ if (canHover && !reducedMotion) {
   raf = requestAnimationFrame(tick);
 })();
 
-/* ---------- 9. Heading per-char parallax --------------------------------- */
-
-if (finePointer && !reducedMotion) {
-  const heading = document.querySelector<HTMLElement>('.ah-heading');
-  if (heading) {
-    // Split into words first (each <span class="ah-word"> stays nowrap),
-    // then split each word into chars inside it. Browser can break BETWEEN
-    // words but never mid-word, so "systems." never loses its trailing 's'.
-    const splitText = (text: string, into: HTMLElement) => {
-      const parts = text.split(/(\s+)/);
-      for (const part of parts) {
-        if (!part) continue;
-        if (/^\s+$/.test(part)) {
-          into.appendChild(document.createTextNode(part));
-          continue;
-        }
-        const word = document.createElement('span');
-        word.className = 'ah-word';
-        for (const ch of part) {
-          const span = document.createElement('span');
-          span.className = 'ah-char';
-          span.textContent = ch;
-          word.appendChild(span);
-        }
-        into.appendChild(word);
-      }
-    };
-    const splitInto = (el: HTMLElement) => {
-      const out = document.createDocumentFragment();
-      el.childNodes.forEach((node) => {
-        if (node.nodeType === Node.TEXT_NODE) {
-          const holder = document.createElement('span');
-          splitText(node.textContent ?? '', holder);
-          while (holder.firstChild) out.appendChild(holder.firstChild);
-        } else if (node.nodeType === Node.ELEMENT_NODE) {
-          const child = node as HTMLElement;
-          const wrapper = child.cloneNode(false) as HTMLElement;
-          child.childNodes.forEach((inner) => {
-            if (inner.nodeType === Node.TEXT_NODE) {
-              splitText(inner.textContent ?? '', wrapper);
-            } else {
-              wrapper.appendChild(inner.cloneNode(true));
-            }
-          });
-          out.appendChild(wrapper);
-        }
-      });
-      el.textContent = '';
-      el.appendChild(out);
-    };
-    splitInto(heading);
-    heading.classList.add('is-split');
-
-    const chars = Array.from(heading.querySelectorAll<HTMLElement>('.ah-char'));
-    let rects: Array<{ el: HTMLElement; cx: number; cy: number }> = [];
-    const measure = () => {
-      rects = chars.map((el) => {
-        const r = el.getBoundingClientRect();
-        return { el, cx: r.left + r.width / 2, cy: r.top + r.height / 2 };
-      });
-    };
-    measure();
-    window.addEventListener('resize', measure);
-    window.addEventListener('scroll', () => { measure(); }, { passive: true });
-
-    // Damped cursor for the heading wave — without lerping the raw pointer,
-    // the chars snap with each mouse event and the wave looks twitchy.
-    const lp = { x: pointer.x, y: pointer.y };
-    const SIGMA = 200;        // radius of influence (px)
-    const PEAK = 24;          // max translateZ (px)
-    const TILT = 4;           // max rotateX (deg)
-    let raf = 0;
-    const loop = () => {
-      lp.x += (pointer.x - lp.x) * 0.08;
-      lp.y += (pointer.y - lp.y) * 0.08;
-      for (const r of rects) {
-        const dx = lp.x - r.cx;
-        const dy = lp.y - r.cy;
-        const d2 = dx * dx + dy * dy;
-        const w = Math.exp(-d2 / (SIGMA * SIGMA));
-        const z = PEAK * w;
-        const tx = TILT * w * Math.sign(dx) * -0.4;
-        const ty = TILT * w * Math.sign(dy) * 0.4;
-        r.el.style.transform = `translate3d(0,0,${z}px) rotateX(${ty}deg) rotateY(${tx}deg)`;
-      }
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) cancelAnimationFrame(raf);
-      else raf = requestAnimationFrame(loop);
-    });
-  }
-}
-
-/* ---------- 10. Layered parallax system --------------------------------- */
+/* ---------- 7. Layered parallax system ---------------------------------- */
 /*
  * Three depth layers reacting to two inputs:
  *
@@ -474,35 +295,5 @@ if (finePointer && !reducedMotion) {
     else raf = requestAnimationFrame(tick);
   });
 }
-
-/* ---------- 11. Drive arc odometer -------------------------------------- */
-
-(() => {
-  const arc = document.querySelector<HTMLElement>('[data-drive-arc]');
-  if (!arc) return;
-  const fill = arc.querySelector<HTMLElement>('.ah-arc-fill');
-  const time = arc.querySelector<HTMLElement>('.ah-arc-time');
-  if (!fill || !time) return;
-
-  // 01:47 target — total of 107 minutes scaled by scroll progress.
-  const TOTAL_MIN = 107;
-  let raf = 0;
-  const tick = () => {
-    const p = window.__ahScroll?.p ?? 0;
-    fill.style.transform = `scaleY(${p})`;
-    // Fade arc in once user starts scrolling the section.
-    arc.style.opacity = String(Math.min(1, p * 6));
-    const mins = Math.round(TOTAL_MIN * p);
-    const hh = Math.floor(mins / 60).toString().padStart(2, '0');
-    const mm = (mins % 60).toString().padStart(2, '0');
-    time.textContent = `${hh}:${mm}`;
-    raf = requestAnimationFrame(tick);
-  };
-  raf = requestAnimationFrame(tick);
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) cancelAnimationFrame(raf);
-    else raf = requestAnimationFrame(tick);
-  });
-})();
 
 export {};

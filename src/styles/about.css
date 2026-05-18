@@ -1354,60 +1354,9 @@
       opacity: 0;
     }
 
-    /* Headlight glow — a soft warm pool that follows the cursor.
-       Fixed so it pans across the whole page, screen-blends so it
-       lifts the warmth of whatever sits underneath. Disabled on
-       touch / reduced-motion. */
-    .ah-headlights {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 560px;
-      height: 560px;
-      margin: -280px 0 0 -280px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9990;
-      background: radial-gradient(
-        circle at center,
-        rgba(200, 169, 110, 0.18) 0%,
-        rgba(200, 169, 110, 0.10) 28%,
-        rgba(200, 169, 110, 0.04) 52%,
-        transparent 70%
-      );
-      mix-blend-mode: screen;
-      opacity: 0;
-      transform: translate3d(-9999px, -9999px, 0);
-      transition: opacity 0.9s ease;
-      will-change: transform, opacity;
-    }
-    .ah-headlights.is-on {
-      opacity: 1;
-    }
-
-    /* Timestamps drift up and dissolve inside the section. */
-    .ah-timestamps {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-    }
-    .ah-timestamp {
-      position: absolute;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      color: var(--text-secondary);
-      opacity: 0;
-      white-space: nowrap;
-      animation: ahTimestampDrift 5.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    @keyframes ahTimestampDrift {
-      0%   { opacity: 0; transform: translateY(6px); }
-      18%  { opacity: 0.55; }
-      72%  { opacity: 0.42; }
-      100% { opacity: 0; transform: translateY(-26px); }
-    }
+    /* .ah-headlights moved to src/styles/global.css so the warm pool follows
+       the cursor on every page, not just /about. The body.ah-webgl-on
+       override above remains here since WebGL only ever boots on /about. */
 
     /* Container — replaces the old .section-container for this page.
        The legacy CSS sets `section { padding: 0 !important; }` so we
@@ -1447,25 +1396,6 @@
       max-width: 18ch;
     }
 
-    /* Per-char z-depth parallax — perspective on the heading, each char
-       transforms in 3D space. JS computes per-char translateZ based on
-       cursor proximity. The .ah-word wrapper keeps characters together
-       so words can't break mid-token (no "systems" → "system" + "s"). */
-    .after-hours .ah-heading.is-split {
-      perspective: 900px;
-      perspective-origin: 50% 40%;
-    }
-    .after-hours .ah-word {
-      display: inline-block;
-      white-space: nowrap;
-    }
-    .after-hours .ah-char {
-      display: inline-block;
-      transform-style: preserve-3d;
-      transform-origin: 50% 50%;
-      will-change: transform;
-      transition: color 0.4s ease;
-    }
 
     .after-hours .ah-italic {
       font-family: inherit;
@@ -1700,56 +1630,6 @@
     }
     .after-hours .ah-closing-time {
       color: var(--accent);
-    }
-
-    /* Drive arc — fixed bottom-right odometer.
-       Vertical track fills downward as scroll progress builds; the time
-       readout interpolates from 00:00 to 01:47 across the section. */
-    .ah-drive-arc {
-      position: fixed;
-      right: 28px;
-      bottom: 28px;
-      z-index: 9991;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 8px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.6s ease;
-      font-family: 'DM Mono', monospace;
-    }
-    .ah-arc-label {
-      font-size: 0.6rem;
-      letter-spacing: 0.18em;
-      color: var(--text-secondary);
-    }
-    .ah-arc-track {
-      position: relative;
-      width: 2px;
-      height: 56px;
-      background: var(--border-muted);
-      overflow: hidden;
-    }
-    .ah-arc-fill {
-      position: absolute;
-      inset: 0;
-      background: var(--accent);
-      transform-origin: top center;
-      transform: scaleY(0);
-      transition: none;
-    }
-    .ah-arc-time {
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      color: var(--accent);
-    }
-    @media (max-width: 778px) {
-      .ah-drive-arc {
-        right: 16px;
-        bottom: 16px;
-      }
-      .ah-arc-track { height: 40px; }
     }
 
     /* ==========================================
@@ -2077,7 +1957,4 @@
       .after-hours .ah-paragraph::after { display: none; }
       .after-hours .ah-cursor { animation: none !important; }
       .ah-headlights { display: none !important; }
-      .ah-timestamp { display: none !important; }
-      .after-hours .ah-char { transform: none !important; }
-      .ah-drive-arc { display: none !important; }
     }

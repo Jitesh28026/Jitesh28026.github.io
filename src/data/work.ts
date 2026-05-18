@@ -74,7 +74,7 @@ export const workCards: readonly WorkCard[] = [
     tags: ['ARTIST PROFILES', 'MOBILE UI', 'FIRST PROJECT'],
     thumbnail: artxThumb,
     thumbnailAlt: 'ArtX Artist Bio App Design',
-    displayNumber: '04',
+    displayNumber: '',
     thumbClass: 'thumb-3',
     href: 'https://www.behance.net/gallery/184744245/ART-X-The-Artist-bio-app',
     external: true,

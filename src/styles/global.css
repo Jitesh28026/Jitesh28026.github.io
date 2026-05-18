@@ -145,3 +145,67 @@ footer {
     cursor: auto;
   }
 }
+
+/* ==========================================
+   HEADLIGHT CURSOR (site-wide signature)
+   A soft warm pool that follows the pointer. Fixed so it pans across the
+   whole page; screen-blends so it lifts the warmth of whatever sits
+   underneath. Disabled on touch / reduced-motion. On /about, the WebGL
+   fog scene takes over once loaded and hides this CSS pool via
+   body.ah-webgl-on (see about.css).
+========================================== */
+.ah-headlights {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 560px;
+  height: 560px;
+  margin: -280px 0 0 -280px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9990;
+  background: radial-gradient(
+    circle at center,
+    rgba(200, 169, 110, 0.18) 0%,
+    rgba(200, 169, 110, 0.10) 28%,
+    rgba(200, 169, 110, 0.04) 52%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform: translate3d(-9999px, -9999px, 0);
+  transition: opacity 0.9s ease;
+  will-change: transform, opacity;
+}
+.ah-headlights.is-on {
+  opacity: 1;
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .ah-headlights { display: none !important; }
+}
+
+/* ==========================================
+   QUIET BREAK (After Hours pacing grammar)
+   A long vertical silence with a single accent hairline. Used between
+   tonally-different homepage sections (Hero → Work, Gallery → Contact)
+   and on About between the polaroid marquee and Aim Lab. Lets each block
+   land instead of stacking back-to-back.
+========================================== */
+.ah-quiet-break {
+  position: relative;
+  height: 220px;
+}
+.ah-quiet-break::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1px;
+  height: 56px;
+  background: rgba(240, 234, 223, 0.12);
+  transform: translate(-50%, -50%);
+}
+@media (max-width: 778px) {
+  .ah-quiet-break { height: 140px; }
+}

@@ -49,9 +49,6 @@ const skills = [
   <Navbar />
 
   <section id="about" class="after-hours">
-    <canvas class="ah-bg-canvas" data-ah-bg-canvas aria-hidden="true"></canvas>
-    <div class="ah-headlights" data-headlights aria-hidden="true"></div>
-    <div class="ah-timestamps" data-timestamps aria-hidden="true"></div>
 
     <div class="ah-container">
       <div class="ah-label" data-exhale>/ ABOUT</div>
@@ -121,7 +118,7 @@ const skills = [
 
           <dl class="ah-meta" data-idle-cursor>
             <div class="ah-meta-row">
-              <dt>LOC</dt><dd>Bengaluru · 12.97° N</dd>
+              <dt>LOC</dt><dd>Bengaluru &middot; <span data-live-clock>--:--</span> IST</dd>
             </div>
             <div class="ah-meta-row">
               <dt>SINCE</dt><dd>02Y designing B2B</dd>
@@ -144,14 +141,8 @@ const skills = [
       </div>
 
       <div class="ah-closing" data-exhale data-exhale-delay="1000">
-        <span class="ah-closing-time">01:47 · still here.</span>
+        <span class="ah-closing-time"><span data-live-clock>--:--</span> &middot; still here.</span>
       </div>
-    </div>
-
-    <div class="ah-drive-arc" data-drive-arc aria-hidden="true">
-      <span class="ah-arc-label">DRIVE</span>
-      <span class="ah-arc-track"><span class="ah-arc-fill"></span></span>
-      <span class="ah-arc-time">00:00</span>
     </div>
 
     <section class="out-of-office" aria-labelledby="oo-label">
@@ -237,7 +228,7 @@ const skills = [
   <script>
     import '../scripts/aim-lab';
     import '../scripts/about-animations';
-    import '../scripts/after-hours-canvas';
+    import '../scripts/live-clock';
     import '../scripts/tilt';
   </script>
 

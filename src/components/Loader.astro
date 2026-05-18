@@ -1,12 +1,13 @@
 ---
-// Site loader + custom cursor. Mirrors the loader behavior from legacy index.html.
-// On first visit: loader shows for ~2.8s with cycling status messages, then slides
-// up. On subsequent visits in the same tab (sessionStorage flag set): loader is
-// skipped entirely with no flash.
+// Site loader. After Hours register: a single hosting moment, not a system
+// boot screen. Shows a time-based greeting ("still up." / "morning." / etc.)
+// and the live Bengaluru clock, then fades. ~1.2s total instead of ~2.8s.
+//
+// On first visit only — a sessionStorage flag short-circuits the loader on
+// subsequent navigation within the same tab so it doesn't gate every page.
 //
 // The synchronous skip-check below MUST run before paint to avoid a one-frame
-// flash of the loader on revisit. That's why it's `is:inline` — Astro otherwise
-// hoists/bundles scripts and they run too late.
+// flash of the loader on revisit.
 ---
 
 <script is:inline>
@@ -16,58 +17,65 @@
   }
 </script>
 
-<div class="site-loader" id="siteLoader" aria-live="polite" aria-label="Loading portfolio">
-  <div class="loader-scanlines" aria-hidden="true"></div>
+<div class="site-loader" id="siteLoader" aria-live="polite" aria-label="Loading">
   <div class="loader-core">
-    <div class="loader-logo">JITESH.EXE<span class="loader-cursor">_</span></div>
-    <div class="loader-bar" aria-hidden="true"><span></span></div>
-    <div class="loader-status" id="loaderStatus">&gt; LOADING PORTFOLIO...</div>
+    <div class="loader-greeting" id="loaderGreeting">still up.</div>
+    <div class="loader-time">
+      <span data-live-clock>--:--</span> IST &middot; BENGALURU
+    </div>
+    <div class="loader-line" aria-hidden="true"><span></span></div>
   </div>
-  <div class="loader-corner loader-corner-left">&copy; INSERT COIN</div>
-  <div class="loader-corner loader-corner-right">2YRS EXP &middot; BLR &middot; v2.0</div>
 </div>
 
 <div class="cursor-dot" aria-hidden="true"></div>
 <div class="cursor-ring" aria-hidden="true"></div>
 
 <script>
+  import '../scripts/live-clock';
+
   const FIRST_LOAD_KEY = 'jitesh_loader_shown';
   const skipLoader = !!sessionStorage.getItem(FIRST_LOAD_KEY);
   const loader = document.getElementById('siteLoader');
-  const loaderStatus = document.getElementById('loaderStatus');
-  const loaderStatuses = [
-    '> LOADING PORTFOLIO...',
-    '> READING PROBLEM SPACE...',
-    '> MAPPING USER FLOWS...',
-    '> CALIBRATING COMPLEXITY...',
-    '> SYSTEM READY.',
-  ];
+  const greetingEl = document.getElementById('loaderGreeting');
+
+  /**
+   * Pick a greeting using actual Bengaluru-local hour. The result is always
+   * true (no fake "01:47" anymore) and never the same across the day.
+   */
+  const pickGreeting = (): string => {
+    const istHourStr = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Kolkata',
+      hour: '2-digit',
+      hour12: false,
+    }).format(new Date());
+    const h = parseInt(istHourStr, 10);
+    if (h >= 0 && h < 5) return 'still up.';
+    if (h < 12) return 'morning.';
+    if (h < 17) return 'afternoon.';
+    if (h < 21) return 'evening.';
+    return 'late.';
+  };
+
+  if (greetingEl) greetingEl.textContent = pickGreeting();
 
   if (skipLoader) {
     document.body.classList.remove('is-loading');
     if (loader) loader.setAttribute('aria-hidden', 'true');
-  } else if (loader && loaderStatus) {
-    let loaderIndex = 0;
-    const statusTimer = window.setInterval(() => {
-      loaderIndex = Math.min(loaderIndex + 1, loaderStatuses.length - 1);
-      loaderStatus.textContent = loaderStatuses[loaderIndex] ?? '';
-    }, 400);
-
+  } else if (loader) {
+    // ~1.2s total — long enough to register the greeting, short enough not
+    // to gate the page. Exit slides up (CSS handles the transform).
     window.setTimeout(() => {
-      window.clearInterval(statusTimer);
-      loaderStatus.textContent = loaderStatuses[loaderStatuses.length - 1] ?? '';
       loader.classList.add('is-exiting');
-
       window.setTimeout(() => {
         document.body.classList.remove('is-loading');
         loader.setAttribute('aria-hidden', 'true');
         try {
           sessionStorage.setItem(FIRST_LOAD_KEY, '1');
         } catch {
-          /* sessionStorage unavailable (private mode, embedded contexts); ignore */
+          /* sessionStorage unavailable; ignore */
         }
       }, 500);
-    }, 2800);
+    }, 1200);
   } else {
     document.body.classList.remove('is-loading');
     try {
@@ -77,7 +85,7 @@
     }
   }
 
-  // Custom pointer cursor (desktop only)
+  // Custom pointer cursor (desktop only) — unchanged
   const cursorDot = document.querySelector<HTMLElement>('.cursor-dot');
   const cursorRing = document.querySelector<HTMLElement>('.cursor-ring');
   const canUseCursor =

@@ -64,12 +64,14 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
   </head>
   <body class="is-loading">
     <Loader />
+    <div class="ah-headlights" data-headlights aria-hidden="true"></div>
     <slot />
     <Footer />
     <script>
       import '../scripts/smooth-scroll';
       import '../scripts/reveal';
       import '../scripts/page-transitions';
+      import '../scripts/headlights';
     </script>
   </body>
 </html>
