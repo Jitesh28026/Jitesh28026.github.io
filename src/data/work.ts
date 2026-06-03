@@ -11,7 +11,7 @@ import type { ImageMetadata } from 'astro';
 import editFeatureThumb from '../assets/work/edit-feature.png';
 import supplierMasterThumb from '../assets/work/supplier-master.png';
 import offerRolloutThumb from '../assets/work/offer-rollout.png';
-import artxThumb from '../assets/work/artx.png';
+import moneyhiThumb from '../assets/work/moneyhi.png';
 
 export type WorkCard = {
   htmlId: string;
@@ -68,15 +68,15 @@ export const workCards: readonly WorkCard[] = [
   },
   {
     htmlId: 'project-3',
-    title: 'Designing for Independent Artists',
+    title: 'The Moment After the Money',
     summary:
-      'My very first design project. A personal exploration of layout, aesthetics, and mobile interactions for an artist biography application.',
-    tags: ['ARTIST PROFILES', 'MOBILE UI', 'FIRST PROJECT'],
-    thumbnail: artxThumb,
-    thumbnailAlt: 'ArtX Artist Bio App Design',
+      'A post-cashout retention redesign for MoneyHi (GreedyGame). Tier-based momentum boost mechanic that creates a revenue-neutral forward hook to bring users back within 7 days.',
+    tags: ['MOBILE', 'B2C', 'RETENTION', 'AI-ASSISTED'],
+    thumbnail: moneyhiThumb,
+    thumbnailAlt: 'MoneyHi case study hero',
     displayNumber: '',
     thumbClass: 'thumb-3',
-    href: 'https://www.behance.net/gallery/184744245/ART-X-The-Artist-bio-app',
+    href: 'https://www.figma.com/deck/18aSPWuhIeyu9T6I9Y0Qhn',
     external: true,
   },
 ];
