@@ -22,6 +22,34 @@ const {
 
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImageUrl = new URL(ogImage, Astro.site).toString();
+
+// Person structured data — tells Google that jitesht.com, LinkedIn, Behance,
+// Medium and GitHub are all the same person. Feeds Search + the AI Overview.
+const PRIMARY_SITE = 'https://jitesht.com';
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Jitesh Thakker',
+  alternateName: 'Jitesh',
+  url: `${PRIMARY_SITE}/`,
+  image: `${PRIMARY_SITE}/og-image.png`,
+  jobTitle: 'Product Designer',
+  description:
+    'Product designer based in Bengaluru, crafting thoughtful B2B experiences with a focus on UX design, prototyping, and design systems.',
+  email: 'mailto:thakker.jitesh04@gmail.com',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Bengaluru',
+    addressRegion: 'Karnataka',
+    addressCountry: 'IN',
+  },
+  sameAs: [
+    'https://www.linkedin.com/in/jitesh-thakker/',
+    'https://www.behance.net/jiteshthakker',
+    'https://medium.com/@thakker.jitesh04',
+    'https://github.com/Jitesh28026',
+  ],
+};
 ---
 
 <!doctype html>
@@ -46,6 +74,8 @@ const ogImageUrl = new URL(ogImage, Astro.site).toString();
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} is:inline />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

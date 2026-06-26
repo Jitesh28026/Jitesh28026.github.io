@@ -13,6 +13,7 @@ const buttons = [
     id: 'contact-linkedin',
     primary: false,
     external: true,
+    me: true,
   },
   {
     label: 'Behance',
@@ -20,6 +21,7 @@ const buttons = [
     id: 'contact-behance',
     primary: false,
     external: true,
+    me: true,
   },
   {
     label: 'Resume ↓',
@@ -53,7 +55,12 @@ const buttons = [
           class={`contact-btn${btn.primary ? ' primary' : ''}`}
           id={btn.id}
           target={btn.external ? '_blank' : undefined}
-          rel={btn.external ? 'noopener noreferrer' : undefined}
+          rel={[
+            'me' in btn && btn.me ? 'me' : '',
+            btn.external ? 'noopener noreferrer' : '',
+          ]
+            .filter(Boolean)
+            .join(' ') || undefined}
         >
           {btn.label}
         </a>
