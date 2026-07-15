@@ -2,6 +2,18 @@
 // Hero section. The right column hosts a minimal "now" meta panel using the
 // same .ah-meta component as the About page, so the homepage and About read
 // as the same designer's hand. Live clock ticks in actual Bengaluru time.
+
+// Years of experience, auto-calculated so it grows over time on its own.
+// EXPERIENCE_ANCHOR is a tenure-adjusted start date: actual first role began
+// Jun 2022, but ~3 months of gaps between roles are subtracted, so the figure
+// reflects real time worked (~3.9 years as of mid-2026) rather than raw span.
+// Also recomputed client-side (see inline script below) so it stays current
+// between deploys.
+const EXPERIENCE_ANCHOR = '2022-08-21';
+const experienceYears = (
+  (Date.now() - new Date(EXPERIENCE_ANCHOR).getTime()) /
+  (365.25 * 24 * 60 * 60 * 1000)
+).toFixed(1);
 ---
 
 <section class="hero" id="home">
@@ -18,7 +30,7 @@
       </h1>
       <p class="hero-desc">
         I craft B2B product experiences, turning complex workflows into
-        intuitive, scalable interfaces. 3.9 years in, still obsessed with the
+        intuitive, scalable interfaces. <span data-experience-years>{experienceYears}</span> years in, still obsessed with the
         details.
       </p>
       <div class="hero-actions">
@@ -174,4 +186,16 @@
   import '../scripts/hero-canvas';
   import '../scripts/tilt';
   import '../scripts/live-clock';
+</script>
+
+<!-- Keep the years-of-experience figure current between deploys. Mirrors the
+     EXPERIENCE_ANCHOR used at build time in the frontmatter above. -->
+<script is:inline>
+  (function () {
+    var anchor = new Date('2022-08-21').getTime();
+    var years = ((Date.now() - anchor) / (365.25 * 24 * 60 * 60 * 1000)).toFixed(1);
+    document.querySelectorAll('[data-experience-years]').forEach(function (el) {
+      el.textContent = years;
+    });
+  })();
 </script>
