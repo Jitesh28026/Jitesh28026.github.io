@@ -1,0 +1,973 @@
+---
+// Standalone Playo product teardown. Deliberately self-contained — its own
+// visual identity (Roboto + Playo green), not the portfolio's terminal theme.
+// Served at /playo. Images live in /public/playo/.
+const canonical = 'https://jitesht.com/playo';
+const description =
+  "A product teardown of Playo: how the app routes a court's footwear rule through the one person it exists to make unnecessary — and the one field that fixes it.";
+---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Show up and play — a Playo teardown</title>
+<meta name="description" content={description}>
+<link rel="canonical" href={canonical}>
+<meta name="author" content="Jitesh Thakker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Show up and play — a Playo teardown">
+<meta property="og:description" content={description}>
+<meta property="og:url" content={canonical}>
+<meta property="og:image" content="https://jitesht.com/playo/playo-venue-page.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style is:global>
+  :root{
+    --green:#06A94E;
+    --green-dark:#0B8C43;
+    --green-tint:#E8F7EE;
+    --slate:#2B3A40;
+    --slate-2:#3A4C53;
+    --blue:#0B6EE8;
+    --amber:#F5A623;
+    --flag:#D9483F;
+    --ink:#1C1D1F;
+    --ink-2:#5F6469;
+    --ink-3:#8E9499;
+    --line:#E4E6E8;
+    --paper:#F2F3F4;
+    --white:#fff;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Roboto',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px;}
+
+  /* ---------- eyebrow / utility type ---------- */
+  .eyebrow{
+    font-family:'Roboto Mono',monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-3);
+    margin:0 0 14px;
+  }
+
+  /* ---------- hero: borrows the game-page header band ---------- */
+  .hero{background:var(--slate);color:#fff;padding:34px 0 44px;}
+  .hero .eyebrow{color:rgba(255,255,255,.5);}
+  .hero h1{
+    font-size:clamp(34px,6vw,58px);
+    font-weight:900;
+    letter-spacing:-.025em;
+    line-height:1.02;
+    margin:0 0 14px;
+  }
+  .hero h1 em{font-style:normal;color:var(--green);}
+  .hero p{
+    font-size:clamp(15px,2vw,18px);
+    color:rgba(255,255,255,.74);
+    max-width:56ch;
+    margin:0;
+  }
+  .hero-meta{
+    margin-top:26px;padding-top:18px;
+    border-top:1px solid rgba(255,255,255,.14);
+    font-family:'Roboto Mono',monospace;
+    font-size:11.5px;letter-spacing:.06em;
+    color:rgba(255,255,255,.46);
+    display:flex;flex-wrap:wrap;gap:8px 22px;
+  }
+
+  /* ---------- receipt: the actual incident, as a fact block ---------- */
+  .receipt{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:12px;
+    margin:-24px 0 0;
+    padding:22px 24px;
+    position:relative;
+    box-shadow:0 6px 22px rgba(0,0,0,.07);
+  }
+  .receipt dl{margin:0;display:grid;grid-template-columns:150px 1fr;gap:9px 18px;}
+  .receipt dt{
+    font-family:'Roboto Mono',monospace;
+    font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-3);padding-top:3px;
+  }
+  .receipt dd{margin:0;font-size:15px;}
+  .receipt dd b{font-weight:700;}
+  .receipt .flagged{color:var(--flag);font-weight:700;}
+
+  /* ---------- sections ---------- */
+  section{padding:56px 0;}
+  h2{
+    font-size:clamp(24px,3.4vw,34px);
+    font-weight:900;letter-spacing:-.02em;line-height:1.14;
+    margin:0 0 16px;max-width:22ch;
+  }
+  .lede{font-size:17px;color:var(--ink-2);max-width:64ch;margin:0 0 8px;}
+  .lede + .lede{margin-top:14px;}
+  .lede b{color:var(--ink);font-weight:700;}
+
+  /* ---------- the two mocks: the signature ---------- */
+  .stage{
+    background:var(--slate);
+    border-radius:16px;
+    padding:32px 22px 26px;
+    margin-top:34px;
+  }
+  .stage-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:28px;
+    max-width:800px;margin:0 auto;
+  }
+  .col-head{margin:0 0 12px;}
+  .col-head .tag{
+    display:inline-block;
+    font-family:'Roboto Mono',monospace;
+    font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    padding:4px 9px;border-radius:4px;margin-bottom:8px;
+  }
+  .tag-now{background:rgba(217,72,63,.16);color:#F08079;}
+  .tag-fix{background:rgba(6,169,78,.18);color:#4FD489;}
+  .col-head h3{margin:0;font-size:15px;font-weight:700;color:#fff;}
+  .col-head p{margin:4px 0 0;font-size:12.5px;color:rgba(255,255,255,.5);line-height:1.45;}
+
+  /* phone */
+  .phone{
+    background:var(--paper);
+    border-radius:14px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.1);
+  }
+  .ph-head{background:var(--slate-2);padding:12px 14px 15px;}
+  .ph-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .ph-bar svg{fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+  .ph-head h4{margin:0;font-size:20px;font-weight:700;color:#fff;letter-spacing:-.01em;}
+  .ph-head span{font-size:11px;color:rgba(255,255,255,.66);}
+  .ph-body{padding:10px;display:flex;flex-direction:column;gap:9px;}
+
+  .card{background:var(--white);border-radius:9px;padding:11px;}
+  .venue-row{display:flex;align-items:flex-start;gap:8px;}
+  .venue-row .pin{width:13px;height:13px;flex:none;margin-top:2px;fill:var(--green);}
+  .venue-row a{color:var(--green);font-weight:700;font-size:12.5px;text-decoration:underline;}
+  .venue-row small{display:block;color:var(--green);font-size:10.5px;font-weight:500;}
+
+  /* ad + upsell blocks, deliberately shown as-is */
+  .ad{
+    background:linear-gradient(105deg,#161A1D,#2C1F33);
+    border-radius:9px;padding:13px;color:#fff;
+  }
+  .ad .live{
+    font-family:'Roboto Mono',monospace;font-size:7.5px;letter-spacing:.1em;
+    background:#111;color:#FF4B4B;padding:2px 5px;border-radius:2px;
+  }
+  .ad h5{margin:8px 0 0;font-size:13px;font-weight:700;line-height:1.25;}
+  .ad h5 i{font-style:normal;color:#4FF08E;font-size:15px;}
+  .ad .chip{display:inline-block;margin-top:8px;background:#4FF08E;color:#0A2417;font-size:8.5px;font-weight:700;padding:3px 7px;border-radius:3px;}
+
+  .card h5{margin:0 0 9px;font-size:13.5px;font-weight:700;}
+  .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+  .card-head h5{margin:0;}
+  .lock{width:12px;height:12px;stroke:var(--ink-3);fill:none;stroke-width:2;}
+  .player{display:flex;align-items:center;gap:8px;}
+  .avatar{width:26px;height:26px;border-radius:50%;background:#CFE3D6;flex:none;}
+  .player .nm{font-size:11.5px;font-weight:500;}
+  .pill{
+    display:inline-block;border:1px solid var(--line);border-radius:20px;
+    padding:2px 8px;font-size:9px;color:var(--ink-2);
+  }
+  .empty{font-size:10.5px;color:var(--ink-3);text-align:center;line-height:1.5;margin:0 0 9px;}
+  .btn{
+    display:block;width:100%;text-align:center;
+    background:var(--green);color:#fff;border:0;border-radius:5px;
+    padding:9px;font-family:inherit;font-size:10.5px;font-weight:700;
+    letter-spacing:.09em;text-transform:uppercase;
+  }
+  .sports{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+  .sports div{border-radius:6px;height:38px;}
+  .sports div:nth-child(1){background:#EFE0F7;}
+  .sports div:nth-child(2){background:#D6F2E7;}
+  .sports div:nth-child(3){background:#FCF1D2;}
+  .sports div:nth-child(4){background:#D8F2E4;}
+  .sports div:nth-child(5){background:#D6E8FA;}
+  .sports div:nth-child(6){background:#EDE2F8;}
+  .private{text-align:center;font-size:10px;color:var(--ink-3);font-style:italic;padding:2px 0 4px;}
+
+  /* the flag markers */
+  .flagline{
+    display:flex;gap:7px;align-items:flex-start;
+    background:rgba(217,72,63,.1);
+    border-left:2px solid var(--flag);
+    padding:6px 8px;border-radius:0 4px 4px 0;
+    margin-top:9px;
+  }
+  .flagline > b{
+    font-family:'Roboto Mono',monospace;color:#F08079;
+    font-size:9px;letter-spacing:.06em;flex:none;padding-top:1px;
+  }
+  .flagline > span{font-size:10.5px;color:rgba(255,255,255,.72);line-height:1.42;}
+
+  /* the proposed block */
+  .prep{border:1.5px solid var(--green);background:var(--green-tint);}
+  .prep .card-head h5{color:var(--green-dark);}
+  .prep-venue{
+    font-family:'Roboto Mono',monospace;font-size:8.5px;letter-spacing:.06em;
+    color:var(--green-dark);text-transform:uppercase;
+  }
+  .rule{display:flex;align-items:center;gap:7px;padding:5px 0;font-size:11.5px;}
+  .rule + .rule{border-top:1px solid rgba(6,169,78,.16);}
+  .rule .ic{
+    width:17px;height:17px;border-radius:4px;flex:none;
+    display:grid;place-items:center;font-size:9px;font-weight:900;color:#fff;
+  }
+  .ic-no{background:var(--flag);}
+  .ic-yes{background:var(--green);}
+  .ic-opt{background:var(--amber);}
+  .rule b{font-weight:700;}
+  .rent{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:9px;background:#fff;border-radius:5px;padding:7px 9px;
+  }
+  .rent span{font-size:10.5px;font-weight:500;}
+  .rent em{font-style:normal;font-size:9.5px;color:var(--ink-3);display:block;}
+  .rent .go{
+    font-family:'Roboto Mono',monospace;font-size:8.5px;letter-spacing:.08em;
+    color:var(--green);font-weight:500;border:1px solid var(--green);
+    padding:3px 7px;border-radius:3px;
+  }
+
+  /* ---------- pipe: one source, four surfaces ---------- */
+  .pipe{
+    background:var(--white);border:1px solid var(--line);border-radius:12px;
+    padding:26px 24px;margin-top:30px;
+  }
+  .pipe-src{
+    border:1.5px dashed var(--green);border-radius:8px;
+    padding:12px 14px;background:var(--green-tint);
+    max-width:400px;
+  }
+  .pipe-src .eyebrow{margin:0 0 7px;color:var(--green-dark);}
+  .pipe-src p{margin:0;font-size:13px;color:var(--ink-2);}
+  .pipe-src p b{color:var(--ink);}
+  .pipe-arrow{
+    height:26px;width:1.5px;background:var(--line);margin:10px 0 10px 30px;
+  }
+  .surfaces{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;}
+  .surf{border:1px solid var(--line);border-radius:8px;padding:12px;}
+  .surf .n{
+    font-family:'Roboto Mono',monospace;font-size:9.5px;letter-spacing:.08em;
+    color:var(--green);display:block;margin-bottom:5px;
+  }
+  .surf h6{margin:0 0 4px;font-size:12.5px;font-weight:700;}
+  .surf p{margin:0;font-size:11.5px;color:var(--ink-2);line-height:1.45;}
+  .surf.new{border-color:var(--green);background:var(--green-tint);}
+
+  /* ---------- callout ---------- */
+  .quote{
+    border-left:3px solid var(--green);
+    padding:2px 0 2px 18px;margin:26px 0;
+    max-width:60ch;
+  }
+  .quote p{margin:0;font-size:18px;font-weight:500;letter-spacing:-.01em;line-height:1.42;}
+  .quote cite{
+    display:block;margin-top:9px;font-style:normal;
+    font-family:'Roboto Mono',monospace;font-size:10.5px;letter-spacing:.06em;color:var(--ink-3);
+  }
+
+  /* ---------- validate list ---------- */
+  .checks{list-style:none;padding:0;margin:22px 0 0;max-width:70ch;}
+  .checks li{
+    display:flex;gap:14px;padding:14px 0;border-top:1px solid var(--line);
+  }
+  .checks li:last-child{border-bottom:1px solid var(--line);}
+  .checks .q{
+    font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.08em;
+    color:var(--ink-3);flex:none;width:34px;padding-top:3px;
+  }
+  .checks p{margin:0;font-size:14.5px;}
+  .checks p b{font-weight:700;}
+  .checks p span{display:block;color:var(--ink-2);font-size:13px;margin-top:2px;}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--slate);color:rgba(255,255,255,.6);padding:34px 0;}
+  footer p{margin:0;font-size:13px;max-width:62ch;}
+  footer a{color:var(--green);text-decoration:none;font-weight:500;}
+  footer a:hover{text-decoration:underline;}
+  footer .sig{
+    margin-top:16px;font-family:'Roboto Mono',monospace;
+    font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.38);
+  }
+
+  /* real screenshotframing */
+  .shot{border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:#fff;}
+  .shot img{display:block;width:100%;height:auto;}
+  .shot-cap{
+    margin:9px 0 0;font-family:'Roboto Mono',monospace;
+    font-size:9px;letter-spacing:.08em;color:rgba(255,255,255,.38);text-align:center;
+  }
+
+  /* phone device: the real screenshot scrolls inside a fixed frame, so a
+     very tall capture reads like you're scrolling the actual app. */
+  .device{
+    width:264px;max-width:100%;margin:0 auto;
+    background:#0E1417;border-radius:30px;padding:8px;
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 18px 44px rgba(0,0,0,.4);
+  }
+  .device-screen{
+    border-radius:22px;overflow:hidden;position:relative;
+    height:500px;overflow-y:auto;
+    scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.3) transparent;
+    -webkit-overflow-scrolling:touch;
+  }
+  .device-screen::-webkit-scrollbar{width:4px;}
+  .device-screen::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3);border-radius:2px;}
+  .device-screen img{display:block;width:100%;height:auto;}
+  .device-cap{
+    margin:11px 0 0;font-family:'Roboto Mono',monospace;
+    font-size:9px;letter-spacing:.08em;color:rgba(255,255,255,.38);text-align:center;
+  }
+  .device-hint{display:block;margin-top:3px;font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.05em;}
+
+  /* scroll-depth figure */
+  .scrollfig{
+    display:grid;grid-template-columns:172px 1fr;gap:30px;align-items:start;
+    background:var(--white);border:1px solid var(--line);border-radius:12px;
+    padding:24px;margin-top:30px;
+  }
+  .strip{position:relative;}
+  .strip img{display:block;width:100%;border-radius:5px;border:1px solid var(--line);}
+  .mark{
+    position:absolute;left:-4px;right:-4px;
+    border:1.5px solid var(--flag);border-radius:4px;
+    background:rgba(217,72,63,.12);
+  }
+  .mark b{
+    position:absolute;right:calc(100% + 8px);top:0;
+    font-family:'Roboto Mono',monospace;font-size:9px;letter-spacing:.06em;
+    color:var(--flag);white-space:nowrap;
+  }
+  .figtext h6{margin:0 0 10px;font-size:15px;font-weight:700;}
+  .figtext p{margin:0 0 12px;font-size:14px;color:var(--ink-2);line-height:1.6;}
+  .figtext p b{color:var(--ink);font-weight:700;}
+  .figtext .depth{
+    font-family:'Roboto Mono',monospace;font-size:10.5px;letter-spacing:.07em;
+    color:var(--flag);margin:0;
+  }
+
+  /* the diff: two blobs, same venue */
+  .diff{
+    background:var(--white);border:1px solid var(--line);border-radius:12px;
+    padding:24px;margin-top:30px;
+  }
+  .diff > h6{margin:0 0 4px;font-size:17px;font-weight:900;letter-spacing:-.015em;}
+  .diff > .sub{margin:0 0 20px;font-size:13.5px;color:var(--ink-2);}
+  .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .blob{border:1px solid var(--line);border-radius:8px;padding:14px;}
+  .blob .src{
+    display:block;font-family:'Roboto Mono',monospace;
+    font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-3);margin-bottom:10px;
+  }
+  .blob ul{list-style:none;margin:0;padding:0;}
+  .blob li{
+    font-size:12.5px;padding:5px 0;color:var(--ink);
+    border-top:1px solid #F0F1F2;line-height:1.4;
+  }
+  .blob li:first-child{border-top:0;}
+  .blob li.only{color:var(--flag);font-weight:700;}
+  .blob li.miss{
+    color:var(--ink-3);font-family:'Roboto Mono',monospace;
+    font-size:10.5px;letter-spacing:.03em;background:rgba(217,72,63,.07);
+  }
+  .blob .note{
+    margin:11px 0 0;padding-top:9px;border-top:1px solid var(--line);
+    font-size:11.5px;color:var(--ink-3);line-height:1.45;
+  }
+  .diff .verdict{
+    margin:18px 0 0;padding-top:16px;border-top:1px solid var(--line);
+    font-size:14.5px;color:var(--ink-2);line-height:1.6;
+  }
+  .diff .verdict b{color:var(--ink);font-weight:700;}
+
+  /* rule chips (mirrors the Amenities row) */
+  .chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px;}
+  .chip-r{
+    display:inline-block;white-space:nowrap;vertical-align:middle;
+    font-size:10px;font-weight:700;padding:4px 8px;border-radius:20px;
+    border:1px solid transparent;letter-spacing:.01em;line-height:1.3;
+  }
+  .chip-no{background:#FDE9E8;border-color:#F3B9B5;color:#B03A32;}
+  .chip-yes{background:#E4F6EC;border-color:#9BDBB6;color:#0B7A3D;}
+  .chip-amb{background:#FDF1DA;border-color:#F0CE8A;color:#8A5D0B;}
+
+  /* aika self-contradiction */
+  .contra{
+    background:var(--white);border:1px solid var(--line);border-radius:12px;
+    padding:24px;margin-top:30px;
+  }
+  .contra > .src{
+    display:block;font-family:'Roboto Mono',monospace;font-size:9px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;
+  }
+  .contra ol{margin:0;padding:0 0 0 22px;}
+  .contra li{
+    font-size:14px;padding:7px 9px;margin-left:-9px;border-radius:5px;
+    color:var(--ink-2);line-height:1.5;
+  }
+  .contra li.hot{
+    background:rgba(217,72,63,.09);color:var(--ink);font-weight:700;
+    box-shadow:inset 2px 0 0 var(--flag);
+  }
+
+  /* template stats */
+  .tmpl{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px;}
+  .stat{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:20px;}
+  .stat b{
+    display:block;font-size:44px;font-weight:900;line-height:1;
+    letter-spacing:-.04em;margin-bottom:8px;
+  }
+  .stat:nth-child(1) b{color:var(--ink);}
+  .stat:nth-child(2) b{color:var(--amber);}
+  .stat:nth-child(3) b{color:var(--flag);}
+  .stat span{font-size:12.5px;color:var(--ink-2);line-height:1.5;display:block;}
+
+  /* the schema already exists */
+  .proof{
+    background:var(--slate);border-radius:12px;padding:26px 24px;margin-top:30px;color:#fff;
+  }
+  .proof h6{margin:0 0 4px;font-size:18px;font-weight:900;letter-spacing:-.015em;}
+  .proof > .sub{margin:0 0 18px;font-size:13.5px;color:rgba(255,255,255,.6);}
+  .proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .proof-col{
+    background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);
+    border-radius:8px;padding:14px;
+  }
+  .proof-col .src{
+    display:block;font-family:'Roboto Mono',monospace;font-size:9px;
+    letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:9px;
+  }
+  .proof-col p{margin:0;font-size:13px;color:rgba(255,255,255,.78);line-height:1.65;}
+  .proof-col p b{color:#4FD489;font-weight:700;}
+  .proof .verdict{
+    margin:18px 0 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.14);
+    font-size:14.5px;color:rgba(255,255,255,.75);line-height:1.6;
+  }
+  .proof .verdict b{color:#fff;font-weight:700;}
+
+  /* check-it-yourself link bar */
+  .linkbar{margin-top:24px;display:flex;flex-wrap:wrap;gap:9px;align-items:center;}
+  .linkbar .lbl{
+    font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.1em;
+    text-transform:uppercase;color:rgba(255,255,255,.42);margin-right:4px;
+  }
+  .linkbar a{
+    font-size:12.5px;font-weight:500;color:#fff;text-decoration:none;
+    border:1px solid rgba(255,255,255,.26);border-radius:20px;padding:6px 13px;
+    transition:background .15s,border-color .15s;
+  }
+  .linkbar a:hover{background:rgba(6,169,78,.2);border-color:var(--green);}
+  .linkbar a::after{content:" ↗";opacity:.5;}
+
+  /* tiers: one per screen, labelled by who reaches it */
+  .tier{border-top:2px solid var(--ink);padding-top:20px;margin-top:52px;}
+  .tier:first-of-type{margin-top:34px;}
+  .tier-lab{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 14px;margin-bottom:12px;}
+  .tier-lab .n{
+    font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--ink-3);
+  }
+  .tier-lab h3{margin:0;font-size:23px;font-weight:900;letter-spacing:-.025em;}
+  .who{
+    font-family:'Roboto Mono',monospace;font-size:9.5px;letter-spacing:.09em;
+    text-transform:uppercase;padding:3px 8px;border-radius:3px;margin-left:auto;
+  }
+  .who-booker{border:1px solid var(--line);color:var(--ink-3);}
+  .who-player{border:1px solid var(--flag);color:var(--flag);background:rgba(217,72,63,.07);}
+
+  /* venue-page chip demo */
+  .vp{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:20px;margin-top:20px;}
+  .vp .row + .row{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);}
+  .vp .lab{display:block;font-size:14px;font-weight:700;margin-bottom:8px;}
+  .vp .lab i{
+    font-style:normal;font-family:'Roboto Mono',monospace;font-size:9px;
+    letter-spacing:.08em;color:var(--ink-3);margin-left:8px;font-weight:400;
+  }
+  .chip-grey{background:#EFEFEF;border-color:#E2E2E2;color:var(--ink-2);font-weight:400;}
+
+  /* checkout demo */
+  .ck{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:20px;margin-top:20px;}
+  .ck h5{margin:0 0 10px;font-size:15px;font-weight:700;}
+  .ck-blob{
+    margin:0;font-size:12px;color:var(--ink-3);line-height:1.55;
+    max-height:52px;overflow:hidden;
+  }
+  .ck-more{
+    display:inline-block;margin-top:4px;font-size:12px;color:var(--green);font-weight:500;
+  }
+
+  /* three readings */
+  .reads{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px;}
+  .read{border:1px solid var(--line);border-radius:12px;padding:20px;background:var(--white);}
+  .read .n{
+    font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.1em;
+    color:var(--ink-3);display:block;margin-bottom:9px;
+  }
+  .read h6{margin:0 0 8px;font-size:15px;font-weight:900;letter-spacing:-.01em;}
+  .read p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.55;}
+
+  :focus-visible{outline:2px solid var(--green);outline-offset:2px;}
+
+  @media (max-width:760px){
+    .stage-grid{grid-template-columns:1fr;gap:34px;}
+    .surfaces{grid-template-columns:repeat(2,1fr);}
+    .receipt dl{grid-template-columns:1fr;gap:3px 0;}
+    .scrollfig{grid-template-columns:120px 1fr;gap:18px;padding:18px;}
+    .diff-grid{grid-template-columns:1fr;}
+    .reads{grid-template-columns:1fr;}
+    .who{margin-left:0;}
+    .tmpl{grid-template-columns:1fr;}
+    .proof-grid{grid-template-columns:1fr;}
+    .mark b{right:auto;left:calc(100% + 6px);}
+    .receipt dt{padding-top:9px;}
+    section{padding:42px 0;}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <a href="/" style="display:inline-block;margin-bottom:18px;font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.55);text-decoration:none;">&larr; jitesht.com</a>
+    <p class="eyebrow">Product teardown · Unsolicited · 18 Jul 2026</p>
+    <h1>Show up and <em>play.</em></h1>
+    <p>Playo's whole thesis is that you shouldn't have to coordinate. Last night I showed up to a court I wasn't allowed to walk onto — because the product told my friend, and not me.</p>
+    <div class="hero-meta">
+      <span>GAMEFIT · SARJAPURA ROAD</span>
+      <span>BADMINTON · 8–9 PM · 17 JUL</span>
+      <span>INVITED PLAYER, NOT BOOKER</span>
+    </div>
+    <!-- TODO: swap these three href="#" for the real Playo URLs before publishing -->
+    <div class="linkbar">
+      <span class="lbl">Check it yourself</span>
+      <a href="#">GameFit venue page</a>
+      <a href="#">Aika venue page</a>
+      <a href="#">The game link I was sent</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="receipt">
+    <dl>
+      <dt>What happened</dt>
+      <dd>A friend booked a court and shared the game link. I opened it, went, and arrived barefoot-ready.</dd>
+
+      <dt>The rule</dt>
+      <dd><b>"Barefoot play is strictly prohibited. Non-marking shoes are mandatory."</b> It's on GameFit's venue page — under the sports list, an insurance ad, amenities, the games rail, and a tournament promo.</dd>
+
+      <dt>What I saw</dt>
+      <dd class="flagged">Nothing. The game page never mentions it.</dd>
+
+      <dt>The part that matters</dt>
+      <dd><b>My friend didn't know either.</b> The app showed him the shoes line at checkout — bullet two, behind "show more", while he was paying. I asked him afterwards. He had no idea barefoot was prohibited. The one person the product told, didn't know.</dd>
+
+      <dt>What it cost</dt>
+      <dd>Rented shoes at the counter. A player who felt ambushed at the exact moment he met a new venue for the first time.</dd>
+
+      <dt>Why it's not rare</dt>
+      <dd>Other Bengaluru courts <b>do</b> allow barefoot play — Aika, and a few off Sarjapura. When venues disagree, no player can hold a reliable default. So the rule has to be pushed, not looked up.</dd>
+    </dl>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">01 — Three screens, one rule</p>
+    <h2>The rule exists on two screens. Neither is mine.</h2>
+    <p class="lede">GameFit's footwear rule is written twice in your app. Both times on a screen only the person paying ever reaches. Here's each screen, who actually sees it, and what one field would put there.</p>
+    <p class="lede">Fixing all three is the point. <b>Any one of them alone is still a single point of failure</b> — you can't know which door a player came in through.</p>
+
+    <div class="tier">
+      <div class="tier-lab">
+        <span class="n">A</span>
+        <h3>The venue page</h3>
+        <span class="who who-booker">Booker only</span>
+      </div>
+      <p class="lede">Where GameFit's rules live — and where Aika's contradict themselves. Below the sports list, a racket-insurance promo, amenities, the games rail, Create Game, and a tournament promo.</p>
+
+      <div class="vp">
+        <div class="row">
+          <span class="lab">Amenities <i>ships today</i></span>
+          <div class="chips">
+            <span class="chip-r chip-grey">Parking</span>
+            <span class="chip-r chip-grey">Restroom</span>
+          </div>
+        </div>
+        <div class="row">
+          <span class="lab">Court rules <i>proposed — same component, one row down</i></span>
+          <div class="chips">
+            <span class="chip-r chip-no">✕ No barefoot</span>
+            <span class="chip-r chip-yes">Non-marking shoes</span>
+            <span class="chip-r chip-amb">Socks with rentals</span>
+            <span class="chip-r chip-grey">Rackets &amp; shoes on rent</span>
+            <span class="chip-r chip-grey">Max 4 per court</span>
+          </div>
+        </div>
+      </div>
+      <p class="lede" style="margin-top:16px;">You already ship a chip row on this page. It's pointed at parking. <b>One row down is the thing that decides whether you're allowed on the court.</b></p>
+    </div>
+
+    <div class="tier">
+      <div class="tier-lab">
+        <span class="n">B</span>
+        <h3>The game link</h3>
+        <span class="who who-player">The only screen I saw</span>
+      </div>
+      <p class="lede">What my friend shared. It carries an ad and a six-sport coaching grid. It does not carry one line about what to bring. <b>It isn't a space problem. It's a priority problem.</b></p>
+
+    <div class="stage">
+      <div class="stage-grid">
+
+        <!-- ============ NOW ============ -->
+        <div>
+          <div class="col-head">
+            <span class="tag tag-now">As shipped</span>
+            <h3>Game page · invited player</h3>
+            <p>Everything the product chose to tell me before I left the house.</p>
+          </div>
+
+          <div class="device">
+            <div class="device-screen" data-autoscroll>
+              <img src="/playo/playo-game-page.jpg" alt="The Playo game page for a badminton booking at GameFit, captured top to bottom.">
+            </div>
+          </div>
+          <p class="device-cap">ACTUAL SCREEN · SCROLL INSIDE<span class="device-hint">auto-scrolls · hover or drag to take over</span></p>
+
+          <div class="flagline">
+            <b>01</b><span>Venue name is a link. Nothing tells you there's a reason to tap it — you were invited, the venue's booked, your job is to turn up.</span>
+          </div>
+          <div class="flagline">
+            <b>02</b><span>Prime real estate, above the players, goes to a match screening.</span>
+          </div>
+          <div class="flagline">
+            <b>03</b><span>"Send query to host if you have any doubts." The answer to <i>what do I need to know</i> is: ask your friend. That's the coordination Playo exists to delete.</span>
+          </div>
+          <div class="flagline">
+            <b>04</b><span>Room for six sports of coaching upsell. None for four words about shoes.</span>
+          </div>
+        </div>
+
+        <!-- ============ FIX ============ -->
+        <div>
+          <div class="col-head">
+            <span class="tag tag-fix">Proposed</span>
+            <h3>Same page, one card earlier</h3>
+            <p>Existing components. No new patterns. The ads stay — they just stop going first.</p>
+          </div>
+
+          <div class="phone">
+            <div class="ph-head">
+              <div class="ph-bar">
+                <svg width="15" height="15" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+              </div>
+              <h4>Badminton</h4>
+              <span>8:00 PM – 9:00 PM &nbsp;•&nbsp; 17th Jul, Fri</span>
+            </div>
+
+            <div class="ph-body">
+              <div class="card venue-row">
+                <svg class="pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>
+                <div><a href="#01">GameFit</a><small>Venue Booked</small></div>
+              </div>
+
+              <div class="card prep">
+                <div class="card-head">
+                  <h5>Before you play</h5>
+                  <span class="prep-venue">GameFit rules</span>
+                </div>
+                <div class="chips">
+                  <span class="chip-r chip-no">✕ No barefoot</span>
+                  <span class="chip-r chip-yes">Non-marking shoes</span>
+                  <span class="chip-r chip-amb">Socks with rentals</span>
+                </div>
+                <div class="rent">
+                  <span>Forgot shoes?<em>Reserve a pair — ₹75, locked</em></span>
+                  <span class="go">Add ₹75</span>
+                </div>
+              </div>
+
+              <div class="ad">
+                <span class="live">● LIVE</span>
+                <h5>Watch the<br><i>FIFA Finals Live</i><br>on the Big Screen</h5>
+                <span class="chip">Save my Spot</span>
+              </div>
+
+              <div class="card">
+                <div class="card-head">
+                  <h5>Players (1)</h5>
+                  <svg class="lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+                </div>
+                <div class="player">
+                  <div class="avatar"></div>
+                  <div>
+                    <div class="nm">Sanskar… &nbsp;<span class="pill">HOST</span></div>
+                    <span class="pill">NO SKILL</span>
+                  </div>
+                </div>
+              </div>
+
+              <p class="private">This game is Private 🔒</p>
+            </div>
+          </div>
+
+          <div class="flagline" style="background:rgba(6,169,78,.13);border-left-color:var(--green);">
+            <b style="color:#4FD489;">→</b><span>Three rows, above the fold, before any ad. Rendered from the venue's own rules — not written by hand.</span>
+          </div>
+          <div class="flagline" style="background:rgba(6,169,78,.13);border-left-color:var(--green);">
+            <b style="color:#4FD489;">→</b><span><b style="color:#fff;">The rental line is the point.</b> GameFit earns money renting shoes — today it earns it by catching people out. This earns it by offering, in advance, to someone who's grateful: a guaranteed sale instead of a hopeful one. And it isn't a new pattern. You already ship it: <i>Protection against injuries · ₹9/session · Applied</i>, on the checkout screen.</span>
+          </div>
+          <div class="flagline" style="background:rgba(6,169,78,.13);border-left-color:var(--green);">
+            <b style="color:#4FD489;">→</b><span><b style="color:#fff;">It also closes a price gap.</b> The venue advertises shoe rental at ₹75; the cart rings it up at ₹80. Small money — but it's the same shape of bug, a number the player assumes, quietly contradicted at the point of paying. Reserving in advance puts the real figure on the game page before anyone leaves home, so what you assume and what you're charged are the same number.</span>
+          </div>
+          <div class="flagline" style="background:rgba(6,169,78,.13);border-left-color:var(--green);">
+            <b style="color:#4FD489;">→</b><span><b style="color:#fff;">Same field, different venue.</b> Aika's block would render <span class="chip-r chip-yes" style="font-size:9px;">Barefoot OK</span> in green, because Aika allows it. That's not a second design — it's the same three chips reading a different row.</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+
+    <div class="tier">
+      <div class="tier-lab">
+        <span class="n">C</span>
+        <h3>Checkout</h3>
+        <span class="who who-booker">Booker only</span>
+      </div>
+      <p class="lede">Fourteen bullets of Club Policy, truncated behind "show more". The shoes line is number two, between the eatables rule and the one about smoking. Barefoot isn't mentioned at all.</p>
+
+      <div class="ck">
+        <span class="eyebrow" style="margin-bottom:10px;">Proposed — chips above, blob intact</span>
+        <h5>Club Policy</h5>
+        <div class="chips">
+          <span class="chip-r chip-no">✕ No barefoot</span>
+          <span class="chip-r chip-yes">Non-marking shoes</span>
+          <span class="chip-r chip-amb">Socks with rentals</span>
+        </div>
+        <p class="ck-blob">- Eatables not allowed inside the premises. - Consumption of Food, Alcohol and Smoking inside the premises is prohibited. - Yelling or Shouting inside the premises is strictly prohibited. Unsolicited criticism, disruptive behavior…</p>
+        <span class="ck-more">show more</span>
+      </div>
+      <p class="lede" style="margin-top:16px;">The policy text stays exactly where it is — it's doing a legal job and I'm not qualified to touch it. The chips do the job the paragraph was never going to do at bullet two of fourteen while someone is trying to pay.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">02 — Why it looks like this</p>
+    <h2>Nobody chose the promo over the shoes. That's the problem.</h2>
+    <p class="lede">The promo isn't a mistake. It's a rational answer to a real question. Look at what the game page actually is: a screen an invited player opens over and over between booking and playing, with genuinely nothing to do on it. High attention, no utility. <b>That's textbook inventory</b> — and inventory earns. So the slot got claimed, reasonably, because it looked like empty space.</p>
+    <p class="lede">It wasn't empty. It was <b>unassigned.</b> The prep info never lost a fight for that slot — it was never in the room. Revenue is just what fills a vacuum.</p>
+    <p class="lede">And even if someone had wanted to put the rules there, they couldn't have. Read GameFit's About Venue closely: it says the same thing twice — a bullet list, then a "Note:" repeating two of the bullets. That redundancy is the tell. <b>It's free text, authored once, by a venue owner, into a box.</b></p>
+
+    <div class="scrollfig">
+      <div class="strip">
+        <img src="/playo/playo-venue-page.jpg" alt="GameFit's full venue page, top to bottom. The rules sit at the very bottom.">
+        <div class="mark" style="top:85.5%;height:11.5%;"><b>rules ↓</b></div>
+      </div>
+      <div class="figtext">
+        <h6>GameFit's venue page, top to bottom.</h6>
+        <p>Above the marker: the sports list, a racket-insurance promo, amenities, the games rail, Create Game, and a junior tournament promo.</p>
+        <p><b>The only part of this page that decides whether you're allowed on the court is the last thing on it</b> — and this is the page an invited player never opens anyway.</p>
+        <p class="depth">RULES BEGIN AT ~86% SCROLL DEPTH</p>
+      </div>
+    </div>
+
+    <div class="contra">
+      <span class="src">Aika Badminton Academy · About Venue · Badminton — all four lines</span>
+      <ol>
+        <li class="hot">Badminton Non Marking Shoes compulsory. Shoes must be worn after entering the facility.</li>
+        <li>Sports equipment available on rent: Rackets, Shoes.</li>
+        <li>Socks are compulsory for rented shoes. Please carry your own.</li>
+        <li class="hot">Barefoot play is allowed.</li>
+      </ol>
+      <p class="verdict">Line one and line four cannot both be true. Same venue, same box, three lines apart. <b>Nobody made a mistake here</b> — free text will happily accept two rules that exclude each other, and nothing in the product is capable of noticing. A field can't be typed wrong. That's the entire argument, and Aika typed it for me.</p>
+    </div>
+
+    <p class="lede" style="margin-top:26px;">Aika also settles the thing I'd assumed. <b>Aika allows barefoot play. GameFit strictly prohibits it.</b> Both in writing, on their own pages. The venues genuinely disagree — so there's no default a player could have held, and looking it up on one venue tells you nothing about the next.</p>
+
+    <div class="tmpl">
+      <div class="stat"><b>13</b><span>bullets identical across GameFit's and Aika's checkout Club Policy — same order, word for word. It's a template.</span></div>
+      <div class="stat"><b>1</b><span>line GameFit inserted into it (non-marking shoes). Aika inserted none at all.</span></div>
+      <div class="stat"><b>0</b><span>mentions of barefoot at either checkout — the rule that decides entry never reaches the pay screen.</span></div>
+    </div>
+
+    <div class="proof">
+      <h6>You already built this. It's one card higher up.</h6>
+      <p class="sub">The Cancellation Policy on those same two checkout screens:</p>
+      <div class="proof-grid">
+        <div class="proof-col">
+          <span class="src">GameFit</span>
+          <p>0–<b>3</b> hrs prior: cancellations not allowed.<br>&gt;<b>3</b> hrs prior: <b>15.0%</b> deducted.</p>
+        </div>
+        <div class="proof-col">
+          <span class="src">Aika</span>
+          <p>0–<b>2</b> hrs prior: cancellations not allowed.<br>&gt;<b>2</b> hrs prior: <b>20.0%</b> deducted.</p>
+        </div>
+      </div>
+      <p class="verdict">Same sentence. Different numbers. <b>That's a schema</b> — venue-configured values rendered through one template, consistent everywhere, impossible to contradict yourself in. You built it for refunds and put it directly above the free-text box where the footwear rule lives. <b>The machinery exists. It just isn't pointed at whether someone is allowed on the court.</b></p>
+    </div>
+
+    <p class="lede" style="margin-top:26px;">One thing I should say plainly, because it cuts against me: <b>my friend was told.</b> "Non-marking shoes are mandatory" was bullet two on his pay screen. It was there. I'm not going to pretend otherwise.</p>
+    <p class="lede">But I asked him afterwards, and <b>he didn't know.</b> Not "forgot to pass it on" — he had no idea barefoot was prohibited at GameFit. The one person the product disclosed to walked away without the knowledge. So this isn't a relay that dropped at the handoff. <b>It never started.</b></p>
+    <p class="lede">The information isn't missing. It's on two screens, twice. It has just never once been on the screen of the person about to walk onto the court, and it doesn't survive contact with the one person it is shown to.</p>
+
+    <p class="lede" style="margin-top:26px;">And there's a side of this that isn't about me at all. <b>Aika chose to allow barefoot play.</b> That's a decision they made and wrote down, and it's a reason to pick Aika over the court down the road — it's exactly the kind of thing a player selects on.</p>
+    <p class="lede">Right now you render that choice as grey 12px body copy at 90% scroll depth, contradicted by their own first line, unfilterable in search, and invisible on the screen where a player decides anything. <b>Every venue on the platform has differentiators you can only express as a paragraph.</b> Fields would let them compete on the things they've already decided to be good at.</p>
+    <p class="lede">A paragraph can only ever live in one place. That's why the rule can't appear on the game page, in the share sheet, or in a notification — not because nobody thought of it, but because there's nothing structured to render. Every surface would need a human to retype it.</p>
+    <p class="lede">So the fix isn't a card. <b>The card is downstream.</b> The fix is upstream, in venue onboarding: turn the four or five rules that actually repeat across every venue in India — footwear, socks, equipment rental, players per court — into fields. Leave the box for everything else.</p>
+
+    <div class="pipe">
+      <div class="pipe-src">
+        <p class="eyebrow">Venue onboarding · structured</p>
+        <p><b>footwear:</b> non_marking_required<br><b>barefoot:</b> prohibited<br><b>socks:</b> required_with_rental<br><b>rental:</b> racket, shoes</p>
+      </div>
+      <div class="pipe-arrow"></div>
+      <div class="surfaces">
+        <div class="surf new">
+          <span class="n">NEW</span>
+          <h6>Venue page chip</h6>
+          <p>One row under Amenities. Same component, pointed at the rule that decides entry.</p>
+        </div>
+        <div class="surf new">
+          <span class="n">NEW</span>
+          <h6>Search filter</h6>
+          <p>Aika's barefoot policy is a reason to pick Aika. Today it's unfilterable.</p>
+        </div>
+        <div class="surf new">
+          <span class="n">NEW</span>
+          <h6>Game page</h6>
+          <p>The invited player finally gets told something.</p>
+        </div>
+        <div class="surf new">
+          <span class="n">NEW</span>
+          <h6>Share sheet</h6>
+          <p>Travels with the invite. The link becomes a brief, not a receipt.</p>
+        </div>
+        <div class="surf new">
+          <span class="n">NEW</span>
+          <h6>2h reminder</h6>
+          <p>"GameFit at 8. Bring non-marking shoes." Push beats pull.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="lede" style="margin-top:26px;">One schema change. Four surfaces. That's the ratio that makes this worth a sprint rather than a ticket.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">03 — Why this one</p>
+    <h2>It fails at exactly the sentence you sell.</h2>
+    <p class="lede">You've written publicly about why Playo wins against District Play: a player joins for ₹100, equipment's included, players are already there, a host runs the session — you just show up and play. The cult.fit comparison. The social friction is completely removed. <i>That is why it worked.</i></p>
+
+    <div class="quote">
+      <p>I showed up. I couldn't play. Not because of the court — because the product routed everything I needed through the one person it was supposed to make unnecessary.</p>
+      <cite>The gap between the thesis and the game page</cite>
+    </div>
+
+    <p class="lede">Renting shoes once is a small event, and I'm not going to tell you what it costs you — I don't have your numbers and I'd only be guessing at them.</p>
+    <p class="lede">What I can tell you is what it was. A player who didn't choose Playo, meeting a venue for the first time, whose first unmediated experience of the product was arriving unprepared and paying for it at the counter.</p>
+    <p class="lede">And I'll be specific about who that is, because it matters: <b>I'm a casual player. I don't own non-marking shoes.</b> I'm not going to tell you what share of your users look like me — I have no idea, and you do. But I'm one of them, and the invite link is how people like me arrive. <b>Whether that's worth a sprint is your call, not mine.</b></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">04 — What I don't know</p>
+    <h2>Four numbers would tell you if I'm right.</h2>
+    <p class="lede">I'm one annoyed user with two screenshots. That's a hypothesis, not a finding. Here's what I'd want before shipping anything:</p>
+    <ul class="checks">
+      <li><span class="q">Q1</span><p><b>What share of players on a given game are invitees, not the booker?</b><span>If it's under 15%, this is a ticket. If it's a third or more, the game page is a primary surface being treated as a secondary one.</span></p></li>
+      <li><span class="q">Q2</span><p><b>What's rental revenue at venues where rules are strict?</b><span>The honest tension: unpreparedness is income for the venue. If it's material, "reserve in advance" isn't a courtesy — it's the version of this that survives the partner conversation.</span></p></li>
+      <li><span class="q">Q3</span><p><b>How many support tickets and venue disputes mention footwear?</b><span>Cheapest signal you have. It's sitting in the queue already.</span></p></li>
+      <li><span class="q">Q4</span><p><b>Do invited players who hit a rule surprise ever book their own slot?</b><span>The one that decides whether this is a UX polish item or a funnel leak.</span></p></li>
+    </ul>
+    <p class="lede" style="margin-top:28px;">I'd start with Q3, because it's the only one of these the product could ever have told you on its own.</p>
+    <p class="lede">69.77K games at this one venue and this never surfaced. Not because nobody cared &mdash; because nothing is pointed at it. <b>The star rates GameFit, and GameFit deserves its 4.45</b>; the courts are fine, the handoff isn't, so an angry rating would land on the wrong entity and you'd learn nothing from it. The query goes to a friend, in private, as free text.</p>
+    <p class="lede">Two instruments on this flow, and neither one is aimed here. <b>The bug isn't that it was missed. It's that it was unmissable in the only two places anyone was looking.</b></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">05 — The actual question</p>
+    <h2>Three ways to read all of this.</h2>
+    <p class="lede">I can't tell from outside which one is true, and that's the only thing I actually want out of writing it.</p>
+    <div class="reads">
+      <div class="read">
+        <span class="n">READING ONE</span>
+        <h6>You've seen it and passed.</h6>
+        <p>The invitee share is small, the slot earns, and structuring rules means a migration plus re-onboarding every venue in nine cities. That's a real answer. If it's the answer, I'd like to know the number that made it one.</p>
+      </div>
+      <div class="read">
+        <span class="n">READING TWO</span>
+        <h6>It's real and it's never surfaced.</h6>
+        <p>Nothing in the product could have told you. The star rates the venue, and the venue is fine. The query goes to a friend, in private, as free text. If that's it, the cheapest move is Q3 — search your support queue for "shoes".</p>
+      </div>
+      <div class="read">
+        <span class="n">READING THREE</span>
+        <h6>I've invented this.</h6>
+        <p>A casual player who doesn't own the shoes had one bad Friday and generalised from it. Entirely possible, and I'd rather hear that than not hear back.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Built from two screenshots and one bad Friday. Every component here is Playo's — I've moved things, not redesigned them. Happy to be told I'm wrong about the numbers; I'd mostly like to know what they are.</p>
+    <p class="sig">JITESH T · PRODUCT DESIGNER · <a href="https://jitesht.com">jitesht.com</a></p>
+  </div>
+</footer>
+
+<script is:inline>
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll('[data-autoscroll]').forEach(function (el) {
+      var dir = 1, speed = 0.7, paused = reduce;
+      ['pointerenter', 'pointerdown', 'touchstart', 'wheel'].forEach(function (ev) {
+        el.addEventListener(ev, function () { paused = true; }, { passive: true });
+      });
+      el.addEventListener('pointerleave', function () { if (!reduce) paused = false; });
+      function step() {
+        if (!paused) {
+          el.scrollTop += dir * speed;
+          if (el.scrollTop + el.clientHeight >= el.scrollHeight - 1) dir = -1;
+          else if (el.scrollTop <= 0) dir = 1;
+        }
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  })();
+</script>
+
+</body>
+</html>
