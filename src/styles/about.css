@@ -41,7 +41,7 @@
     }
 
     .nav-logo {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 1.5rem;
       color: var(--text-primary);
       text-decoration: none;
@@ -60,7 +60,7 @@
     }
 
     .nav-links a {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.85rem;
       font-weight: 500;
       letter-spacing: 0.03em;
@@ -186,7 +186,7 @@
     }
 
     .about-photo-placeholder {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 8rem;
       color: rgba(255, 255, 255, 0.2);
       letter-spacing: -0.04em;
@@ -206,7 +206,7 @@
     }
 
     .about-stats-float .stat-number {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 2.8rem;
       color: var(--accent);
       line-height: 1;
@@ -225,7 +225,7 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.14em;
@@ -243,7 +243,7 @@
     }
 
     .section-heading {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: clamp(2.2rem, 3.8vw, 3.2rem);
       letter-spacing: -0.02em;
       line-height: 1.12;
@@ -271,7 +271,7 @@
     }
 
     .skill-chip {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.78rem;
       font-weight: 500;
       letter-spacing: 0.05em;
@@ -423,7 +423,7 @@
       min-height: 100vh;
       background: #0d0d0d;
       color: var(--text-primary);
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       cursor: none;
     }
 
@@ -593,7 +593,7 @@
     .section-heading,
     .about-stats-float .stat-number,
     .footer-logo {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-weight: 700;
       color: var(--text-primary);
     }
@@ -691,14 +691,14 @@
 
     .muted {
       color: var(--accent);
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-style: italic;
       font-weight: 400;
     }
 
     .about-body {
       color: var(--text-secondary);
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 1.06rem;
       line-height: 1.8;
     }
@@ -1386,7 +1386,7 @@
     }
 
     .after-hours .ah-heading {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-weight: 500;
       font-size: clamp(2.4rem, 5vw, 4.2rem);
       letter-spacing: -0.02em;
@@ -1421,7 +1421,7 @@
 
     .after-hours .ah-paragraph {
       position: relative;
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 1.06rem;
       line-height: 1.85;
       letter-spacing: 0.005em;

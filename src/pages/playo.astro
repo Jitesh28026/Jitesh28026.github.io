@@ -1,6 +1,6 @@
 ---
 // Standalone Playo product teardown. Deliberately self-contained — its own
-// visual identity (Roboto + Playo green), not the portfolio's terminal theme.
+// visual identity (Manrope + Playo green), not the portfolio's terminal theme.
 // Served at /playo. Images live in /public/playo/.
 const canonical = 'https://jitesht.com/playo';
 const description =
@@ -23,7 +23,7 @@ const description =
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style is:global>
   :root{
     --green:#06A94E;
@@ -48,7 +48,7 @@ const description =
     margin:0;
     background:var(--paper);
     color:var(--ink);
-    font-family:'Roboto',system-ui,sans-serif;
+    font-family:'Manrope',system-ui,sans-serif;
     -webkit-font-smoothing:antialiased;
     line-height:1.55;
   }
@@ -56,7 +56,7 @@ const description =
 
   /* ---------- eyebrow / utility type ---------- */
   .eyebrow{
-    font-family:'Roboto Mono',monospace;
+    font-family:'DM Mono',monospace;
     font-size:11px;
     letter-spacing:.14em;
     text-transform:uppercase;
@@ -84,7 +84,7 @@ const description =
   .hero-meta{
     margin-top:26px;padding-top:18px;
     border-top:1px solid rgba(255,255,255,.14);
-    font-family:'Roboto Mono',monospace;
+    font-family:'DM Mono',monospace;
     font-size:11.5px;letter-spacing:.06em;
     color:rgba(255,255,255,.46);
     display:flex;flex-wrap:wrap;gap:8px 22px;
@@ -102,7 +102,7 @@ const description =
   }
   .receipt dl{margin:0;display:grid;grid-template-columns:150px 1fr;gap:9px 18px;}
   .receipt dt{
-    font-family:'Roboto Mono',monospace;
+    font-family:'DM Mono',monospace;
     font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
     color:var(--ink-3);padding-top:3px;
   }
@@ -137,7 +137,7 @@ const description =
   .col-head{margin:0 0 12px;}
   .col-head .tag{
     display:inline-block;
-    font-family:'Roboto Mono',monospace;
+    font-family:'DM Mono',monospace;
     font-size:10px;letter-spacing:.12em;text-transform:uppercase;
     padding:4px 9px;border-radius:4px;margin-bottom:8px;
   }
@@ -172,7 +172,7 @@ const description =
     border-radius:9px;padding:13px;color:#fff;
   }
   .ad .live{
-    font-family:'Roboto Mono',monospace;font-size:7.5px;letter-spacing:.1em;
+    font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:.1em;
     background:#111;color:#FF4B4B;padding:2px 5px;border-radius:2px;
   }
   .ad h5{margin:8px 0 0;font-size:13px;font-weight:700;line-height:1.25;}
@@ -216,7 +216,7 @@ const description =
     margin-top:9px;
   }
   .flagline > b{
-    font-family:'Roboto Mono',monospace;color:#F08079;
+    font-family:'DM Mono',monospace;color:#F08079;
     font-size:9px;letter-spacing:.06em;flex:none;padding-top:1px;
   }
   .flagline > span{font-size:10.5px;color:rgba(255,255,255,.72);line-height:1.42;}
@@ -225,7 +225,7 @@ const description =
   .prep{border:1.5px solid var(--green);background:var(--green-tint);}
   .prep .card-head h5{color:var(--green-dark);}
   .prep-venue{
-    font-family:'Roboto Mono',monospace;font-size:8.5px;letter-spacing:.06em;
+    font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.06em;
     color:var(--green-dark);text-transform:uppercase;
   }
   .rule{display:flex;align-items:center;gap:7px;padding:5px 0;font-size:11.5px;}
@@ -245,7 +245,7 @@ const description =
   .rent span{font-size:10.5px;font-weight:500;}
   .rent em{font-style:normal;font-size:9.5px;color:var(--ink-3);display:block;}
   .rent .go{
-    font-family:'Roboto Mono',monospace;font-size:8.5px;letter-spacing:.08em;
+    font-family:'DM Mono',monospace;font-size:8.5px;letter-spacing:.08em;
     color:var(--green);font-weight:500;border:1px solid var(--green);
     padding:3px 7px;border-radius:3px;
   }
@@ -269,7 +269,7 @@ const description =
   .surfaces{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;}
   .surf{border:1px solid var(--line);border-radius:8px;padding:12px;}
   .surf .n{
-    font-family:'Roboto Mono',monospace;font-size:9.5px;letter-spacing:.08em;
+    font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.08em;
     color:var(--green);display:block;margin-bottom:5px;
   }
   .surf h6{margin:0 0 4px;font-size:12.5px;font-weight:700;}
@@ -285,7 +285,7 @@ const description =
   .quote p{margin:0;font-size:18px;font-weight:500;letter-spacing:-.01em;line-height:1.42;}
   .quote cite{
     display:block;margin-top:9px;font-style:normal;
-    font-family:'Roboto Mono',monospace;font-size:10.5px;letter-spacing:.06em;color:var(--ink-3);
+    font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.06em;color:var(--ink-3);
   }
 
   /* ---------- validate list ---------- */
@@ -295,7 +295,7 @@ const description =
   }
   .checks li:last-child{border-bottom:1px solid var(--line);}
   .checks .q{
-    font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.08em;
+    font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.08em;
     color:var(--ink-3);flex:none;width:34px;padding-top:3px;
   }
   .checks p{margin:0;font-size:14.5px;}
@@ -308,7 +308,7 @@ const description =
   footer a{color:var(--green);text-decoration:none;font-weight:500;}
   footer a:hover{text-decoration:underline;}
   footer .sig{
-    margin-top:16px;font-family:'Roboto Mono',monospace;
+    margin-top:16px;font-family:'DM Mono',monospace;
     font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.38);
   }
 
@@ -316,7 +316,7 @@ const description =
   .shot{border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:#fff;}
   .shot img{display:block;width:100%;height:auto;}
   .shot-cap{
-    margin:9px 0 0;font-family:'Roboto Mono',monospace;
+    margin:9px 0 0;font-family:'DM Mono',monospace;
     font-size:9px;letter-spacing:.08em;color:rgba(255,255,255,.38);text-align:center;
   }
 
@@ -338,7 +338,7 @@ const description =
   .device-screen::-webkit-scrollbar-thumb{background:rgba(255,255,255,.3);border-radius:2px;}
   .device-screen img{display:block;width:100%;height:auto;}
   .device-cap{
-    margin:11px 0 0;font-family:'Roboto Mono',monospace;
+    margin:11px 0 0;font-family:'DM Mono',monospace;
     font-size:9px;letter-spacing:.08em;color:rgba(255,255,255,.38);text-align:center;
   }
   .device-hint{display:block;margin-top:3px;font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.05em;}
@@ -358,14 +358,14 @@ const description =
   }
   .mark b{
     position:absolute;right:calc(100% + 8px);top:0;
-    font-family:'Roboto Mono',monospace;font-size:9px;letter-spacing:.06em;
+    font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.06em;
     color:var(--flag);white-space:nowrap;
   }
   .figtext h6{margin:0 0 10px;font-size:15px;font-weight:700;}
   .figtext p{margin:0 0 12px;font-size:14px;color:var(--ink-2);line-height:1.6;}
   .figtext p b{color:var(--ink);font-weight:700;}
   .figtext .depth{
-    font-family:'Roboto Mono',monospace;font-size:10.5px;letter-spacing:.07em;
+    font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.07em;
     color:var(--flag);margin:0;
   }
 
@@ -379,7 +379,7 @@ const description =
   .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   .blob{border:1px solid var(--line);border-radius:8px;padding:14px;}
   .blob .src{
-    display:block;font-family:'Roboto Mono',monospace;
+    display:block;font-family:'DM Mono',monospace;
     font-size:9px;letter-spacing:.1em;text-transform:uppercase;
     color:var(--ink-3);margin-bottom:10px;
   }
@@ -391,7 +391,7 @@ const description =
   .blob li:first-child{border-top:0;}
   .blob li.only{color:var(--flag);font-weight:700;}
   .blob li.miss{
-    color:var(--ink-3);font-family:'Roboto Mono',monospace;
+    color:var(--ink-3);font-family:'DM Mono',monospace;
     font-size:10.5px;letter-spacing:.03em;background:rgba(217,72,63,.07);
   }
   .blob .note{
@@ -421,7 +421,7 @@ const description =
     padding:24px;margin-top:30px;
   }
   .contra > .src{
-    display:block;font-family:'Roboto Mono',monospace;font-size:9px;
+    display:block;font-family:'DM Mono',monospace;font-size:9px;
     letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;
   }
   .contra ol{margin:0;padding:0 0 0 22px;}
@@ -458,7 +458,7 @@ const description =
     border-radius:8px;padding:14px;
   }
   .proof-col .src{
-    display:block;font-family:'Roboto Mono',monospace;font-size:9px;
+    display:block;font-family:'DM Mono',monospace;font-size:9px;
     letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:9px;
   }
   .proof-col p{margin:0;font-size:13px;color:rgba(255,255,255,.78);line-height:1.65;}
@@ -472,7 +472,7 @@ const description =
   /* check-it-yourself link bar */
   .linkbar{margin-top:24px;display:flex;flex-wrap:wrap;gap:9px;align-items:center;}
   .linkbar .lbl{
-    font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.1em;
+    font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;
     text-transform:uppercase;color:rgba(255,255,255,.42);margin-right:4px;
   }
   .linkbar a{
@@ -488,11 +488,11 @@ const description =
   .tier:first-of-type{margin-top:34px;}
   .tier-lab{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 14px;margin-bottom:12px;}
   .tier-lab .n{
-    font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--ink-3);
+    font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--ink-3);
   }
   .tier-lab h3{margin:0;font-size:23px;font-weight:900;letter-spacing:-.025em;}
   .who{
-    font-family:'Roboto Mono',monospace;font-size:9.5px;letter-spacing:.09em;
+    font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.09em;
     text-transform:uppercase;padding:3px 8px;border-radius:3px;margin-left:auto;
   }
   .who-booker{border:1px solid var(--line);color:var(--ink-3);}
@@ -503,7 +503,7 @@ const description =
   .vp .row + .row{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);}
   .vp .lab{display:block;font-size:14px;font-weight:700;margin-bottom:8px;}
   .vp .lab i{
-    font-style:normal;font-family:'Roboto Mono',monospace;font-size:9px;
+    font-style:normal;font-family:'DM Mono',monospace;font-size:9px;
     letter-spacing:.08em;color:var(--ink-3);margin-left:8px;font-weight:400;
   }
   .chip-grey{background:#EFEFEF;border-color:#E2E2E2;color:var(--ink-2);font-weight:400;}
@@ -523,7 +523,7 @@ const description =
   .reads{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px;}
   .read{border:1px solid var(--line);border-radius:12px;padding:20px;background:var(--white);}
   .read .n{
-    font-family:'Roboto Mono',monospace;font-size:10px;letter-spacing:.1em;
+    font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;
     color:var(--ink-3);display:block;margin-bottom:9px;
   }
   .read h6{margin:0 0 8px;font-size:15px;font-weight:900;letter-spacing:-.01em;}
@@ -551,7 +551,7 @@ const description =
 
 <header class="hero">
   <div class="wrap">
-    <a href="/" style="display:inline-block;margin-bottom:18px;font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.55);text-decoration:none;">&larr; jitesht.com</a>
+    <a href="/" style="display:inline-block;margin-bottom:18px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.55);text-decoration:none;">&larr; jitesht.com</a>
     <p class="eyebrow">Product teardown · Unsolicited · 18 Jul 2026</p>
     <h1>Show up and <em>play.</em></h1>
     <p>Playo's whole thesis is that you shouldn't have to coordinate. Last night I showed up to a court I wasn't allowed to walk onto — because the product told my friend, and not me.</p>

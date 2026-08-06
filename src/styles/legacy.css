@@ -31,7 +31,7 @@
     body {
       background-color: var(--white);
       color: var(--text-primary);
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-weight: 400;
       line-height: 1.6;
       letter-spacing: 0.01em;
@@ -80,7 +80,7 @@
     }
 
     .nav-logo {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 1.5rem;
       color: var(--text-primary);
       text-decoration: none;
@@ -101,7 +101,7 @@
     }
 
     .nav-links a {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.85rem;
       font-weight: 500;
       letter-spacing: 0.03em;
@@ -205,7 +205,7 @@
       gap: 8px;
       background: var(--accent-light);
       color: var(--accent);
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.78rem;
       font-weight: 600;
       letter-spacing: 0.06em;
@@ -231,7 +231,7 @@
     }
 
     .hero-title {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: clamp(3.5rem, 6.5vw, 5.5rem);
       line-height: 1.05;
       letter-spacing: -0.04em;
@@ -283,7 +283,7 @@
       background: var(--accent);
       color: #fff;
       padding: 14px 32px;
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.88rem;
       font-weight: 600;
       letter-spacing: 0.04em;
@@ -306,7 +306,7 @@
     .btn-outline {
       color: var(--text-primary);
       padding: 14px 28px;
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.88rem;
       font-weight: 500;
       letter-spacing: 0.04em;
@@ -382,7 +382,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 1.3rem;
       color: #fff;
     }
@@ -392,7 +392,7 @@
     }
 
     .card-name {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-weight: 600;
       font-size: 1rem;
       color: var(--text-primary);
@@ -419,7 +419,7 @@
     }
 
     .stat-number {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 2rem;
       color: var(--text-primary);
       line-height: 1;
@@ -441,7 +441,7 @@
     }
 
     .card-skill {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.72rem;
       font-weight: 500;
       letter-spacing: 0.05em;
@@ -511,7 +511,7 @@
     }
 
     .marquee-inner span {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.78rem;
       font-weight: 500;
       letter-spacing: 0.15em;
@@ -541,7 +541,7 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.14em;
@@ -555,7 +555,7 @@
        on About so the two pages read as the same designer's grammar. */
 
     .section-heading {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: clamp(2.2rem, 3.8vw, 3.2rem);
       letter-spacing: -0.02em;
       line-height: 1.12;
@@ -662,7 +662,7 @@
     .thumb-number {
       position: relative;
       z-index: 1;
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 6rem;
       color: rgba(255, 255, 255, 0.12);
       letter-spacing: -0.04em;
@@ -681,7 +681,7 @@
     }
 
     .project-tag {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.68rem;
       font-weight: 500;
       letter-spacing: 0.1em;
@@ -693,7 +693,7 @@
     }
 
     .project-name {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 1.45rem;
       letter-spacing: -0.01em;
       margin-bottom: 8px;
@@ -778,7 +778,7 @@
     }
 
     .hero-title {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: clamp(3.5rem, 8vw, 6.5rem);
       line-height: 0.95;
       letter-spacing: -0.04em;
@@ -843,7 +843,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 1.8rem;
       color: #fff;
     }
@@ -873,7 +873,7 @@
     }
 
     .stat-number {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 1.5rem;
       color: var(--accent);
       line-height: 1;
@@ -963,7 +963,7 @@
     }
 
     .gallery-title {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: clamp(3rem, 6vw, 4.5rem);
       line-height: 1.05;
       letter-spacing: -0.04em;
@@ -1078,7 +1078,7 @@
     }
 
     .caption-title {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-weight: 600;
       font-size: 1.1rem;
       margin-bottom: 4px;
@@ -1192,7 +1192,7 @@
     }
 
     .step-num {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 1.5rem;
       color: var(--accent);
       margin-bottom: 0.75rem;
@@ -1201,7 +1201,7 @@
     }
 
     .step-title {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 2.5rem;
       line-height: 1.1;
       margin-bottom: 1.5rem;
@@ -1286,7 +1286,7 @@
     }
 
     .contact-btn {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.85rem;
       font-weight: 500;
       letter-spacing: 0.05em;
@@ -1339,7 +1339,7 @@
     }
 
     .footer-logo {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 1.1rem;
       color: var(--text-primary);
       letter-spacing: -0.01em;
@@ -1369,7 +1369,7 @@
     }
 
     .footer-links a {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: 0.78rem;
       font-weight: 500;
       color: var(--text-secondary);
@@ -1675,7 +1675,7 @@
       min-height: 100vh;
       background: #0d0d0d;
       color: var(--text-primary);
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       cursor: none;
     }
 
@@ -1743,7 +1743,7 @@
     .loader-greeting {
       margin: 0 0 0.85rem;
       color: var(--text-primary);
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-size: clamp(1.6rem, 2.6vw, 2.2rem);
       font-weight: 500;
       line-height: 1.1;
@@ -1844,7 +1844,7 @@
     .step-title,
     .section-heading,
     .hero-title {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-weight: 800;
     }
 
@@ -1959,7 +1959,7 @@
     .hero-title .highlight,
     .muted {
       color: var(--accent);
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
       font-style: italic;
       font-weight: 400;
     }
@@ -1974,7 +1974,7 @@
     .step-desc,
     .contact-sub {
       color: var(--text-secondary);
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
     }
 
     .hero-desc {
@@ -2244,7 +2244,7 @@
 
     .caption-title {
       color: var(--text-primary);
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Manrope', sans-serif;
     }
 
     .caption-tag {
