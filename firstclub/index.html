@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FirstClub · Taste Passport — Version 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --cream:#f5efe1;
+      --cream-2:#fbf7ec;
+      --cream-3:#fdfbf3;
+      --page:#ebe3d1;
+      --paper:#f7f1e2;
+      --paper-2:#f1e7d2;
+      --ink:#1d1b16;
+      --ink-soft:#726d5f;
+      --ink-faint:#9c9686;
+      --green-900:#123a26;
+      --green-700:#1e5c3f;
+      --green-500:#2f7b54;
+      --sage-1:#dce9d2;
+      --sage-2:#c7deb8;
+      --gold:#dfa84d;
+      --gold-soft:#f1dca6;
+      --line:#e4dcc8;
+      --shadow:0 24px 52px -24px rgba(24,36,24,.42);
+      --shadow-soft:0 14px 30px -20px rgba(24,36,24,.28);
+      --radius-xl:34px;
+      --radius-lg:24px;
+      --radius-md:18px;
+      --radius-sm:12px;
+      --ease:cubic-bezier(.2,.8,.2,1);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+    body{
+      min-height:100vh;
+      background:
+        radial-gradient(1100px 500px at 50% -10%, rgba(255,255,255,.48), transparent 60%),
+        linear-gradient(180deg, #efe7d6 0%, var(--page) 100%);
+      color:var(--ink);
+      font-family:"Poppins",system-ui,sans-serif;
+      line-height:1.45;
+      padding:36px 16px 88px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    button,input,select{font:inherit}
+    button{border:none;background:none}
+    .serif{font-family:"Fraunces", Georgia, serif}
+
+    .masthead{
+      width:min(100%, 430px);
+      margin:0 auto 28px;
+    }
+    .kick{
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--green-700);
+      font-weight:600;
+    }
+    h1{
+      font-family:"Fraunces", Georgia, serif;
+      font-size:31px;
+      line-height:1.03;
+      color:var(--green-900);
+      margin-top:7px;
+      font-weight:600;
+    }
+    .masthead p{
+      font-size:13.5px;
+      color:var(--ink-soft);
+      margin-top:10px;
+      max-width:39ch;
+    }
+
+    .controls{
+      width:min(100%, 430px);
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:0 auto 16px;
+    }
+    .controls button{
+      padding:8px 13px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(251,247,236,.82);
+      color:var(--ink-soft);
+      font-size:12px;
+      font-weight:500;
+      cursor:pointer;
+      transition:all .18s var(--ease);
+    }
+    .controls button:hover{border-color:var(--sage-2)}
+    .controls button.on{
+      background:var(--green-900);
+      color:#fff;
+      border-color:var(--green-900);
+    }
+    .controls button:focus-visible,
+    .passport-card:focus-visible,
+    .page-dot:focus-visible,
+    .navbtn:focus-visible,
+    .archive-card:focus-visible,
+    .ghost-link:focus-visible,
+    .reward-button:focus-visible,
+    .entry-pill:focus-visible,
+    .intro-cta:focus-visible{
+      outline:2px solid var(--green-500);
+      outline-offset:2px;
+    }
+
+    .phone{
+      width:min(100%, 390px);
+      background:var(--cream);
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow);
+      border:1px solid rgba(0,0,0,.05);
+      overflow:hidden;
+      position:relative;
+    }
+    .statusbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:11px 22px 4px;
+      font-size:12px;
+      color:var(--ink);
+      font-weight:500;
+    }
+    .statusbar .dots{display:flex;gap:5px;align-items:center}
+    .statusbar .dots i{
+      width:5px;height:5px;border-radius:50%;
+      background:var(--ink);opacity:.7;display:block;
+    }
+    .statusbar .right{font-size:11px;opacity:.74}
+
+    .shell{
+      padding:0 16px 18px;
+      background:
+        radial-gradient(140% 60% at 50% -10%, rgba(255,255,255,.34), transparent 46%),
+        linear-gradient(180deg, rgba(251,247,236,.82), rgba(245,239,225,1));
+    }
+
+    .profile-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      padding:14px 4px 14px;
+    }
+    .profile-header .name{
+      font-family:"Fraunces", Georgia, serif;
+      font-size:22px;
+      color:var(--green-900);
+      font-weight:600;
+    }
+    .profile-header .sub{
+      font-size:12px;
+      color:var(--ink-soft);
+      margin-top:3px;
+    }
+    .tracking-panel{
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(255,255,255,.74), rgba(251,247,236,.96));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow-soft);
+      padding:16px 16px 16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .tracking-panel::before{
+      content:"";
+      position:absolute;
+      width:120px;
+      height:120px;
+      right:-30px;
+      top:-40px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(220,233,210,.55), transparent 66%);
+      pointer-events:none;
+    }
+    .order-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+    .order-label{
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--green-700);
+      font-weight:600;
+    }
+    .order-title{
+      margin-top:6px;
+      font-family:"Fraunces", Georgia, serif;
+      font-size:24px;
+      line-height:1.05;
+      font-weight:600;
+      color:var(--ink);
+    }
+    .order-meta{
+      margin-top:8px;
+      font-size:12.5px;
+      color:var(--ink-soft);
+      max-width:25ch;
+    }
+    .order-chip{
+      padding:6px 10px;
+      border-radius:999px;
+      background:var(--sage-1);
+      color:var(--green-700);
+      font-size:11px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+    .order-progress{
+      margin-top:14px;
+      display:grid;
+      gap:8px;
+      position:relative;
+      z-index:1;
+    }
+    .order-step{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      font-size:12px;
+      color:var(--ink-soft);
+    }
+    .order-step b{
+      color:var(--ink);
+      font-weight:600;
+      display:block;
+    }
+    .order-step .bullet{
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      flex:none;
+      display:grid;
+      place-items:center;
+      margin-top:1px;
+      background:#f4efdf;
+      border:1px solid rgba(30,92,63,.12);
+      color:var(--green-700);
+      font-size:10px;
+      font-weight:700;
+    }
+    .passport-unlock{
+      width:100%;
+      margin-top:16px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 15px;
+      border-radius:24px;
+      text-align:left;
+      background:linear-gradient(160deg, #295f42 0%, #173f29 74%, #123321 100%);
+      color:#fff;
+      box-shadow:0 18px 38px -22px rgba(18,58,38,.75);
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+    }
+    .passport-unlock::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(115deg, transparent 30%, rgba(241,220,166,.16) 50%, transparent 64%);
+      transform:translateX(-140%);
+      animation:foil 7s linear infinite;
+      pointer-events:none;
+    }
+    .unlock-copy{
+      position:relative;
+      z-index:1;
+      flex:1;
+      min-width:0;
+    }
+    .entry-kicker{
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:rgba(241,220,166,.92);
+      font-weight:600;
+      position:relative;
+      z-index:1;
+    }
+    .entry-title{
+      margin-top:6px;
+      font-family:"Fraunces", Georgia, serif;
+      font-size:21px;
+      line-height:1.05;
+      font-weight:600;
+      position:relative;
+      z-index:1;
+    }
+    .entry-copy{
+      margin-top:5px;
+      font-size:12px;
+      color:rgba(255,255,255,.78);
+      max-width:26ch;
+      position:relative;
+      z-index:1;
+    }
+    .entry-action{
+      position:relative;
+      z-index:1;
+      flex:none;
+      align-self:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.14);
+      font-size:11px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+    .avatar{
+      width:38px;height:38px;border-radius:50%;
+      background:linear-gradient(150deg, var(--sage-1), #eef5e8);
+      border:1px solid rgba(30,92,63,.14);
+      display:grid;
+      place-items:center;
+      color:var(--green-700);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
+    }
+
+    .passport-card{
+      width:100%;
+      text-align:left;
+      display:block;
+      background:linear-gradient(160deg, #295f42 0%, #173f29 74%, #123321 100%);
+      border-radius:28px;
+      color:#fff;
+      padding:18px 18px 16px;
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 18px 38px -20px rgba(18,58,38,.8);
+      cursor:pointer;
+      transition:transform .26s var(--ease), box-shadow .26s var(--ease);
+    }
+    .passport-card:hover{transform:translateY(-1px)}
+    .passport-card::before{
+      content:"";
+      position:absolute;
+      inset:-10% auto auto -15%;
+      width:160px;height:160px;
+      background:radial-gradient(circle, rgba(255,255,255,.13) 0%, transparent 62%);
+      pointer-events:none;
+    }
+    .passport-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(110deg, transparent 30%, rgba(241,220,166,.18) 48%, transparent 64%);
+      transform:translateX(-130%);
+      opacity:.6;
+      pointer-events:none;
+      animation:foil 6s linear infinite;
+    }
+    @keyframes foil{
+      0%, 18%{transform:translateX(-130%)}
+      32%, 100%{transform:translateX(140%)}
+    }
+
+    .card-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      position:relative;
+      z-index:1;
+    }
+    .card-kicker{
+      font-size:10.5px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:rgba(241,220,166,.92);
+      font-weight:600;
+    }
+    .card-title{
+      font-family:"Fraunces", Georgia, serif;
+      font-size:26px;
+      line-height:1.02;
+      margin-top:8px;
+      font-weight:600;
+      max-width:12ch;
+    }
+    .card-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.12);
+      font-size:11px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+    .card-meta{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:18px;
+    }
+    .meta-block .label{
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.68);
+      font-weight:600;
+    }
+    .meta-block .value{
+      margin-top:4px;
+      font-size:14px;
+      font-weight:600;
+    }
+    .card-progress{
+      position:relative;
+      z-index:1;
+      margin-top:16px;
+      padding-top:14px;
+      border-top:1px solid rgba(255,255,255,.12);
+    }
+    .progress-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      font-size:12px;
+      color:rgba(255,255,255,.82);
+    }
+    .progress-row b{color:#fff}
+    .track{
+      height:8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.15);
+      overflow:hidden;
+      margin-top:10px;
+    }
+    .track span{
+      display:block;
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg, #f1dca6 0%, #dfa84d 55%, #f7e6bc 100%);
+      width:0;
+      transition:width .55s var(--ease);
+    }
+
+    .section{
+      margin-top:18px;
+      background:rgba(253,251,243,.85);
+      border:1px solid var(--line);
+      border-radius:24px;
+      box-shadow:var(--shadow-soft);
+      overflow:hidden;
+    }
+    .section[hidden]{display:none}
+    .passport-section{
+      opacity:0;
+      transform:translateY(16px);
+      transition:opacity .32s var(--ease), transform .32s var(--ease);
+    }
+    .passport-section.is-visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+    .section-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:16px 16px 12px;
+    }
+    .section-head .eyebrow{
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--green-700);
+      font-weight:600;
+    }
+    .section-head h2{
+      font-family:"Fraunces", Georgia, serif;
+      font-size:19px;
+      font-weight:600;
+      color:var(--ink);
+      margin-top:5px;
+    }
+    .section-head p{
+      margin-top:4px;
+      color:var(--ink-soft);
+      font-size:12px;
+      max-width:26ch;
+    }
+    .ghost-link{
+      color:var(--green-700);
+      font-size:12px;
+      font-weight:600;
+      text-decoration:none;
+      border-bottom:1px solid rgba(47,123,84,.32);
+      padding-bottom:2px;
+    }
+
+    .booklet-shell{
+      padding:0 16px 16px;
+    }
+    .booklet{
+      position:relative;
+      background:var(--paper-2);
+      border-radius:18px 26px 26px 18px;
+      box-shadow:0 16px 36px -20px rgba(30,40,25,.38);
+      overflow:hidden;
+    }
+    .booklet::after{
+      content:"";
+      position:absolute;
+      top:10px;
+      bottom:10px;
+      right:0;
+      width:10px;
+      border-radius:0 14px 14px 0;
+      background:repeating-linear-gradient(90deg, #efe6d3 0 2px, #e0d4bb 2px 3px);
+      pointer-events:none;
+      z-index:4;
+    }
+    .pages{
+      display:flex;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      scrollbar-width:none;
+      scroll-behavior:smooth;
+    }
+    .pages::-webkit-scrollbar{display:none}
+    .page{
+      flex:0 0 100%;
+      height:498px;
+      scroll-snap-align:start;
+      position:relative;
+      overflow:hidden;
+      background:var(--paper);
+    }
+
+    .cover-page{
+      background:linear-gradient(160deg, #2d6948 0%, #173f29 68%, #0f3321 100%);
+      color:#fff;
+      padding:24px 22px 24px;
+    }
+    .cover-page .frame,
+    .reward-page .frame{
+      position:absolute;
+      inset:14px;
+      border:1.4px solid rgba(223,168,77,.38);
+      border-radius:12px;
+      pointer-events:none;
+    }
+    .cover-page .frame::before,
+    .reward-page .frame::before{
+      content:"";
+      position:absolute;
+      inset:5px;
+      border:1px solid rgba(223,168,77,.2);
+      border-radius:9px;
+    }
+    .cover-page .cover-mark{
+      width:96px;
+      height:96px;
+      margin:20px auto 16px;
+      position:relative;
+      display:grid;
+      place-items:center;
+    }
+    .ring,
+    .ring-2{
+      position:absolute;
+      inset:0;
+      border-radius:50%;
+      border:1.5px solid rgba(223,168,77,.44);
+    }
+    .ring-2{
+      inset:10px;
+      border-width:1px;
+      border-color:rgba(223,168,77,.28);
+    }
+    .cover-page .season-note{
+      font-size:10px;
+      letter-spacing:.28em;
+      text-transform:uppercase;
+      text-align:center;
+      color:var(--gold-soft);
+      font-weight:600;
+      margin-top:8px;
+      position:relative;
+      z-index:1;
+    }
+    .cover-page .passport-title{
+      text-align:center;
+      font-family:"Fraunces", Georgia, serif;
+      font-size:30px;
+      line-height:1.03;
+      font-weight:600;
+      margin-top:8px;
+      position:relative;
+      z-index:1;
+    }
+    .cover-page .cover-sub{
+      text-align:center;
+      margin-top:8px;
+      color:rgba(255,255,255,.78);
+      font-size:12.5px;
+      position:relative;
+      z-index:1;
+    }
+    .cover-stats{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:22px;
+      position:relative;
+      z-index:1;
+    }
+    .cover-stat{
+      padding:12px 13px;
+      border-radius:16px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.1);
+    }
+    .cover-stat .label{
+      font-size:10px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.68);
+      font-weight:600;
+    }
+    .cover-stat .value{
+      font-size:16px;
+      margin-top:4px;
+      font-weight:600;
+    }
+    .cover-progress{
+      margin-top:18px;
+      position:relative;
+      z-index:1;
+    }
+    .cover-footer{
+      margin-top:18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      font-size:12px;
+      color:rgba(255,255,255,.8);
+      position:relative;
+      z-index:1;
+    }
+
+    .inner-page{
+      padding:18px 18px 20px 28px;
+      display:flex;
+      flex-direction:column;
+    }
+    .binding{
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:18px;
+      background:linear-gradient(90deg, #e5dcc5, #f2ead9);
+      border-right:1px solid #e0d6be;
+    }
+    .binding i{
+      position:absolute;
+      left:8px;
+      width:3px;height:3px;
+      border-radius:50%;
+      background:#cbbf9f;
+    }
+    .page-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      padding-bottom:10px;
+      border-bottom:1px solid rgba(18,58,38,.12);
+    }
+    .page-header .label{
+      font-size:9.5px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--green-700);
+      font-weight:600;
+    }
+    .page-header .index{
+      font-family:"Fraunces", Georgia, serif;
+      color:var(--ink-faint);
+      font-size:12px;
+    }
+    .intro-copy{
+      margin-top:18px;
+      position:relative;
+      z-index:1;
+    }
+    .intro-copy h3,
+    .collection-copy h3,
+    .reward-page h3,
+    .empty-state h3{
+      font-family:"Fraunces", Georgia, serif;
+      font-size:24px;
+      line-height:1.06;
+      font-weight:600;
+      color:var(--ink);
+    }
+    .intro-copy p,
+    .collection-copy p,
+    .reward-page p,
+    .empty-state p{
+      margin-top:10px;
+      font-size:13px;
+      color:var(--ink-soft);
+    }
+    .intro-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:18px;
+      position:relative;
+      z-index:1;
+    }
+    .intro-chip{
+      padding:12px;
+      border-radius:15px;
+      background:rgba(255,255,255,.5);
+      border:1px solid var(--line);
+    }
+    .intro-chip .small{
+      font-size:10px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--ink-faint);
+      font-weight:600;
+    }
+    .intro-chip .big{
+      margin-top:6px;
+      color:var(--green-900);
+      font-weight:600;
+      font-size:14px;
+    }
+
+    .collection-page .watermark,
+    .intro-page .watermark{
+      position:absolute;
+      right:-20px;
+      bottom:-20px;
+      width:160px;
+      height:160px;
+      color:rgba(18,58,38,.06);
+      pointer-events:none;
+    }
+    .collection-copy{
+      margin-top:16px;
+      position:relative;
+      z-index:1;
+    }
+    .stamp-list{
+      margin-top:18px;
+      display:grid;
+      gap:10px;
+      position:relative;
+      z-index:1;
+    }
+    .stamp-row{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:11px 12px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.54);
+      min-height:66px;
+      transition:transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease);
+    }
+    .stamp-row.done{
+      border-color:rgba(47,123,84,.28);
+      box-shadow:0 12px 24px -20px rgba(30,92,63,.35);
+    }
+    .stamp-row.newly-done{
+      animation:ink-pop .7s var(--ease);
+    }
+    @keyframes ink-pop{
+      0%{transform:scale(.985); box-shadow:0 0 0 0 rgba(47,123,84,.16)}
+      45%{transform:scale(1.01); box-shadow:0 0 0 8px rgba(47,123,84,.06)}
+      100%{transform:scale(1); box-shadow:0 12px 24px -20px rgba(30,92,63,.35)}
+    }
+    .stamp-icon{
+      width:44px;height:44px;border-radius:14px;
+      flex:none;
+      display:grid;
+      place-items:center;
+      position:relative;
+      color:var(--green-700);
+      background:#efe7d5;
+      border:1px dashed #ccbf9d;
+    }
+    .stamp-row.done .stamp-icon{
+      background:radial-gradient(circle at 35% 30%, #eef5e9 0%, #dce9d2 100%);
+      border-style:solid;
+      border-color:rgba(47,123,84,.25);
+    }
+    .stamp-row.done .stamp-icon::after{
+      content:"";
+      position:absolute;
+      right:-2px;
+      bottom:-2px;
+      width:18px;height:18px;border-radius:50%;
+      background:var(--gold);
+      border:2px solid var(--cream-2);
+      box-shadow:0 4px 12px -6px rgba(223,168,77,.7);
+    }
+    .stamp-icon svg{
+      width:19px;height:19px;
+      stroke:currentColor;
+      fill:none;
+      stroke-width:1.9;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .stamp-body{
+      flex:1;
+      min-width:0;
+    }
+    .stamp-body .name{
+      font-size:14px;
+      font-weight:600;
+      color:var(--ink);
+    }
+    .stamp-body .meta{
+      margin-top:3px;
+      font-size:11.5px;
+      color:var(--ink-soft);
+    }
+    .stamp-status{
+      flex:none;
+      font-size:11px;
+      font-weight:600;
+      color:var(--ink-faint);
+      white-space:nowrap;
+    }
+    .stamp-row.done .stamp-status{color:var(--green-700)}
+
+    .reward-page{
+      background:linear-gradient(160deg, #2c6b47 0%, #123a26 100%);
+      color:#fff;
+      padding:20px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      text-align:center;
+      align-items:center;
+      justify-content:flex-start;
+    }
+    .seal{
+      width:88px;height:88px;border-radius:50%;
+      display:grid;
+      place-items:center;
+      margin:14px 0 12px;
+      position:relative;
+      z-index:1;
+    }
+    .seal.locked{
+      background:radial-gradient(circle at 35% 30%, #e7c878, #c79634);
+      box-shadow:0 12px 28px -12px rgba(0,0,0,.52), inset 0 2px 7px rgba(255,255,255,.35);
+    }
+    .seal.open{
+      background:radial-gradient(circle at 35% 30%, #f0dca0, #dfa84d);
+      box-shadow:0 0 0 9px rgba(223,168,77,.14), 0 14px 30px -12px rgba(0,0,0,.56);
+    }
+    .seal::before{
+      content:"";
+      position:absolute;
+      inset:11px;
+      border-radius:50%;
+      border:2px dashed rgba(255,255,255,.44);
+    }
+    .seal svg{
+      width:34px;height:34px;
+      color:#5a3e12;
+      position:relative;
+      z-index:1;
+    }
+    .reward-page h3{color:#fff; position:relative; z-index:1}
+    .reward-page p{color:rgba(255,255,255,.8); position:relative; z-index:1}
+    .reward-market{
+      width:100%;
+      margin-top:12px;
+      display:grid;
+      gap:8px;
+      position:relative;
+      z-index:1;
+      text-align:left;
+    }
+    .reward-badge{
+      align-self:flex-start;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(241,220,166,.16);
+      border:1px solid rgba(241,220,166,.28);
+      color:var(--gold-soft);
+      font-size:11px;
+      font-weight:600;
+      margin-top:2px;
+      position:relative;
+      z-index:1;
+    }
+    .reward-option{
+      display:grid;
+      grid-template-columns:60px 1fr;
+      gap:10px;
+      padding:8px;
+      border-radius:16px;
+      background:rgba(251,247,236,.96);
+      border:1px solid rgba(228,220,200,.78);
+      color:var(--ink);
+      box-shadow:0 18px 30px -24px rgba(0,0,0,.34);
+    }
+    .reward-visual{
+      border-radius:14px;
+      min-height:72px;
+      padding:8px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:flex-start;
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(180deg, #f7eedb 0%, #ead9b3 100%);
+    }
+    .reward-visual::before{
+      content:"";
+      position:absolute;
+      inset:auto -12px -20px auto;
+      width:62px;
+      height:62px;
+      border-radius:50%;
+      background:rgba(255,255,255,.22);
+    }
+    .reward-visual .mini-pack{
+      width:20px;
+      border-radius:7px;
+      background:rgba(255,255,255,.9);
+      border:1px solid rgba(18,58,38,.08);
+      box-shadow:0 10px 16px -14px rgba(0,0,0,.45);
+    }
+    .reward-visual .mini-pack.tall{height:42px}
+    .reward-visual .mini-pack.medium{height:32px}
+    .reward-visual .mini-pack.small{height:24px}
+    .reward-visual .mini-pack + .mini-pack{margin-left:6px}
+    .reward-visual.olive{
+      background:linear-gradient(160deg, #f4ead4 0%, #dbc08f 100%);
+    }
+    .reward-visual.pantry{
+      background:linear-gradient(160deg, #f6eedf 0%, #e6d7b4 100%);
+    }
+    .reward-visual.breakfast{
+      background:linear-gradient(160deg, #f8f0df 0%, #efdcb1 100%);
+    }
+    .reward-copy{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .reward-brand{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:var(--ink-soft);
+      font-size:10px;
+      font-weight:600;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+    .reward-brand .dot{
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      background:linear-gradient(160deg, var(--sage-1), #f6fbf2);
+      border:1px solid rgba(30,92,63,.12);
+      display:grid;
+      place-items:center;
+      color:var(--green-700);
+      font-size:8px;
+      font-family:"Fraunces", Georgia, serif;
+      font-weight:700;
+    }
+    .reward-name{
+      margin-top:4px;
+      font-size:14px;
+      line-height:1.14;
+      color:var(--ink);
+      font-weight:600;
+    }
+    .reward-note{
+      margin-top:3px;
+      color:var(--ink-soft);
+      font-size:10.5px;
+      line-height:1.35;
+    }
+    .reward-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .reward-use{
+      color:#9a7326;
+      font-size:10px;
+      font-weight:600;
+    }
+    .reward-cta{
+      color:var(--green-700);
+      font-size:11px;
+      font-weight:600;
+      text-decoration:none;
+      border-bottom:1px solid rgba(47,123,84,.28);
+      padding-bottom:2px;
+      white-space:nowrap;
+    }
+    .reward-button{
+      margin-top:14px;
+      background:#fff;
+      color:var(--green-900);
+      padding:11px 18px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 14px 28px -18px rgba(0,0,0,.5);
+    }
+    .reward-foot{
+      margin-top:10px;
+      font-size:10.5px;
+      color:rgba(255,255,255,.62);
+      position:relative;
+      z-index:1;
+    }
+    .reward-endnote{
+      margin-top:8px;
+      font-size:10px;
+      color:rgba(255,255,255,.62);
+      position:relative;
+      z-index:1;
+      max-width:30ch;
+    }
+
+    .booklet-controls{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:16px;
+      padding:14px 0 4px;
+    }
+    .navbtn{
+      width:38px;height:38px;border-radius:50%;
+      display:grid;place-items:center;
+      border:1px solid var(--line);
+      background:var(--cream-2);
+      color:var(--green-700);
+      cursor:pointer;
+      transition:all .18s var(--ease);
+    }
+    .navbtn:hover{background:#fff;border-color:var(--sage-2)}
+    .navbtn:disabled{opacity:.34;cursor:default}
+    .navbtn svg,
+    .page-dot svg{
+      width:18px;height:18px;
+      stroke:currentColor;
+      fill:none;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .page-dots{
+      display:flex;
+      gap:7px;
+      align-items:center;
+    }
+    .page-dot{
+      width:8px;height:8px;border-radius:999px;
+      background:#cdc4ac;
+      cursor:pointer;
+      transition:all .22s var(--ease);
+    }
+    .page-dot.on{
+      width:22px;
+      background:var(--green-700);
+    }
+    .swipe-hint{
+      text-align:center;
+      font-size:11.5px;
+      color:var(--ink-faint);
+      padding:2px 0 0;
+    }
+
+    .archive-list{
+      padding:0 16px 16px;
+      display:grid;
+      gap:10px;
+    }
+    .archive-card{
+      position:relative;
+      display:block;
+      text-align:left;
+      padding:14px 14px 14px 18px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.54), rgba(247,241,226,.96)),
+        var(--paper);
+      box-shadow:var(--shadow-soft);
+      text-decoration:none;
+      color:inherit;
+      overflow:hidden;
+    }
+    .archive-card::before{
+      content:"";
+      position:absolute;
+      left:10px;right:10px;top:-6px;height:12px;
+      border-radius:12px;
+      background:rgba(255,255,255,.32);
+    }
+    .archive-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+    }
+    .archive-title{
+      font-family:"Fraunces", Georgia, serif;
+      font-size:18px;
+      color:var(--ink);
+      font-weight:600;
+    }
+    .archive-sub{
+      font-size:12px;
+      color:var(--ink-soft);
+      margin-top:4px;
+    }
+    .archive-chip{
+      padding:6px 9px;
+      border-radius:999px;
+      font-size:10.5px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+    .archive-chip.complete{
+      background:var(--sage-1);
+      color:var(--green-700);
+    }
+    .archive-chip.incomplete{
+      background:#efe7d5;
+      color:var(--ink-soft);
+    }
+    .archive-meta{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:10px;
+      font-size:11.5px;
+      color:var(--ink-faint);
+    }
+
+    .empty-state{
+      padding:0 16px 16px;
+    }
+    .empty-card{
+      position:relative;
+      overflow:hidden;
+      background:linear-gradient(160deg, #f8f2e4 0%, #efe7d4 100%);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:22px 18px;
+      box-shadow:var(--shadow-soft);
+    }
+    .empty-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:6px 10px;
+      border-radius:999px;
+      background:#fff8ea;
+      border:1px solid rgba(223,168,77,.34);
+      color:#9b7429;
+      font-size:11px;
+      font-weight:600;
+    }
+    .preview-box{
+      margin-top:18px;
+      border-radius:18px;
+      background:#fffdf7;
+      border:1px solid rgba(30,92,63,.08);
+      padding:14px;
+    }
+    .preview-box .preview-label{
+      font-size:10px;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--ink-faint);
+      font-weight:600;
+    }
+    .preview-box .preview-title{
+      font-family:"Fraunces", Georgia, serif;
+      font-size:20px;
+      margin-top:6px;
+      color:var(--green-900);
+      font-weight:600;
+    }
+    .preview-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+    }
+    .preview-list span{
+      padding:7px 9px;
+      border-radius:999px;
+      background:var(--cream-2);
+      border:1px solid var(--line);
+      font-size:11.5px;
+      color:var(--ink-soft);
+    }
+    .passport-intro{
+      position:absolute;
+      inset:40px 0 0;
+      background:
+        radial-gradient(120% 90% at 50% 0%, rgba(255,255,255,.36), transparent 50%),
+        linear-gradient(180deg, #f8f2e4 0%, #ebe1cf 100%);
+      z-index:15;
+      padding:18px 16px 18px;
+      display:flex;
+      flex-direction:column;
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(10px);
+      transition:opacity .28s var(--ease), transform .28s var(--ease);
+    }
+    .passport-intro.is-visible{
+      opacity:1;
+      pointer-events:auto;
+      transform:translateY(0);
+    }
+    .intro-screen{
+      display:flex;
+      flex:1;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:0;
+    }
+    .intro-art{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      position:relative;
+      min-height:0;
+    }
+    .intro-emblem{
+      width:116px;
+      height:116px;
+      margin:0 auto 18px;
+      border-radius:50%;
+      position:relative;
+      display:grid;
+      place-items:center;
+      color:var(--green-700);
+      background:radial-gradient(circle at 35% 30%, #fcf7eb 0%, #efe4ca 100%);
+      box-shadow:0 20px 36px -24px rgba(24,36,24,.35);
+    }
+    .intro-emblem::before,
+    .intro-emblem::after{
+      content:"";
+      position:absolute;
+      border-radius:50%;
+      border:1px solid rgba(223,168,77,.36);
+    }
+    .intro-emblem::before{inset:0}
+    .intro-emblem::after{inset:12px}
+    .intro-screen .eyebrow{
+      font-size:10px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--green-700);
+      font-weight:600;
+      text-align:center;
+    }
+    .intro-screen h2{
+      margin-top:10px;
+      font-family:"Fraunces", Georgia, serif;
+      font-size:31px;
+      line-height:1.04;
+      font-weight:600;
+      color:var(--green-900);
+      text-align:center;
+    }
+    .intro-screen p{
+      margin:12px auto 0;
+      max-width:28ch;
+      text-align:center;
+      font-size:13px;
+      color:var(--ink-soft);
+    }
+    .cover-preview{
+      margin:26px auto 0;
+      width:228px;
+      padding:20px 16px 22px;
+      border-radius:20px 26px 26px 20px;
+      background:linear-gradient(160deg, #2d6948 0%, #173f29 70%, #0f3321 100%);
+      color:#fff;
+      box-shadow:0 24px 40px -26px rgba(18,58,38,.7);
+      position:relative;
+      transform-origin:left center;
+      animation:cover-breathe 5.2s ease-in-out infinite;
+    }
+    .cover-preview::before{
+      content:"";
+      position:absolute;
+      inset:12px;
+      border:1px solid rgba(223,168,77,.34);
+      border-radius:12px;
+    }
+    @keyframes cover-breathe{
+      0%,100%{transform:perspective(800px) rotateY(0deg) translateY(0)}
+      50%{transform:perspective(800px) rotateY(-8deg) translateY(-2px)}
+    }
+    .cover-preview .tiny{
+      font-size:9px;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      color:var(--gold-soft);
+      font-weight:600;
+      text-align:center;
+      position:relative;
+      z-index:1;
+    }
+    .cover-preview .name{
+      margin-top:10px;
+      font-family:"Fraunces", Georgia, serif;
+      font-size:24px;
+      line-height:1.02;
+      text-align:center;
+      font-weight:600;
+      position:relative;
+      z-index:1;
+    }
+    .cover-preview .sub{
+      margin-top:8px;
+      text-align:center;
+      font-size:12px;
+      color:rgba(255,255,255,.78);
+      position:relative;
+      z-index:1;
+    }
+    .intro-actions{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:22px;
+    }
+    .intro-cta{
+      width:100%;
+      padding:13px 16px;
+      border-radius:999px;
+      text-align:center;
+      cursor:pointer;
+      transition:transform .18s var(--ease), box-shadow .18s var(--ease);
+    }
+    .intro-cta.primary{
+      background:var(--green-900);
+      color:#fff;
+      box-shadow:0 16px 30px -20px rgba(18,58,38,.6);
+    }
+    .intro-cta.secondary{
+      color:var(--green-700);
+      background:rgba(255,255,255,.52);
+      border:1px solid var(--line);
+    }
+    .intro-cta:hover{transform:translateY(-1px)}
+    .intro-step{
+      text-align:center;
+      font-size:11px;
+      color:var(--ink-faint);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .welcome-map{
+      margin-top:22px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:8px;
+      position:relative;
+      z-index:1;
+    }
+    .welcome-node{
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.56);
+      padding:12px 8px;
+      text-align:center;
+      box-shadow:var(--shadow-soft);
+    }
+    .welcome-node .icon{
+      width:34px;
+      height:34px;
+      margin:0 auto;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:var(--sage-1);
+      color:var(--green-700);
+    }
+    .welcome-node .icon svg{
+      width:16px;
+      height:16px;
+      stroke:currentColor;
+      fill:none;
+      stroke-width:1.9;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .welcome-node .label{
+      margin-top:8px;
+      font-family:"Fraunces", Georgia, serif;
+      font-size:13px;
+      line-height:1.05;
+      color:var(--ink);
+      font-weight:600;
+    }
+    .welcome-node .small{
+      margin-top:4px;
+      font-size:10px;
+      color:var(--ink-soft);
+      line-height:1.3;
+    }
+
+    .note{
+      width:min(100%, 430px);
+      margin:26px auto 0;
+      padding:16px 4px 0;
+      border-top:1px solid var(--line);
+      color:var(--ink-faint);
+      font-size:11.5px;
+      line-height:1.6;
+    }
+    .note b{color:var(--ink-soft)}
+
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .pages{scroll-behavior:auto}
+      .track span,
+      .passport-card,
+      .stamp-row,
+      .controls button,
+      .navbtn,
+      .page-dot{transition:none}
+      .passport-card::after{animation:none}
+      .stamp-row.newly-done{animation:none}
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="kick">FirstClub · Seasonal Discovery</div>
+    <h1>Taste Passport<br>Version 3</h1>
+    <p>A seasonal collectible that keeps one persistent passport, turns premium discovery into a calmer ritual, and makes each exceptional find feel personally kept.</p>
+  </header>
+
+  <div class="controls" id="stateSwitch" aria-label="Prototype states">
+    <button type="button" class="on" data-state="active">Active season</button>
+    <button type="button" data-state="complete">Completed season</button>
+    <button type="button" data-state="between">Between seasons</button>
+  </div>
+
+  <main class="phone">
+    <div class="statusbar">
+      <span>6:12</span>
+      <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="right">5G 84</span>
+    </div>
+
+    <div class="shell">
+      <div class="profile-header">
+        <div>
+          <div class="name">Jitesh Thakker</div>
+          <div class="sub">Track your order and discover what it quietly unlocked</div>
+        </div>
+        <div class="avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="3.2"></circle>
+            <path d="M5.5 19a6.8 6.8 0 0 1 13 0"></path>
+          </svg>
+        </div>
+      </div>
+
+      <section class="tracking-panel" aria-label="Order tracking">
+        <div class="order-top">
+          <div>
+            <div class="order-label">Order tracking</div>
+            <div class="order-title">Order packed</div>
+            <div class="order-meta">Your FirstClub order is ready for the 6:00 AM run, and one discovery from this basket now belongs to your passport.</div>
+          </div>
+          <span class="order-chip">Arrives tomorrow</span>
+        </div>
+        <div class="order-progress">
+          <div class="order-step">
+            <span class="bullet">1</span>
+            <div><b>Order confirmed</b> Your selection has been accepted and prepared.</div>
+          </div>
+          <div class="order-step">
+            <span class="bullet">2</span>
+            <div><b>Curated product spotted</b> This order included a seasonal premium discovery.</div>
+          </div>
+          <div class="order-step">
+            <span class="bullet">3</span>
+            <div><b>New stamp earned</b> A handcrafted stamp is now waiting inside Taste Passport.</div>
+          </div>
+        </div>
+        <button type="button" class="passport-unlock" id="openPassport" aria-expanded="false" aria-controls="passportSection">
+          <div class="unlock-copy">
+            <div class="entry-kicker">Taste Passport</div>
+            <div class="entry-title">Taste Passport unlocked</div>
+            <div class="entry-copy">Every great discovery deserves a place. Open your seasonal journal to see what this order added.</div>
+          </div>
+          <span class="entry-action" id="cardTag">Explore</span>
+        </button>
+      </section>
+
+      <section class="section passport-section" id="passportSection" hidden>
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Current season</div>
+            <h2>Open passport</h2>
+            <p>Story-led pages, clear progress, and a premium reward ending.</p>
+          </div>
+          <a href="#archiveSection" class="ghost-link">Archive</a>
+        </div>
+
+        <div class="booklet-shell" id="bookletShell">
+          <div class="booklet">
+            <div class="pages" id="pages" tabindex="0" role="group" aria-label="Taste Passport pages"></div>
+          </div>
+          <div class="booklet-controls">
+            <button type="button" class="navbtn" id="prevBtn" aria-label="Previous page">
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"></path></svg>
+            </button>
+            <div class="page-dots" id="pageDots" aria-label="Page navigation"></div>
+            <button type="button" class="navbtn" id="nextBtn" aria-label="Next page">
+              <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"></path></svg>
+            </button>
+          </div>
+          <div class="swipe-hint" id="swipeHint">Swipe or use arrows to turn pages</div>
+        </div>
+
+        <div class="empty-state" id="emptyState" hidden></div>
+      </section>
+
+      <section class="section" id="archiveSection" hidden>
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Archive</div>
+            <h2>Past editions</h2>
+            <p>Seasonal passports stay collectible, whether completed or not.</p>
+          </div>
+          <span class="ghost-link" aria-hidden="true">Stacked journals</span>
+        </div>
+        <div class="archive-list" id="archiveList"></div>
+      </section>
+    </div>
+
+    <div class="passport-intro" id="passportIntro" aria-hidden="true">
+      <section class="intro-screen">
+        <div class="intro-art">
+          <div class="intro-emblem" aria-hidden="true">
+            <div style="width:54px;height:54px"><svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="18" r="15"></circle><circle cx="50" cy="82" r="15"></circle><circle cx="18" cy="50" r="15"></circle><circle cx="82" cy="50" r="15"></circle><circle cx="30" cy="30" r="12"></circle><circle cx="70" cy="30" r="12"></circle><circle cx="30" cy="70" r="12"></circle><circle cx="70" cy="70" r="12"></circle><circle cx="50" cy="50" r="16"></circle></svg></div>
+          </div>
+          <div class="eyebrow">Introducing Taste Passport</div>
+          <h2>Every great discovery deserves a place.</h2>
+          <p>Every season, FirstClub curates a collection of exceptional products worth discovering.</p>
+          <p>As you explore, your passport quietly fills with handcrafted stamps. Complete the season to unlock a curated reward.</p>
+          <div class="cover-preview" aria-hidden="true">
+            <div class="tiny">Taste Passport</div>
+            <div class="name">Summer Collection ’26</div>
+            <div class="sub">A collectible journal of seasonal discoveries</div>
+          </div>
+        </div>
+        <div class="intro-actions">
+          <button type="button" class="intro-cta primary" id="enterPassport">Open passport</button>
+          <div class="intro-step">A seasonal membership experience, not a promotion</div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="note">
+    <b>Version 3 notes.</b> This prototype keeps v1’s clarity around progress, keeps v2’s collectible booklet metaphor, and adds the long-term seasonal system: one persistent passport, a clear current edition, elegant completion, archived history, and a between-seasons state with anticipation instead of disappointment.
+  </div>
+
+  <script>
+    const icons = {
+      olive: '<svg viewBox="0 0 24 24"><path d="M12 20c4-2.2 6.5-5.5 6.5-9.2 0-3-2.2-5.8-5.5-6.8C9.7 3 6 6 6 10.2 6 14 8.3 17.4 12 20z"></path><path d="M12 8c1.4 1.2 2.2 2.8 2.2 4.6"></path></svg>',
+      pasta: '<svg viewBox="0 0 24 24"><path d="M4 9h16"></path><path d="M6 13h12"></path><path d="M8 17h8"></path></svg>',
+      cheese: '<svg viewBox="0 0 24 24"><path d="M4 16l10-8 6 4v4H4z"></path><circle cx="11" cy="13" r="1"></circle><circle cx="16" cy="14" r="1"></circle></svg>',
+      biscuit: '<svg viewBox="0 0 24 24"><path d="M8 4h8l4 8-4 8H8l-4-8z"></path><path d="M10 10h.01M14 10h.01M12 14h.01"></path></svg>',
+      matcha: '<svg viewBox="0 0 24 24"><path d="M5 10h14l-2 7a3 3 0 0 1-2.9 2H10a3 3 0 0 1-2.9-2z"></path><path d="M7 7h10"></path></svg>',
+      ramen: '<svg viewBox="0 0 24 24"><path d="M4 11h16"></path><path d="M6 11a6 6 0 0 0 12 0"></path><path d="M9 6l-1 3M12 5l-.5 4M15 6l1 3"></path></svg>',
+      mochi: '<svg viewBox="0 0 24 24"><circle cx="9" cy="13" r="4"></circle><circle cx="15" cy="11" r="4"></circle></svg>',
+      rice: '<svg viewBox="0 0 24 24"><path d="M12 5c2.5 2.4 4 5 4 7.6A4 4 0 0 1 12 17a4 4 0 0 1-4-4.4C8 10 9.5 7.4 12 5z"></path></svg>',
+      granola: '<svg viewBox="0 0 24 24"><path d="M6 9h12l-1 7a2 2 0 0 1-2 1.7H9A2 2 0 0 1 7 16z"></path><path d="M9 6h6"></path></svg>',
+      yogurt: '<svg viewBox="0 0 24 24"><path d="M8 6h8l1 12H7z"></path><path d="M10 3h4"></path></svg>',
+      berries: '<svg viewBox="0 0 24 24"><circle cx="9" cy="13" r="3"></circle><circle cx="15" cy="13" r="3"></circle><path d="M12 7c1.2 0 2.4.6 3 1.6"></path></svg>',
+      coffee: '<svg viewBox="0 0 24 24"><path d="M5 9h11a0 0 0 0 1 0 0v4a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9a0 0 0 0 1 0 0z"></path><path d="M16 10h2a2 2 0 1 1 0 4h-2"></path><path d="M8 5c0 1 1 1.6 1 2.6S8 9 8 10"></path></svg>',
+      beans: '<svg viewBox="0 0 24 24"><path d="M9 6c-2 1.4-3.5 4.2-2.4 7 1.2 3.2 5 4.8 8 3.2 2.6-1.3 4-4.4 3.2-7.2-.6-2.2-2.5-3.6-4.8-3.6"></path></svg>',
+      roast: '<svg viewBox="0 0 24 24"><path d="M7 16c2-4 8-4 10 0"></path><path d="M9 11c1.2-2.2 4.8-2.2 6 0"></path></svg>',
+      brew: '<svg viewBox="0 0 24 24"><path d="M7 18h10"></path><path d="M9 18V9h6v9"></path><path d="M11 6h2"></path></svg>',
+      gift: '<svg viewBox="0 0 24 24"><path d="M20 12v8H4v-8"></path><path d="M2 8h20v4H2z"></path><path d="M12 8V4"></path><path d="M12 8c-2.5 0-4-1-4-2.5S9 3 12 8zM12 8c2.5 0 4-1 4-2.5S15 3 12 8z"></path></svg>',
+      clock: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l3 2"></path></svg>',
+      passport: '<svg viewBox="0 0 100 100" fill="currentColor"><circle cx="50" cy="18" r="15"></circle><circle cx="50" cy="82" r="15"></circle><circle cx="18" cy="50" r="15"></circle><circle cx="82" cy="50" r="15"></circle><circle cx="30" cy="30" r="12"></circle><circle cx="70" cy="30" r="12"></circle><circle cx="30" cy="70" r="12"></circle><circle cx="70" cy="70" r="12"></circle><circle cx="50" cy="50" r="16"></circle></svg>'
+    };
+
+    const seasons = {
+      active: {
+        cardTitle: "Summer Collection ’26",
+        cardTag: "28 days left",
+        focus: "Japanese Pantry",
+        statusLabel: "In progress",
+        daysRemaining: 28,
+        collectionIntro: "This season celebrates premium Mediterranean flavours, precise pantry staples, and comforting rituals worth returning for.",
+        rewardTitle: "Choose one premium reward",
+        rewardDescription: "Complete every collection to unlock a curated reward selection with no chance and no wasted effort.",
+      active: true,
+        rewardOptions: [
+          {
+            brand: "FirstClub Reserve",
+            title: "Complimentary premium olive oil",
+            note: "Add one curated bottle to your next order from this season’s Mediterranean edit.",
+            use: "Choose within 28 days",
+            visual: "olive"
+          },
+          {
+            brand: "FirstClub Pantry",
+            title: "Pick 1 artisanal pantry find",
+            note: "Select from parmesan, matcha, biscotti, or another seasonal premium pantry item.",
+            use: "Redeem on next order",
+            visual: "pantry"
+          },
+          {
+            brand: "FirstClub Breakfast",
+            title: "Breakfast upgrade on us",
+            note: "Claim one premium breakfast item from the healthy breakfast collection at checkout.",
+            use: "Limited to one claim",
+            visual: "breakfast"
+          }
+        ],
+        archive: [
+          { title: "Spring Collection ’26", status: "Completed", note: "Reward claimed", progress: "16 of 16" },
+          { title: "Winter Collection ’25", status: "Archived", note: "12 of 16 collected", progress: "Incomplete" }
+        ],
+        nextPreview: null,
+        collections: [
+          {
+            title: "Mediterranean",
+            story: "Olive oil, pantry essentials, and dinner-table depth in one quiet, confident set.",
+            stamps: [
+              { name: "Olive Oil", meta: "Cold-pressed discovery", icon: "olive", done: true },
+              { name: "Pasta", meta: "Bronze-cut pantry staple", icon: "pasta", done: true },
+              { name: "Parmesan", meta: "Aged premium cheese", icon: "cheese", done: false },
+              { name: "Biscotti", meta: "Finishing ritual", icon: "biscuit", done: false }
+            ]
+          },
+          {
+            title: "Japanese Pantry",
+            story: "A tighter edit of everyday Japanese favourites, from calm breakfast moments to late-night comfort.",
+            stamps: [
+              { name: "Matcha", meta: "Ceremonial green tea", icon: "matcha", done: true },
+              { name: "Ramen", meta: "Broth-led pantry hero", icon: "ramen", done: true, isNew: true },
+              { name: "Mochi", meta: "Soft sweet finish", icon: "mochi", done: true },
+              { name: "Rice Crackers", meta: "Crisp snack find", icon: "rice", done: false }
+            ]
+          },
+          {
+            title: "Healthy Breakfast",
+            story: "Small upgrades to the first meal of the day, with quality that feels nourishing rather than performative.",
+            stamps: [
+              { name: "Granola", meta: "Toasted cluster blend", icon: "granola", done: true },
+              { name: "Greek Yogurt", meta: "Creamy high-protein base", icon: "yogurt", done: false },
+              { name: "Berry Compote", meta: "Low-sugar topper", icon: "berries", done: false },
+              { name: "Single-Origin Coffee", meta: "Morning ritual", icon: "coffee", done: false }
+            ]
+          },
+          {
+            title: "Coffee Explorer",
+            story: "A gentle progression through beans, roast, and brew, designed for repeat curiosity instead of urgency.",
+            stamps: [
+              { name: "Estate Beans", meta: "Premium whole beans", icon: "beans", done: false },
+              { name: "Medium Roast", meta: "Balanced roast profile", icon: "roast", done: false },
+              { name: "Pour-over Brew", meta: "Slow weekend ritual", icon: "brew", done: false },
+              { name: "Coffee Pairing", meta: "Cafe-at-home finish", icon: "coffee", done: false }
+            ]
+          }
+        ]
+      },
+      complete: {
+        cardTitle: "Summer Collection ’26",
+        cardTag: "Completed",
+        focus: "Reward unlocked",
+        statusLabel: "Collection complete",
+        daysRemaining: 0,
+        collectionIntro: "Every collection has been completed. The season now feels like a finished journal rather than a temporary promotion.",
+        rewardTitle: "Collection complete",
+        rewardDescription: "All seasonal finds are stamped. Choose one premium reward and move this edition into your archive.",
+        active: true,
+        rewardOptions: [
+          {
+            brand: "FirstClub Reserve",
+            title: "Complimentary premium olive oil",
+            note: "Add one curated bottle to your next order from this season’s Mediterranean edit.",
+            use: "Redeem before autumn opens",
+            visual: "olive"
+          },
+          {
+            brand: "FirstClub Pantry",
+            title: "Pick 1 artisanal pantry find",
+            note: "Choose from a curated list of seasonal favourites instead of receiving a random freebie.",
+            use: "One reward selection",
+            visual: "pantry"
+          },
+          {
+            brand: "FirstClub Breakfast",
+            title: "Breakfast upgrade on us",
+            note: "Unlock one premium breakfast addition for your next order, selected from the current reward shelf.",
+            use: "Added at checkout",
+            visual: "breakfast"
+          }
+        ],
+        archive: [
+          { title: "Spring Collection ’26", status: "Completed", note: "Reward claimed", progress: "16 of 16" },
+          { title: "Winter Collection ’25", status: "Archived", note: "12 of 16 collected", progress: "Incomplete" }
+        ],
+        nextPreview: null,
+        collections: [
+          {
+            title: "Mediterranean",
+            story: "Olive oil, pantry essentials, and dinner-table depth in one quiet, confident set.",
+            stamps: [
+              { name: "Olive Oil", meta: "Cold-pressed discovery", icon: "olive", done: true },
+              { name: "Pasta", meta: "Bronze-cut pantry staple", icon: "pasta", done: true },
+              { name: "Parmesan", meta: "Aged premium cheese", icon: "cheese", done: true },
+              { name: "Biscotti", meta: "Finishing ritual", icon: "biscuit", done: true }
+            ]
+          },
+          {
+            title: "Japanese Pantry",
+            story: "A tighter edit of everyday Japanese favourites, from calm breakfast moments to late-night comfort.",
+            stamps: [
+              { name: "Matcha", meta: "Ceremonial green tea", icon: "matcha", done: true },
+              { name: "Ramen", meta: "Broth-led pantry hero", icon: "ramen", done: true },
+              { name: "Mochi", meta: "Soft sweet finish", icon: "mochi", done: true },
+              { name: "Rice Crackers", meta: "Crisp snack find", icon: "rice", done: true }
+            ]
+          },
+          {
+            title: "Healthy Breakfast",
+            story: "Small upgrades to the first meal of the day, with quality that feels nourishing rather than performative.",
+            stamps: [
+              { name: "Granola", meta: "Toasted cluster blend", icon: "granola", done: true },
+              { name: "Greek Yogurt", meta: "Creamy high-protein base", icon: "yogurt", done: true },
+              { name: "Berry Compote", meta: "Low-sugar topper", icon: "berries", done: true },
+              { name: "Single-Origin Coffee", meta: "Morning ritual", icon: "coffee", done: true }
+            ]
+          },
+          {
+            title: "Coffee Explorer",
+            story: "A gentle progression through beans, roast, and brew, designed for repeat curiosity instead of urgency.",
+            stamps: [
+              { name: "Estate Beans", meta: "Premium whole beans", icon: "beans", done: true },
+              { name: "Medium Roast", meta: "Balanced roast profile", icon: "roast", done: true },
+              { name: "Pour-over Brew", meta: "Slow weekend ritual", icon: "brew", done: true },
+              { name: "Coffee Pairing", meta: "Cafe-at-home finish", icon: "coffee", done: true }
+            ]
+          }
+        ]
+      },
+      between: {
+        cardTitle: "Taste Passport",
+        cardTag: "Next season soon",
+        focus: "Autumn preview",
+        statusLabel: "No active season",
+        daysRemaining: 6,
+        collectionIntro: "Between seasons, the passport keeps its place in profile and turns into a calm preview rather than a dead end.",
+        rewardTitle: "Your next journey begins soon",
+        rewardDescription: "A preview keeps anticipation alive without faking urgency or showing a failed state.",
+        active: false,
+        rewardOptions: [],
+        archive: [
+          { title: "Summer Collection ’26", status: "Completed", note: "Reward claimed", progress: "16 of 16" },
+          { title: "Spring Collection ’26", status: "Archived", note: "11 of 16 collected", progress: "Incomplete" }
+        ],
+        nextPreview: {
+          season: "Autumn Collection ’26",
+          arrivesIn: "6 days",
+          items: ["Single-estate cocoa", "Stone fruit preserve", "Aged gouda", "Chestnut granola"]
+        },
+        collections: []
+      }
+    };
+
+    const PASSPORT_STORAGE_KEY = "firstclub-taste-passport-intro-seen";
+    const stateSwitch = document.getElementById("stateSwitch");
+    const pagesEl = document.getElementById("pages");
+    const pageDotsEl = document.getElementById("pageDots");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const bookletShell = document.getElementById("bookletShell");
+    const emptyStateEl = document.getElementById("emptyState");
+    const openPassportBtn = document.getElementById("openPassport");
+    const swipeHintEl = document.getElementById("swipeHint");
+    const passportSection = document.getElementById("passportSection");
+    const archiveSection = document.getElementById("archiveSection");
+    const passportIntro = document.getElementById("passportIntro");
+    const enterPassportBtn = document.getElementById("enterPassport");
+
+    let currentState = "active";
+    let activePage = 0;
+    let pageCount = 0;
+    let scrollTimer = null;
+    let introSeen = false;
+
+    function buildBindingDots() {
+      let dots = "";
+      for (let i = 0; i < 9; i += 1) {
+        dots += '<i style="top:' + (10 + i * 9) + '%"></i>';
+      }
+      return dots;
+    }
+
+    function countProgress(collections) {
+      const total = collections.reduce((sum, collection) => sum + collection.stamps.length, 0);
+      const done = collections.reduce((sum, collection) => {
+        return sum + collection.stamps.filter((stamp) => stamp.done).length;
+      }, 0);
+      return { total, done };
+    }
+
+    function coverPage(state, progress) {
+      const percent = progress.total ? Math.round((progress.done / progress.total) * 100) : 0;
+      return `
+        <section class="page cover-page">
+          <div class="frame"></div>
+          <div class="season-note">FirstClub</div>
+          <div class="passport-title">Taste Passport</div>
+          <div class="cover-sub">${state.cardTitle}</div>
+          <div class="cover-mark" aria-hidden="true">
+            <div class="ring"></div>
+            <div class="ring-2"></div>
+            <div style="width:54px;height:54px;color:rgba(241,220,166,.9)">${icons.passport}</div>
+          </div>
+          <div class="cover-stats">
+            <div class="cover-stat">
+              <div class="label">Progress</div>
+              <div class="value">${progress.done} of ${progress.total}</div>
+            </div>
+            <div class="cover-stat">
+              <div class="label">${state.daysRemaining === 0 ? "Status" : "Days left"}</div>
+              <div class="value">${state.daysRemaining === 0 ? "Finished" : state.daysRemaining}</div>
+            </div>
+          </div>
+          <div class="cover-progress">
+            <div class="track"><span style="width:${percent}%"></span></div>
+          </div>
+          <div class="cover-footer">
+            <span>${state.active ? "Seasonal collectible" : "Awaiting next edition"}</span>
+            <span>${state.statusLabel}</span>
+          </div>
+        </section>`;
+    }
+
+    function welcomePage() {
+      return `
+        <section class="page intro-page inner-page">
+          <div class="binding">${buildBindingDots()}</div>
+          <div class="watermark" aria-hidden="true">${icons.passport}</div>
+          <div class="page-header">
+            <span class="label">Welcome</span>
+            <span class="index">01</span>
+          </div>
+          <div class="intro-copy">
+            <h3>How Taste Passport unfolds</h3>
+            <p>Within a few seconds, the journey should feel obvious: an order leads to a stamp, stamps build collections, and completed collections open one curated reward.</p>
+          </div>
+          <div class="welcome-map">
+            <article class="welcome-node">
+              <div class="icon">${icons.coffee}</div>
+              <div class="label">Order</div>
+              <div class="small">A premium product is discovered</div>
+            </article>
+            <article class="welcome-node">
+              <div class="icon">${icons.gift}</div>
+              <div class="label">Stamp</div>
+              <div class="small">A handcrafted mark is added</div>
+            </article>
+            <article class="welcome-node">
+              <div class="icon">${icons.passport}</div>
+              <div class="label">Collection</div>
+              <div class="small">Seasonal pages quietly fill</div>
+            </article>
+            <article class="welcome-node">
+              <div class="icon">${icons.olive}</div>
+              <div class="label">Reward</div>
+              <div class="small">Completion unlocks one curated choice</div>
+            </article>
+          </div>
+        </section>`;
+    }
+
+    function seasonPage(state, progress) {
+      return `
+        <section class="page intro-page inner-page">
+          <div class="binding">${buildBindingDots()}</div>
+          <div class="watermark" aria-hidden="true">${icons.passport}</div>
+          <div class="page-header">
+            <span class="label">Season introduction</span>
+            <span class="index">02</span>
+          </div>
+          <div class="intro-copy">
+            <h3>${state.cardTitle}</h3>
+            <p>${state.collectionIntro}</p>
+          </div>
+          <div class="intro-grid">
+            <div class="intro-chip">
+              <div class="small">Mediterranean</div>
+              <div class="big">Olive oil, pasta, parmesan, biscotti</div>
+            </div>
+            <div class="intro-chip">
+              <div class="small">Japanese Pantry</div>
+              <div class="big">Matcha, ramen, mochi, rice crackers</div>
+            </div>
+            <div class="intro-chip">
+              <div class="small">Healthy Breakfast</div>
+              <div class="big">Granola, yogurt, berries, coffee</div>
+            </div>
+            <div class="intro-chip">
+              <div class="small">Collected</div>
+              <div class="big">${progress.done} of ${progress.total} seasonal discoveries placed</div>
+            </div>
+          </div>
+        </section>`;
+    }
+
+    function stampRow(stamp) {
+      const rowClass = [
+        "stamp-row",
+        stamp.done ? "done" : "",
+        stamp.isNew ? "newly-done" : ""
+      ].filter(Boolean).join(" ");
+
+      return `
+        <div class="${rowClass}">
+          <div class="stamp-icon" aria-hidden="true">${icons[stamp.icon]}</div>
+          <div class="stamp-body">
+            <div class="name">${stamp.name}</div>
+            <div class="meta">${stamp.meta}</div>
+          </div>
+          <div class="stamp-status">${stamp.done ? "Stamped" : "Awaiting"}</div>
+        </div>`;
+    }
+
+    function collectionPage(collection, index, total) {
+      return `
+        <section class="page collection-page inner-page">
+          <div class="binding">${buildBindingDots()}</div>
+          <div class="watermark" aria-hidden="true">${icons.passport}</div>
+          <div class="page-header">
+            <span class="label">Curated collection</span>
+            <span class="index">${String(index).padStart(2, "0")} / ${String(total).padStart(2, "0")}</span>
+          </div>
+          <div class="collection-copy">
+            <h3>${collection.title}</h3>
+            <p>${collection.story}</p>
+          </div>
+          <div class="stamp-list">
+            ${collection.stamps.map(stampRow).join("")}
+          </div>
+        </section>`;
+    }
+
+    function rewardMarketplace(options) {
+      return `
+        <div class="reward-market">
+          ${options.map((option) => `
+            <article class="reward-option">
+              <div class="reward-visual ${option.visual}" aria-hidden="true">
+                <span class="mini-pack tall"></span>
+                <span class="mini-pack medium"></span>
+                <span class="mini-pack small"></span>
+              </div>
+              <div class="reward-copy">
+                <div>
+                  <div class="reward-brand"><span class="dot">F</span>${option.brand}</div>
+                  <div class="reward-name">${option.title}</div>
+                  <div class="reward-note">${option.note}</div>
+                </div>
+                <div class="reward-row">
+                  <span class="reward-use">${option.use}</span>
+                  <a href="#" class="reward-cta">Choose</a>
+                </div>
+              </div>
+            </article>
+          `).join("")}
+        </div>`;
+    }
+
+    function rewardPage(state, progress) {
+      const complete = progress.total > 0 && progress.done === progress.total;
+      return `
+        <section class="page reward-page">
+          <div class="frame"></div>
+          <div class="season-note">${complete ? "Collection complete" : "Reward page"}</div>
+          <div class="seal ${complete ? "open" : "locked"}" aria-hidden="true">
+            ${complete ? icons.gift : icons.clock}
+          </div>
+          ${complete ? '<div class="reward-badge">Curated reward shelf</div>' : ""}
+          <h3>${state.rewardTitle}</h3>
+          <p>${complete ? state.rewardDescription : "Complete every collection page to open the reward seal. Progress is saved, even if the season ends before you finish."}</p>
+          ${complete ? rewardMarketplace(state.rewardOptions || []) : ""}
+          ${complete ? '<button type="button" class="reward-button">Choose your reward</button>' : ""}
+          <div class="reward-foot">${complete ? "A fresh seasonal chapter begins automatically after this one is archived." : progress.done + " of " + progress.total + " collected"}</div>
+          ${complete ? '<div class="reward-endnote">Inspired by a reward marketplace pattern, but translated into FirstClub’s paper, pantry, and editorial visual language.</div>' : ""}
+        </section>`;
+    }
+
+    function renderBooklet(state) {
+      const progress = countProgress(state.collections);
+      const pages = [
+        coverPage(state, progress),
+        welcomePage(),
+        seasonPage(state, progress),
+        ...state.collections.map((collection, idx) => collectionPage(collection, idx + 1, state.collections.length)),
+        rewardPage(state, progress)
+      ];
+
+      pagesEl.innerHTML = pages.join("");
+      pageCount = pages.length;
+      activePage = 0;
+      pageDotsEl.innerHTML = "";
+
+      for (let i = 0; i < pageCount; i += 1) {
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "page-dot" + (i === 0 ? " on" : "");
+        dot.setAttribute("aria-label", "Go to page " + (i + 1));
+        dot.addEventListener("click", () => goToPage(i));
+        pageDotsEl.appendChild(dot);
+      }
+
+      pagesEl.scrollLeft = 0;
+      swipeHintEl.textContent = "Swipe or use arrows to turn pages";
+      updatePageControls();
+      requestAnimationFrame(() => {
+        updatePageControls();
+      });
+    }
+
+    function renderEmptyState(state) {
+      const preview = state.nextPreview;
+      emptyStateEl.innerHTML = `
+        <div class="empty-card">
+          <div class="empty-pill">${icons.clock} Your next journey begins in ${preview.arrivesIn}</div>
+          <div style="margin-top:16px">
+            <h3>${preview.season}</h3>
+            <p>No season is currently active. Instead of showing a failed state, the passport quietly previews what is coming next.</p>
+          </div>
+          <div class="preview-box">
+            <div class="preview-label">Next collection preview</div>
+            <div class="preview-title">${preview.season}</div>
+            <div class="preview-list">
+              ${preview.items.map((item) => "<span>" + item + "</span>").join("")}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function renderArchive(items) {
+      const archiveList = document.getElementById("archiveList");
+      archiveList.innerHTML = items.map((item) => {
+        const complete = item.status.toLowerCase() === "completed";
+        return `
+          <a href="#passportSection" class="archive-card">
+            <div class="archive-top">
+              <div>
+                <div class="archive-title">${item.title}</div>
+                <div class="archive-sub">${item.note}</div>
+              </div>
+              <span class="archive-chip ${complete ? "complete" : "incomplete"}">${item.status}</span>
+            </div>
+            <div class="archive-meta">
+              <span>${item.progress}</span>
+              <span>Saved in archive</span>
+            </div>
+          </a>`;
+      }).join("");
+    }
+
+    function renderCard(state) {
+      document.getElementById("cardTag").textContent = state.cardTag;
+      openPassportBtn.setAttribute("aria-label", "Open Taste Passport for " + state.cardTitle);
+    }
+
+    function goToPage(index) {
+      const clamped = Math.max(0, Math.min(pageCount - 1, index));
+      pagesEl.scrollTo({
+        left: clamped * pagesEl.clientWidth,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+      });
+    }
+
+    function updatePageControls() {
+      Array.from(pageDotsEl.children).forEach((dot, index) => {
+        dot.classList.toggle("on", index === activePage);
+      });
+      prevBtn.disabled = activePage === 0;
+      nextBtn.disabled = activePage === pageCount - 1;
+    }
+
+    function showIntro() {
+      passportIntro.classList.add("is-visible");
+      passportIntro.setAttribute("aria-hidden", "false");
+    }
+
+    function hideIntro() {
+      passportIntro.classList.remove("is-visible");
+      passportIntro.setAttribute("aria-hidden", "true");
+    }
+
+    function showPassportSection(options = {}) {
+      passportSection.hidden = false;
+      archiveSection.hidden = false;
+      requestAnimationFrame(() => {
+        passportSection.classList.add("is-visible");
+      });
+      openPassportBtn.setAttribute("aria-expanded", "true");
+      if (options.scroll !== false) {
+        passportSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      if (typeof options.page === "number") {
+        requestAnimationFrame(() => goToPage(options.page));
+      }
+    }
+
+    function hidePassportSection() {
+      passportSection.hidden = true;
+      archiveSection.hidden = true;
+      passportSection.classList.remove("is-visible");
+      openPassportBtn.setAttribute("aria-expanded", "false");
+    }
+
+    function completeIntroAndOpen() {
+      introSeen = true;
+      try {
+        localStorage.setItem(PASSPORT_STORAGE_KEY, "true");
+      } catch (error) {
+        console.warn("Unable to persist passport intro state.", error);
+      }
+      hideIntro();
+      showPassportSection({ page: 0 });
+    }
+
+    function setState(key) {
+      currentState = key;
+      const state = seasons[key];
+
+      Array.from(stateSwitch.children).forEach((button) => {
+        button.classList.toggle("on", button.dataset.state === key);
+      });
+
+      renderCard(state);
+      renderArchive(state.archive);
+
+      if (state.active) {
+        bookletShell.hidden = false;
+        emptyStateEl.hidden = true;
+        renderBooklet(state);
+      } else {
+        bookletShell.hidden = true;
+        emptyStateEl.hidden = false;
+        renderEmptyState(state);
+      }
+      hidePassportSection();
+      hideIntro();
+    }
+
+    stateSwitch.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-state]");
+      if (!button) return;
+      setState(button.dataset.state);
+    });
+
+    pagesEl.addEventListener("scroll", () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        const nextActive = Math.round(pagesEl.scrollLeft / pagesEl.clientWidth);
+        if (nextActive !== activePage) {
+          activePage = nextActive;
+          updatePageControls();
+        }
+      }, 50);
+    });
+
+    prevBtn.addEventListener("click", () => goToPage(activePage - 1));
+    nextBtn.addEventListener("click", () => goToPage(activePage + 1));
+
+    pagesEl.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        goToPage(activePage + 1);
+      }
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        goToPage(activePage - 1);
+      }
+    });
+
+    openPassportBtn.addEventListener("click", () => {
+      if (currentState === "between") {
+        showPassportSection({ page: 0 });
+        return;
+      }
+      if (!introSeen) {
+        hidePassportSection();
+        showIntro();
+        return;
+      }
+      hideIntro();
+      showPassportSection({ page: 0 });
+    });
+
+    enterPassportBtn.addEventListener("click", completeIntroAndOpen);
+
+    try {
+      introSeen = localStorage.getItem(PASSPORT_STORAGE_KEY) === "true";
+    } catch (error) {
+      introSeen = false;
+    }
+    setState("active");
+  </script>
+</body>
+</html>
