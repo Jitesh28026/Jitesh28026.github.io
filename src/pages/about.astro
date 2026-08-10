@@ -40,6 +40,15 @@ const skills = [
   { label: 'Product Strategy',         gloss: 'arguing my way to a smaller scope.' },
   { label: 'Agentic Workflows',        gloss: 'letting the bot have the boring half.' },
 ];
+
+// Years of experience — same tenure-adjusted anchor as the homepage hero,
+// so both surfaces always show the identical figure. Recomputed client-side
+// (see inline script below) to stay current between deploys.
+const EXPERIENCE_ANCHOR = '2022-08-21';
+const experienceYears = (
+  (Date.now() - new Date(EXPERIENCE_ANCHOR).getTime()) /
+  (365.25 * 24 * 60 * 60 * 1000)
+).toFixed(1);
 ---
 
 <BaseLayout
@@ -121,7 +130,7 @@ const skills = [
               <dt>LOC</dt><dd>Bengaluru &middot; <span data-live-clock>--:--</span> IST</dd>
             </div>
             <div class="ah-meta-row">
-              <dt>SINCE</dt><dd>02Y designing B2B</dd>
+              <dt>SINCE</dt><dd><span data-experience-years>{experienceYears}</span>Y designing B2B</dd>
             </div>
             <div class="ah-meta-row">
               <dt>STATE</dt>
@@ -230,6 +239,19 @@ const skills = [
     import '../scripts/about-animations';
     import '../scripts/live-clock';
     import '../scripts/tilt';
+  </script>
+
+  <!-- Keep the years-of-experience figure current between deploys. Mirrors the
+       EXPERIENCE_ANCHOR used at build time in the frontmatter above (and on the
+       homepage hero). -->
+  <script is:inline>
+    (function () {
+      var anchor = new Date('2022-08-21').getTime();
+      var years = ((Date.now() - anchor) / (365.25 * 24 * 60 * 60 * 1000)).toFixed(1);
+      document.querySelectorAll('[data-experience-years]').forEach(function (el) {
+        el.textContent = years;
+      });
+    })();
   </script>
 
 </BaseLayout>
