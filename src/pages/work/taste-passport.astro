@@ -5,7 +5,7 @@
 // /public/taste-passport/. Discoverable via a card in the homepage Work grid.
 const canonical = 'https://jitesht.com/work/taste-passport';
 const description =
-  'FirstClub Taste Passport — a seasonal, deterministic stamp-collection concept (no chance mechanics) built entirely on FirstClub’s live design system.';
+  'FirstClub Taste Passport — a seasonal, deterministic stamp-collection concept (no chance mechanics), inspired by FirstClub’s design system.';
 const figmaUrl =
   'https://www.figma.com/design/CAbVYp5Gu2sIuiLeOP4nM3/Untitled?node-id=9-203&t=Sg7YTfYD3RNLsSag-1';
 ---
@@ -63,7 +63,9 @@ const figmaUrl =
   .fig-btn{display:inline-flex;align-items:center;gap:9px;background:var(--g900);color:#fff;font-family:'Poppins',sans-serif;font-weight:600;font-size:13.5px;text-decoration:none;padding:12px 22px;border-radius:30px;border:1px solid var(--g900);transition:background .18s,transform .18s}
   .fig-btn:hover{background:var(--g700);transform:translateY(-1px)}
   .fig-btn svg{flex:none}
-  .fig-foot{display:flex;justify-content:center;margin-bottom:20px}
+  .fig-btn.light{background:#fff;color:var(--g900);border-color:#fff}
+  .fig-btn.light:hover{background:var(--cream);border-color:var(--cream)}
+  .fig-foot{display:flex;justify-content:center;margin-top:32px}
   .backlink{display:inline-flex;align-items:center;gap:6px;font-family:'Poppins',sans-serif;font-size:12.5px;font-weight:600;color:var(--g700);text-decoration:none;flex:none;white-space:nowrap}
   .backlink:hover{color:var(--g900)}
 
@@ -126,7 +128,7 @@ const figmaUrl =
   .dl-a b{color:var(--g700);font-weight:600}
 
   /* ===== closing ===== */
-  .close{background:linear-gradient(160deg,#2C6B47,#123A26);color:#fff;text-align:center;border-top:none}
+  .close{background:linear-gradient(160deg,#2C6B47,#123A26);color:#fff;text-align:center;border-top:none;max-width:none;margin:0;padding:76px 28px 82px}
   .close .s-title{color:#fff;margin:0 auto;max-width:20ch}
   .close .s-body{color:rgba(255,255,255,.78);margin:14px auto 0}
   .close .s-kick{color:var(--gold-soft,#F1DCA6);justify-content:center}
@@ -164,12 +166,12 @@ const figmaUrl =
 <header class="hero">
   <div class="kick">FirstClub · Gamification concept</div>
   <h1 class="serif">The Taste Passport</h1>
-  <p class="dek">A seasonal collectible built on FirstClub's existing screens and design language — turning genuine product discovery into a calm, premium ritual instead of a spin-wheel promotion.</p>
+  <p class="dek">A seasonal collectible inspired by FirstClub's screens and design language — turning genuine product discovery into a calm, premium ritual instead of a spin-wheel promotion.</p>
   <div class="meta">
     <div>Screens<b>12</b></div>
     <div>Entry points<b>3</b></div>
     <div>Chance mechanics<b>0</b></div>
-    <div>Design system<b>FirstClub native</b></div>
+    <div>Design system<b>Inspired by FirstClub</b></div>
   </div>
   <div class="fig-cta">
     <a class="fig-btn" href={figmaUrl} target="_blank" rel="noopener noreferrer">
@@ -355,8 +357,8 @@ const figmaUrl =
       <p>There's no failed attempt state. An order either adds a stamp or it doesn't — never a penalty.</p>
     </div>
     <div class="rule">
-      <div class="rt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>FirstClub's own system</div>
-      <p>Same fonts, same pill shapes, same greens and creams as the live app — this reads as a feature, not a reskin.</p>
+      <div class="rt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Inspired by FirstClub</div>
+      <p>Echoes the app's fonts, pill shapes, greens and creams so the concept feels of-a-piece — a considered homage, not a reskin.</p>
     </div>
   </div>
 </section>
@@ -391,16 +393,16 @@ const figmaUrl =
 <section class="close">
   <div class="s-kick">In short</div>
   <h2 class="s-title serif">A membership, not a promotion</h2>
-  <p class="s-body">The Taste Passport turns FirstClub's existing quality-first identity into a quiet, collectible ritual — built entirely from screens and patterns the app already has, extended just far enough to feel new.</p>
+  <p class="s-body">The Taste Passport turns FirstClub's quality-first identity into a quiet, collectible ritual — inspired by the patterns the app already leans on, extended just far enough to feel new.</p>
+  <div class="fig-foot">
+    <a class="fig-btn light" href={figmaUrl} target="_blank" rel="noopener noreferrer">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2h10M7 2a3 3 0 0 0 0 6m0-6v6m10-6a3 3 0 0 1 0 6H7m10 0a3 3 0 1 1-6 0m-4 0a3 3 0 0 0 0 6m0-6h4m-4 6a3 3 0 1 0 6 0v-6"/></svg>
+      View in Figma
+    </a>
+  </div>
 </section>
 
-<div class="fig-foot">
-  <a class="fig-btn" href={figmaUrl} target="_blank" rel="noopener noreferrer">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2h10M7 2a3 3 0 0 0 0 6m0-6v6m10-6a3 3 0 0 1 0 6H7m10 0a3 3 0 1 1-6 0m-4 0a3 3 0 0 0 0 6m0-6h4m-4 6a3 3 0 1 0 6 0v-6"/></svg>
-    View in Figma
-  </a>
-</div>
-<footer>Taste Passport · Gamification concept · Built on FirstClub's live design system · <a href="/" style="color:var(--g700);text-decoration:none;font-weight:600;">jitesht.com</a></footer>
+<footer>Taste Passport · Gamification concept · Inspired by FirstClub's design system · <a href="/" style="color:var(--g700);text-decoration:none;font-weight:600;">jitesht.com</a></footer>
 
 </body>
 </html>
