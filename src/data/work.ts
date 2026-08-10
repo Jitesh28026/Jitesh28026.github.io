@@ -12,6 +12,7 @@ import editFeatureThumb from '../assets/work/edit-feature.png';
 import supplierMasterThumb from '../assets/work/supplier-master.png';
 import offerRolloutThumb from '../assets/work/offer-rollout.png';
 import moneyhiThumb from '../assets/work/moneyhi.png';
+import tastePassportThumb from '../assets/work/taste-passport.png';
 
 export type WorkCard = {
   htmlId: string;
@@ -41,6 +42,19 @@ export const workCards: readonly WorkCard[] = [
     external: false,
   },
   {
+    htmlId: 'project-5',
+    title: 'Taste Passport — FirstClub',
+    summary:
+      'A seasonal, deterministic stamp-collection concept for a premium grocery app — genuine product discovery as a calm collectible ritual, zero chance mechanics, built on FirstClub’s live design system.',
+    tags: ['GAMIFICATION CONCEPT', 'SEASONAL COLLECTIBLE', 'DESIGN-SYSTEM NATIVE'],
+    thumbnail: tastePassportThumb,
+    thumbnailAlt: 'FirstClub Taste Passport case study',
+    displayNumber: '02',
+    thumbClass: 'thumb-2',
+    href: '/work/taste-passport',
+    external: false,
+  },
+  {
     htmlId: 'project-1',
     title: 'Making Data Consolidation Feel Safe (dataX.ai)',
     summary:
@@ -48,7 +62,7 @@ export const workCards: readonly WorkCard[] = [
     tags: ['4-STEP MERGE FLOW', 'AI-POWERED MDM', 'ENTERPRISE GOVERNANCE'],
     thumbnail: supplierMasterThumb,
     thumbnailAlt: 'Supplier Master case study hero',
-    displayNumber: '02',
+    displayNumber: '03',
     thumbClass: 'thumb-1',
     href: '/work/supplier-master',
     external: false,
@@ -61,7 +75,7 @@ export const workCards: readonly WorkCard[] = [
     tags: ['OFFER APPROVAL FLOW', 'HR TECH SAAS', 'CANDIDATE EXPERIENCE'],
     thumbnail: offerRolloutThumb,
     thumbnailAlt: 'Vasitum Offer Rollout Design',
-    displayNumber: '03',
+    displayNumber: '04',
     thumbClass: 'thumb-2',
     href: 'https://medium.com/@thakker.jitesh04/offer-rollout-at-vasitum-342539f4c8f1',
     external: true,
