@@ -26,7 +26,12 @@ if (stage) {
   const px = (pct: number) => (pct / 100) * stage.getBoundingClientRect().width;
   const pieces = Array.from(stage.querySelectorAll<HTMLElement>('[data-piece]'));
 
+  let reassembleTimer = 0;
+
   function separate(): void {
+    window.clearTimeout(reassembleTimer);
+    // relax the structural clips so scattered pieces stay fully visible
+    stage!.classList.add('is-separated');
     pieces.forEach((el, i) => {
       const id = el.dataset.piece as string;
       const [dx, dy, rot] = SCATTER[id] ?? [0, 0, 0];
@@ -40,6 +45,13 @@ if (stage) {
       el.style.transitionDelay = reduce ? '0s' : `${i * 30}ms`;
       el.style.transform = 'translate(0px, 0px) rotate(0deg)';
     });
+    // re-apply the clips only once pieces have settled, so the resting ship
+    // is byte-perfect again (no visible pop of the masks mid-return).
+    window.clearTimeout(reassembleTimer);
+    reassembleTimer = window.setTimeout(
+      () => stage!.classList.remove('is-separated'),
+      reduce ? 0 : 1350
+    );
   }
 
   document.querySelector('[data-separate]')?.addEventListener('click', separate);

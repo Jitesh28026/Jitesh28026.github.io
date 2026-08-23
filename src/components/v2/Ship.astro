@@ -1,57 +1,78 @@
 ---
 /**
- * Ship — the recurring visual system, built from the 7 individual SVG pieces.
- * Pieces are inlined via compile-time `?raw` imports (platform-independent —
- * no runtime fs), with #373D3B swapped to currentColor so the ship draws in
- * var(--ship) and adapts to light/dark automatically. Each piece is a live DOM
- * element GSAP can transform independently.
+ * Ship — reproduces the complete Figma SVG *exactly*: clipPath + mask0..3 +
+ * the nested <g> hierarchy are kept intact, so the assembled ship is
+ * byte-for-byte the original (identical masking / overlap / float).
  *
- * Positions are the calibrated 1600x1600 offsets (verified against the Figma
- * render) as % of the square stage. Paint order = DOM order:
- * body -> cargo stack -> flag -> waves. Waves are the FRONT-most layer (the
- * waterline crosses in front of the hull, so the ship reads as floating).
+ * We only:
+ *  1. give the clip/mask ids a unique suffix (so multiple ships can coexist),
+ *  2. swap the ink colour #373D3B -> currentColor (mask-alpha/luminance
+ *     values are unaffected), so the ship draws in var(--ship) per theme,
+ *  3. wrap each piece's path run in a `<g class="ship-piece" data-piece>` —
+ *     WITHOUT reordering — so each piece can be transformed independently for
+ *     separate/reassemble while the clip/mask relationships stay intact.
+ *
+ * The two structural clipping groups (mask1 = waterline float, mask2 = ship
+ * region) are tagged so they can be relaxed while pieces are scattered, then
+ * re-applied when reassembled (keeping the flag's mask3 always on).
  */
-import flagRaw from '../../assets/ship/flag.svg?raw';
-import verticalRaw from '../../assets/ship/vertical-piece.svg?raw';
-import middleTopRaw from '../../assets/ship/middle-top.svg?raw';
-import middleBottomRaw from '../../assets/ship/middle-bottom.svg?raw';
-import rightRaw from '../../assets/ship/right-piece.svg?raw';
-import bodyRaw from '../../assets/ship/body.svg?raw';
-import wavesRaw from '../../assets/ship/waves.svg?raw';
+import svgRaw from '../../assets/ship/complete-figma.svg?raw';
 
-// id -> [raw svg, left%, top%, width%]  (of the 1600 square stage)
-const PIECES: [string, string, number, number, number][] = [
-  ['body', bodyRaw, 18.75, 50.5, 66.875],
-  ['vertical-piece', verticalRaw, 23.125, 40.31, 15.1875],
-  ['middle-bottom', middleBottomRaw, 31.5625, 52.0, 22.0],
-  ['middle-top', middleTopRaw, 31.8125, 46.25, 21.3125],
-  ['right-piece', rightRaw, 52.8125, 53.4375, 15.4375],
-  ['flag', flagRaw, 28.0, 33.9375, 4.875],
-  ['waves', wavesRaw, 15.31, 71.25, 67.75],
-];
+const uid = 'sh' + Math.random().toString(36).slice(2, 8);
 
-function themed(raw: string): string {
-  return raw
-    .replace(/#373D3B/g, 'currentColor')
-    .replace(
-      /<svg /,
-      '<svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;overflow:visible" '
-    );
-}
+let svg = svgRaw
+  // unique clip/mask ids
+  .replace(/_2109_56/g, `_${uid}`)
+  // theme ink (masks use white / alpha — unaffected in practice)
+  .replace(/#373D3B/g, 'currentColor')
+  // responsive sizing + let strokes overflow tight bounds
+  .replace(
+    /<svg /,
+    '<svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;overflow:visible" '
+  );
+
+// tag the two structural clipping groups so we can relax them mid-animation
+svg = svg
+  .replace(/<g mask="url\(#mask1_/, '<g class="ship-clip ship-clip-float" mask="url(#mask1_')
+  .replace(/<g mask="url\(#mask2_/, '<g class="ship-clip ship-clip-region" mask="url(#mask2_');
+
+// wrap each piece's paint run in a transformable group (order preserved)
+svg = svg
+  .replace(
+    /(<g mask="url\(#mask3_[\s\S]*?<path d="M513\.734[\s\S]*?\/>)/,
+    '<g class="ship-piece" data-piece="flag">$1</g>'
+  )
+  .replace(
+    /(<path d="M323\.953[\s\S]*?\/>)/,
+    '<g class="ship-piece" data-piece="body">$1</g>'
+  )
+  .replace(
+    /(<path d="M1073\.76[\s\S]*?)(<path d="M878\.913)/,
+    '<g class="ship-piece" data-piece="right-piece">$1</g>$2'
+  )
+  .replace(
+    /(<path d="M878\.913[\s\S]*?)(<path d="M837\.704)/,
+    '<g class="ship-piece" data-piece="middle-top">$1</g>$2'
+  )
+  .replace(
+    /(<path d="M837\.704[\s\S]*?)(<path d="M985\.971)/,
+    '<g class="ship-piece" data-piece="middle-bottom">$1</g>$2'
+  )
+  .replace(
+    /(<path d="M985\.971[\s\S]*?)(<path d="M583\.037)/,
+    '<g class="ship-piece" data-piece="body">$1</g>$2'
+  )
+  .replace(
+    /(<path d="M583\.037[\s\S]*?)(<\/g>)/,
+    '<g class="ship-piece" data-piece="vertical-piece">$1</g>$2'
+  )
+  .replace(
+    /(<path d="M239\.508[\s\S]*?\/>)/,
+    '<g class="ship-piece" data-piece="waves">$1</g>'
+  );
 ---
 
-<div class="ship-stage" data-ship aria-hidden="true">
-  {
-    PIECES.map(([id, raw, left, top, width]) => (
-      <div
-        class="ship-piece"
-        data-piece={id}
-        style={`left:${left}%;top:${top}%;width:${width}%`}
-        set:html={themed(raw)}
-      />
-    ))
-  }
-</div>
+<div class="ship-stage" data-ship aria-hidden="true" set:html={svg} />
 
 <style>
   .ship-stage {
@@ -60,20 +81,29 @@ function themed(raw: string): string {
     aspect-ratio: 1 / 1;
     color: var(--ship);
   }
-  .ship-piece {
-    position: absolute;
-    will-change: transform, opacity;
-    transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .ship-piece {
-      transition: none;
-    }
-  }
-  .ship-piece :global(svg) {
+  .ship-stage :global(svg) {
     width: 100%;
     height: auto;
     display: block;
     overflow: visible;
+  }
+  /* each piece is transformable around its own centre */
+  .ship-stage :global(.ship-piece) {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+    will-change: transform;
+  }
+  /* while scattered, relax the two structural clips so pieces move freely and
+     stay fully visible (the flag's mask3 stays on). Re-applied when assembled
+     so the resting ship is byte-perfect. */
+  .ship-stage.is-separated :global(.ship-clip-float),
+  .ship-stage.is-separated :global(.ship-clip-region) {
+    mask: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ship-stage :global(.ship-piece) {
+      transition: none;
+    }
   }
 </style>
