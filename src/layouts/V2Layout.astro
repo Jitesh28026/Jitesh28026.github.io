@@ -1,0 +1,80 @@
+---
+/**
+ * V2Layout — isolated shell for the portfolio redesign at /v2.
+ * Deliberately does NOT import BaseLayout, global.css, legacy.css, or the
+ * legacy dark tokens. Its own scoped token layer (v2.css) + DM Sans + a
+ * self-contained theme system, so the live homepage is untouchable from here.
+ */
+import '../styles/v2.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Jitesh Thakker — Product Designer. I design to learn, not just to ship.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    {/* No-flicker theme init — runs before first paint. Manual preference
+        wins; otherwise pick by local time (07:00–18:59 light, else dark). */}
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('v2-theme');
+          var theme = saved;
+          if (theme !== 'light' && theme !== 'dark') {
+            var h = new Date().getHours();
+            theme = h >= 7 && h < 19 ? 'light' : 'dark';
+          }
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="v2-topbar">
+      <a class="v2-logo" href="/v2">Jitesh<span>.</span></a>
+      <button
+        class="theme-toggle"
+        data-theme-toggle
+        type="button"
+        aria-label="Switch theme"
+      >
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2" />
+          <path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7" />
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 14.5A8 8 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z" />
+        </svg>
+      </button>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <script>
+      import '../scripts/v2/theme-toggle';
+    </script>
+  </body>
+</html>
