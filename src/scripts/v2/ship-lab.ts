@@ -1,15 +1,15 @@
 /**
  * Ship System test choreography (Phase 5).
- * Demonstrates: assembled -> separated -> independent -> reassembled,
- * using the 7 real pieces. Scatter offsets are % of the square stage, so
- * the motion scales responsively. Respects prefers-reduced-motion.
+ * assembled -> separated -> independent -> reassembled, using the 7 real
+ * pieces. Driven by CSS transitions (no animation library) — each piece is
+ * moved by setting its transform; the transition on .ship-piece animates it.
+ * Scatter offsets are % of the square stage, so motion scales responsively.
+ * Respects prefers-reduced-motion (transition disabled in CSS).
  */
-import gsap from 'gsap';
-
 const stage = document.querySelector<HTMLElement>('[data-ship]');
 if (stage) {
   const reduce =
-    window.matchMedia &&
+    !!window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // id -> [dx%, dy%, rotationDeg]
@@ -30,27 +30,15 @@ if (stage) {
     pieces.forEach((el, i) => {
       const id = el.dataset.piece as string;
       const [dx, dy, rot] = SCATTER[id] ?? [0, 0, 0];
-      gsap.to(el, {
-        x: px(dx),
-        y: px(dy),
-        rotation: rot,
-        duration: reduce ? 0 : 1,
-        ease: 'power3.inOut',
-        delay: reduce ? 0 : i * 0.04,
-      });
+      el.style.transitionDelay = reduce ? '0s' : `${i * 40}ms`;
+      el.style.transform = `translate(${px(dx)}px, ${px(dy)}px) rotate(${rot}deg)`;
     });
   }
 
   function reassemble(): void {
     pieces.forEach((el, i) => {
-      gsap.to(el, {
-        x: 0,
-        y: 0,
-        rotation: 0,
-        duration: reduce ? 0 : 1.1,
-        ease: 'power3.inOut',
-        delay: reduce ? 0 : i * 0.03,
-      });
+      el.style.transitionDelay = reduce ? '0s' : `${i * 30}ms`;
+      el.style.transform = 'translate(0px, 0px) rotate(0deg)';
     });
   }
 
