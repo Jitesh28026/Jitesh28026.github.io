@@ -57,9 +57,9 @@ if (stage) {
   document.querySelector('[data-separate]')?.addEventListener('click', separate);
   document.querySelector('[data-reassemble]')?.addEventListener('click', reassemble);
 
-  const ref = document.querySelector<HTMLElement>('[data-ref]');
+  const labStage = document.querySelector<HTMLElement>('[data-stage]');
   document.querySelector('[data-toggle-ref]')?.addEventListener('click', () => {
-    if (ref) ref.hidden = !ref.hidden;
+    labStage?.classList.toggle('show-ref');
   });
 }
 

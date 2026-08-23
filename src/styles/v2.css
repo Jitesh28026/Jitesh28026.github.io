@@ -18,7 +18,7 @@
   --line-strong: rgba(27, 26, 22, 0.26);
   /* accent stays monochrome until a direction is approved */
   --accent: var(--ink);
-  --ship: #1b1a16;        /* ship draws in ink on light */
+  --ship: #373d3b;        /* ship ink on light (per Figma reference) */
   color-scheme: light;
 }
 
@@ -32,7 +32,7 @@
   --line: rgba(240, 237, 228, 0.14);
   --line-strong: rgba(240, 237, 228, 0.26);
   --accent: var(--ink);
-  --ship: #f0ede4;        /* ship draws in off-white on dark */
+  --ship: #c8c2c4;        /* ship ink on dark (per Figma reference) */
   color-scheme: dark;
 }
 
