@@ -1,0 +1,100 @@
+---
+/**
+ * /v2/ship-lab — isolated Ship System test (Phase 5).
+ * Verifies the 7 pieces reconstruct the exact ship and can move
+ * independently, in both themes. Not part of the final IA.
+ */
+import V2Layout from '../../layouts/V2Layout.astro';
+import Ship from '../../components/v2/Ship.astro';
+---
+
+<V2Layout title="Ship system test — v2">
+  <section class="lab">
+    <div class="v2-wrap">
+      <p class="v2-eyebrow">Phase 5 · Ship system test</p>
+      <h1 class="lab-title">Seven pieces, one ship.</h1>
+      <p class="lab-copy">
+        The pieces are the real SVG assets, positioned to reconstruct the ship,
+        drawn in the theme's ink. Toggle the reference to compare against the
+        original; separate and reassemble to confirm independent motion.
+      </p>
+
+      <div class="lab-controls">
+        <button data-separate type="button">Separate</button>
+        <button data-reassemble type="button">Reassemble</button>
+        <button data-toggle-ref type="button">Toggle reference</button>
+      </div>
+
+      <div class="lab-stage">
+        <img class="lab-ref" src="/ship/complete-figma.svg" alt="" data-ref hidden />
+        <Ship />
+      </div>
+    </div>
+  </section>
+
+  <script>
+    import '../../scripts/v2/ship-lab';
+  </script>
+</V2Layout>
+
+<style>
+  .lab {
+    padding: clamp(2rem, 6vh, 4rem) 0 6rem;
+  }
+  .lab-title {
+    font-weight: 600;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    letter-spacing: -0.03em;
+    line-height: 1.04;
+    margin-top: 0.75rem;
+  }
+  .lab-copy {
+    margin-top: 1rem;
+    max-width: 52ch;
+    color: var(--ink-2);
+  }
+  .lab-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+  .lab-controls button {
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .lab-controls button:hover {
+    background: var(--bg-2);
+  }
+  .lab-controls button:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+  .lab-stage {
+    position: relative;
+    width: min(78vw, 560px);
+    aspect-ratio: 1 / 1;
+    margin: 3rem auto 0;
+  }
+  .lab-ref {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.22;
+    pointer-events: none;
+  }
+  /* keep the reference legible on dark theme */
+  :root[data-theme='dark'] .lab-ref {
+    filter: invert(1);
+    opacity: 0.28;
+  }
+</style>
