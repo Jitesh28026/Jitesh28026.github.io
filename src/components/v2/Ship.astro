@@ -1,50 +1,52 @@
 ---
 /**
  * Ship — the recurring visual system, built from the 7 individual SVG pieces.
- * Pieces are inlined (so each is a live DOM element GSAP can transform
- * independently) with #373D3B swapped to currentColor, so the ship draws in
- * var(--ship) and adapts to light/dark automatically.
+ * Pieces are inlined via compile-time `?raw` imports (platform-independent —
+ * no runtime fs), with #373D3B swapped to currentColor so the ship draws in
+ * var(--ship) and adapts to light/dark automatically. Each piece is a live DOM
+ * element GSAP can transform independently.
  *
  * Positions are the calibrated 1600x1600 offsets (verified against the Figma
- * render) expressed as % of the square stage. Paint order = DOM order:
+ * render) as % of the square stage. Paint order = DOM order:
  * waves (back) -> body -> cargo stack -> flag (front).
  */
-import fs from 'node:fs';
-import path from 'node:path';
+import flagRaw from '../../assets/ship/flag.svg?raw';
+import verticalRaw from '../../assets/ship/vertical-piece.svg?raw';
+import middleTopRaw from '../../assets/ship/middle-top.svg?raw';
+import middleBottomRaw from '../../assets/ship/middle-bottom.svg?raw';
+import rightRaw from '../../assets/ship/right-piece.svg?raw';
+import bodyRaw from '../../assets/ship/body.svg?raw';
+import wavesRaw from '../../assets/ship/waves.svg?raw';
 
-const dir = path.join(process.cwd(), 'public/ship');
-
-// [id, left%, top%, width%]  (of the 1600 square stage)
-const PIECES: [string, number, number, number][] = [
-  ['waves', 15.31, 71.25, 67.75],
-  ['body', 18.75, 50.5, 66.875],
-  ['vertical-piece', 23.125, 40.31, 15.1875],
-  ['middle-bottom', 31.5625, 52.0, 22.0],
-  ['middle-top', 31.8125, 46.25, 21.3125],
-  ['right-piece', 52.8125, 53.4375, 15.4375],
-  ['flag', 28.0, 33.9375, 4.875],
+// id -> [raw svg, left%, top%, width%]  (of the 1600 square stage)
+const PIECES: [string, string, number, number, number][] = [
+  ['waves', wavesRaw, 15.31, 71.25, 67.75],
+  ['body', bodyRaw, 18.75, 50.5, 66.875],
+  ['vertical-piece', verticalRaw, 23.125, 40.31, 15.1875],
+  ['middle-bottom', middleBottomRaw, 31.5625, 52.0, 22.0],
+  ['middle-top', middleTopRaw, 31.8125, 46.25, 21.3125],
+  ['right-piece', rightRaw, 52.8125, 53.4375, 15.4375],
+  ['flag', flagRaw, 28.0, 33.9375, 4.875],
 ];
 
-function inlineSvg(id: string): string {
-  let s = fs.readFileSync(path.join(dir, `${id}.svg`), 'utf8');
-  s = s.replace(/#373D3B/g, 'currentColor');
-  // scale to wrapper, allow strokes to overflow the tight viewBox
-  s = s.replace(
-    /<svg /,
-    '<svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;overflow:visible" '
-  );
-  return s;
+function themed(raw: string): string {
+  return raw
+    .replace(/#373D3B/g, 'currentColor')
+    .replace(
+      /<svg /,
+      '<svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block;overflow:visible" '
+    );
 }
 ---
 
 <div class="ship-stage" data-ship aria-hidden="true">
   {
-    PIECES.map(([id, left, top, width]) => (
+    PIECES.map(([id, raw, left, top, width]) => (
       <div
         class="ship-piece"
         data-piece={id}
         style={`left:${left}%;top:${top}%;width:${width}%`}
-        set:html={inlineSvg(id)}
+        set:html={themed(raw)}
       />
     ))
   }
@@ -59,7 +61,6 @@ function inlineSvg(id: string): string {
   }
   .ship-piece {
     position: absolute;
-    /* transforms are driven by GSAP / CSS; keep them GPU-friendly */
     will-change: transform, opacity;
   }
   .ship-piece :global(svg) {
