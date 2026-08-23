@@ -12,15 +12,16 @@ if (stage) {
     !!window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // id -> [dx%, dy%, rotationDeg]
+  // id -> [dx%, dy%, rotationDeg]. Pieces move up/outward so nothing sinks
+  // below the waterline (mask1 stays on); only the waves drop away.
   const SCATTER: Record<string, [number, number, number]> = {
-    flag: [-16, -20, -14],
-    'vertical-piece': [-26, -2, -7],
-    'middle-top': [6, -24, 7],
-    'middle-bottom': [-10, 20, -6],
-    'right-piece': [26, 8, 10],
-    body: [2, 26, 0],
-    waves: [0, 15, 0],
+    flag: [-16, -21, -14],
+    'vertical-piece': [-27, -6, -7],
+    'middle-top': [8, -23, 7],
+    'middle-bottom': [-13, -13, -6],
+    'right-piece': [27, -9, 10],
+    body: [0, -15, 0],
+    waves: [0, 17, 0],
   };
 
   const px = (pct: number) => (pct / 100) * stage.getBoundingClientRect().width;

@@ -94,10 +94,11 @@ svg = svg
     transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
     will-change: transform;
   }
-  /* while scattered, relax the two structural clips so pieces move freely and
-     stay fully visible (the flag's mask3 stays on). Re-applied when assembled
-     so the resting ship is byte-perfect. */
-  .ship-stage.is-separated :global(.ship-clip-float),
+  /* While scattered, relax ONLY the region clip (mask2 — a no-op on the
+     assembled ship, so no pop) so pieces aren't cut off as they move out.
+     The waterline float clip (mask1) stays ON always: pieces scatter upward,
+     so nothing sinks below the water, and the hull rises out smoothly rather
+     than the hidden bottom popping into view. The flag's mask3 also stays on. */
   .ship-stage.is-separated :global(.ship-clip-region) {
     mask: none;
   }
