@@ -8,7 +8,8 @@
  *
  * Positions are the calibrated 1600x1600 offsets (verified against the Figma
  * render) as % of the square stage. Paint order = DOM order:
- * waves (back) -> body -> cargo stack -> flag (front).
+ * body -> cargo stack -> flag -> waves. Waves are the FRONT-most layer (the
+ * waterline crosses in front of the hull, so the ship reads as floating).
  */
 import flagRaw from '../../assets/ship/flag.svg?raw';
 import verticalRaw from '../../assets/ship/vertical-piece.svg?raw';
@@ -20,13 +21,13 @@ import wavesRaw from '../../assets/ship/waves.svg?raw';
 
 // id -> [raw svg, left%, top%, width%]  (of the 1600 square stage)
 const PIECES: [string, string, number, number, number][] = [
-  ['waves', wavesRaw, 15.31, 71.25, 67.75],
   ['body', bodyRaw, 18.75, 50.5, 66.875],
   ['vertical-piece', verticalRaw, 23.125, 40.31, 15.1875],
   ['middle-bottom', middleBottomRaw, 31.5625, 52.0, 22.0],
   ['middle-top', middleTopRaw, 31.8125, 46.25, 21.3125],
   ['right-piece', rightRaw, 52.8125, 53.4375, 15.4375],
   ['flag', flagRaw, 28.0, 33.9375, 4.875],
+  ['waves', wavesRaw, 15.31, 71.25, 67.75],
 ];
 
 function themed(raw: string): string {
