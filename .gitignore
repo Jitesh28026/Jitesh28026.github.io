@@ -30,3 +30,12 @@ Thumbs.db
 
 # Claude Code per-developer overrides (project-level shared settings stay in .claude/settings.json)
 .claude/settings.local.json
+
+# extracted frame sequences (regenerate via scripts/extract-frames.sh; served from CDN)
+public/frames/
+
+# /flat scroll-film: gsap-dependent, gsap install is flaky in CI — kept local, out of build
+src/pages/flat.astro
+src/layouts/FilmLayout.astro
+src/scripts/film/
+src/styles/film.css
