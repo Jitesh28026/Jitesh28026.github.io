@@ -1,107 +1,111 @@
 ---
 /**
- * Process — how I move through problems. Six stages, flexible not rigid.
- * (The ship deconstructs and distributes its pieces through this section in
- * Phase 8; for now the content stands on its own.)
+ * Process — how I move through problems, six flexible stages.
+ * Phase 8: a sticky ship sits beside the stages and DECONSTRUCTS as you scroll
+ * through the section, then REASSEMBLES at the end. Scroll-progress driven
+ * (rAF, no animation library). Reduced-motion / small screens get the static
+ * stages with an assembled ship.
  */
+import Ship from './Ship.astro';
+
 const stages = [
-  {
-    n: '01',
-    name: 'Understand',
-    body: "Understand the context and the people before deciding a solution is even needed. What's actually happening? What do we know, and what are we just assuming?",
-  },
-  {
-    n: '02',
-    name: 'Frame',
-    body: 'Decide what problem is actually worth solving. Priorities, constraints, business context, scope, tradeoffs. What are we really trying to change?',
-  },
-  {
-    n: '03',
-    name: 'Explore',
-    body: "Explore possibilities before committing too early. The goal isn't endless options. It's not locking onto the first reasonable answer.",
-  },
-  {
-    n: '04',
-    name: 'Design',
-    body: 'Turn the strongest direction into a real product experience: flows, interfaces, states, edge cases, concrete enough to build and evaluate.',
-  },
-  {
-    n: '05',
-    name: 'Validate',
-    body: "A feature isn't done because it shipped. I care whether the built experience actually works: usability, edge cases, and whether what got implemented matches what was designed.",
-  },
-  {
-    n: '06',
-    name: 'Learn',
-    body: 'Watch what happens. What worked, what assumptions were wrong, what should change. Learning feeds the next decision. The process loops, it doesn\'t end at ship.',
-  },
+  { n: '01', name: 'Understand', body: "Understand the context and the people before deciding a solution is even needed. What's actually happening? What do we know, and what are we just assuming?" },
+  { n: '02', name: 'Frame', body: 'Decide what problem is actually worth solving. Priorities, constraints, business context, scope, tradeoffs. What are we really trying to change?' },
+  { n: '03', name: 'Explore', body: "Explore possibilities before committing too early. The goal isn't endless options. It's not locking onto the first reasonable answer." },
+  { n: '04', name: 'Design', body: 'Turn the strongest direction into a real product experience: flows, interfaces, states, edge cases, concrete enough to build and evaluate.' },
+  { n: '05', name: 'Validate', body: "A feature isn't done because it shipped. I care whether the built experience actually works: usability, edge cases, and whether what got implemented matches what was designed." },
+  { n: '06', name: 'Learn', body: 'Watch what happens. What worked, what assumptions were wrong, what should change. Learning feeds the next decision. The process loops, it does not end at ship.' },
 ];
 ---
 
 <section class="v2-process" id="process">
   <div class="v2-wrap">
-    <header class="sec-head">
+    <header class="sec-head proc-head">
       <p class="v2-eyebrow">How I think</p>
       <h2 class="sec-title">The general way I move through problems.</h2>
       <p class="sec-note">
         Not a rigid six steps every project follows, just a shape I adapt to the
-        situation. The important part is the last one: it doesn't end at ship.
+        situation. The important part is the last one: it does not end at ship.
       </p>
     </header>
+  </div>
 
-    <ol class="proc-list">
-      {
-        stages.map((s) => (
-          <li class="proc-item">
-            <span class="proc-n">{s.n}</span>
-            <h3 class="proc-name">{s.name}</h3>
-            <p class="proc-body">{s.body}</p>
-          </li>
-        ))
-      }
-    </ol>
+  <div class="proc-scroll" data-proc-scroll>
+    <div class="v2-wrap proc-grid">
+      <ol class="proc-list">
+        {
+          stages.map((s) => (
+            <li class="proc-item" data-proc-stage>
+              <span class="proc-n">{s.n}</span>
+              <h3 class="proc-name">{s.name}</h3>
+              <p class="proc-body">{s.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="proc-ship-col">
+        <div class="proc-ship" data-proc-ship>
+          <Ship />
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
+<script>
+  import '../../scripts/v2/process-ship';
+</script>
+
 <style>
-  .v2-process { padding: clamp(4rem, 10vh, 8rem) 0; }
-  .sec-note {
-    margin-top: 1.25rem;
-    max-width: 52ch;
-    color: var(--ink-2);
-    line-height: 1.65;
-  }
-  .proc-list {
-    list-style: none;
+  .v2-process { padding: clamp(4rem, 10vh, 8rem) 0 0; }
+  .proc-head { margin-bottom: clamp(2rem, 5vh, 3.5rem); }
+  .sec-note { margin-top: 1.25rem; max-width: 52ch; color: var(--ink-2); line-height: 1.65; }
+
+  .proc-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: clamp(1.5rem, 4vw, 3rem) clamp(2rem, 6vw, 5rem);
+    grid-template-columns: 1fr 0.9fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
   }
+
+  .proc-list { list-style: none; }
   .proc-item {
-    padding-top: 1.5rem;
+    padding: clamp(2.5rem, 8vh, 5rem) 0;
     border-top: 1px solid var(--line);
   }
-  .proc-n {
-    font-size: 0.8rem;
-    color: var(--ink-3);
-    font-variant-numeric: tabular-nums;
-  }
+  .proc-item:first-child { border-top: none; }
+  .proc-n { font-size: 0.8rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
   .proc-name {
     margin-top: 0.5rem;
     font-weight: 600;
-    font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
     letter-spacing: -0.02em;
   }
-  .proc-body {
-    margin-top: 0.8rem;
-    color: var(--ink-2);
-    line-height: 1.62;
-    font-size: 0.98rem;
-    max-width: 42ch;
-  }
+  .proc-body { margin-top: 0.9rem; color: var(--ink-2); line-height: 1.62; max-width: 42ch; }
   .proc-item:nth-child(5) .proc-name { color: var(--ink); }
 
-  @media (max-width: 720px) {
-    .proc-list { grid-template-columns: 1fr; }
+  /* sticky ship beside the stages */
+  .proc-ship-col { height: 100%; }
+  .proc-ship {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .proc-ship :global(.ship-stage) { width: min(100%, 460px); }
+  /* scroll-driven: pieces follow the scroll frame-by-frame, no lag */
+  .proc-ship :global(.ship-piece) { transition: none; }
+
+  @media (max-width: 860px) {
+    .proc-grid { grid-template-columns: 1fr; }
+    /* on small screens, drop the pinned choreography: show stages plainly,
+       ship sits assembled above (handled by the script bailing out). */
+    .proc-ship-col { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .proc-ship :global(.ship-piece) { transition: none; }
   }
 </style>
