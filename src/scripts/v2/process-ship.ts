@@ -1,8 +1,11 @@
 /**
- * Phase 8 (v1): scroll-driven ship choreography through the Process section.
- * The sticky ship deconstructs as you scroll into the section and reassembles
- * as you approach the end. Progress-driven via rAF; no animation library.
- * Bails out on reduced-motion and small screens (ship stays assembled/hidden).
+ * Phase 8: scroll-driven ship choreography through the Process section.
+ * Timeline (progress p over the section):
+ *   dismantle  — pieces fan out toward the step list (left, staggered down)
+ *   reassemble — pieces return to the ship
+ *   invert     — the reassembled ship flips horizontally (bow swaps sides)
+ * Ends as the mirrored ship, matching the reference. rAF driven, no gsap.
+ * Bails to a static assembled ship on reduced-motion / small screens.
  */
 const wrap = document.querySelector<HTMLElement>('[data-proc-scroll]');
 const shipHost = document.querySelector<HTMLElement>('[data-proc-ship]');
@@ -13,16 +16,17 @@ if (wrap && ship) {
     !!window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // id -> [dx%, dy%, rotationDeg] fully-spread offset (% of ship stage width).
-  // Up/outward so nothing sinks below the waterline (mask1 stays on).
+  // id -> [dx%, dy%, rotationDeg]: where the piece travels when fully
+  // dismantled. Fanned left toward the step column, staggered down the list so
+  // each piece roughly lines up with its step (flag=01 at top ... waves=06).
   const SPREAD: Record<string, [number, number, number]> = {
-    flag: [-26, -24, -12],
-    'vertical-piece': [-34, -6, -8],
-    'middle-top': [10, -32, 8],
-    'middle-bottom': [-20, -14, -6],
-    'right-piece': [32, -16, 10],
-    body: [0, -20, 0],
-    waves: [0, 22, 0],
+    flag: [-56, -30, -10],
+    'vertical-piece': [-60, -12, -8],
+    'middle-top': [-52, 6, 7],
+    'middle-bottom': [-56, 24, -6],
+    'right-piece': [-48, 40, 10],
+    body: [-38, 52, 0],
+    waves: [-30, 58, 4],
   };
 
   const pieces = Array.from(ship.querySelectorAll<HTMLElement>('[data-piece]'));
@@ -34,8 +38,8 @@ if (wrap && ship) {
 
   let ticking = false;
 
-  const apply = (spread: number): void => {
-    ship.classList.toggle('is-separated', spread > 0.02);
+  const apply = (spread: number, flip: number): void => {
+    ship.classList.toggle('is-dismantled', spread > 0.02);
     const w = ship.getBoundingClientRect().width || 1;
     for (const el of pieces) {
       const [dx, dy, rot] = SPREAD[el.dataset.piece as string] ?? [0, 0, 0];
@@ -43,6 +47,8 @@ if (wrap && ship) {
       const y = ((dy / 100) * w * spread).toFixed(2);
       el.style.transform = `translate(${x}px, ${y}px) rotate(${(rot * spread).toFixed(2)}deg)`;
     }
+    // flip the whole ship once it's back together (bow swaps side)
+    ship.style.transform = `scaleX(${flip.toFixed(3)})`;
   };
 
   const update = (): void => {
@@ -51,9 +57,10 @@ if (wrap && ship) {
     const vh = window.innerHeight;
     const total = r.height - vh;
     const p = total > 0 ? Math.max(0, Math.min(1, -r.top / total)) : 0;
-    // assemble (0..0.12) -> deconstruct (..0.4) -> hold -> reassemble (0.72..0.95)
-    const spread = smoothstep(0.12, 0.4, p) - smoothstep(0.72, 0.95, p);
-    apply(Math.max(0, spread));
+    // dismantle (0.08..0.42) -> hold -> reassemble (0.58..0.80) -> flip (0.80..0.95)
+    const spread = smoothstep(0.08, 0.42, p) - smoothstep(0.58, 0.8, p);
+    const flip = 1 - 2 * smoothstep(0.8, 0.95, p);
+    apply(Math.max(0, spread), flip);
   };
 
   const onScroll = (): void => {

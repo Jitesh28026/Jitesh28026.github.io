@@ -80,6 +80,7 @@ svg = svg
     width: 100%;
     aspect-ratio: 1 / 1;
     color: var(--ship);
+    transform-origin: center center;
   }
   .ship-stage :global(svg) {
     width: 100%;
@@ -100,6 +101,12 @@ svg = svg
      so nothing sinks below the water, and the hull rises out smoothly rather
      than the hidden bottom popping into view. The flag's mask3 also stays on. */
   .ship-stage.is-separated :global(.ship-clip-region) {
+    mask: none;
+  }
+  /* fully dismantled (scroll choreography): relax BOTH clips so every piece
+     shows whole as it travels to its step, incl. the hull bottom. */
+  .ship-stage.is-dismantled :global(.ship-clip-float),
+  .ship-stage.is-dismantled :global(.ship-clip-region) {
     mask: none;
   }
   @media (prefers-reduced-motion: reduce) {
