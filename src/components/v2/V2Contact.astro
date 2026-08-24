@@ -1,0 +1,104 @@
+---
+/**
+ * Contact — a natural continuation of the conversation. Real links only.
+ */
+const links = [
+  { label: 'Email', href: 'mailto:thakker.jitesh04@gmail.com', external: false },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jitesh-thakker/', external: true },
+  { label: 'Behance', href: 'https://www.behance.net/jiteshthakker', external: true },
+  {
+    label: 'Resume',
+    href: 'https://drive.google.com/file/d/1Bo3qazlM20DL6OOTWJNPzIryA7H0SNRc/view?usp=sharing',
+    external: true,
+  },
+];
+---
+
+<section class="v2-contact" id="contact">
+  <div class="v2-wrap">
+    <p class="v2-eyebrow">Contact</p>
+    <h2 class="contact-title">Got something worth<br />figuring out?</h2>
+    <p class="contact-sub">
+      I design to learn, not just to ship — and the interesting problems are the
+      ones nobody's sure about yet. If that's what you're sitting on, let's talk.
+    </p>
+
+    <div class="contact-links">
+      {
+        links.map((l) => (
+          <a
+            class="contact-link"
+            href={l.href}
+            target={l.external ? '_blank' : undefined}
+            rel={l.external ? 'noopener noreferrer' : undefined}
+          >
+            {l.label}
+            <span aria-hidden="true">↗</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <footer class="v2-footer">
+    <div class="v2-wrap footer-inner">
+      <span>Jitesh Thakker — Product Designer</span>
+      <span>Designed to learn · {new Date().getFullYear()}</span>
+    </div>
+  </footer>
+</section>
+
+<style>
+  .v2-contact { padding: clamp(4rem, 12vh, 9rem) 0 0; }
+  .contact-title {
+    margin-top: 1rem;
+    font-weight: 600;
+    font-size: clamp(2.4rem, 7vw, 5rem);
+    letter-spacing: -0.04em;
+    line-height: 1.01;
+  }
+  .contact-sub {
+    margin-top: 1.75rem;
+    max-width: 50ch;
+    color: var(--ink-2);
+    line-height: 1.65;
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+  }
+  .contact-links {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 0.7rem 1.3rem;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .contact-link span { color: var(--ink-3); transition: transform 0.2s ease; }
+  .contact-link:hover { background: var(--bg-2); border-color: var(--ink); }
+  .contact-link:hover span { transform: translate(2px, -2px); }
+  .contact-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+  .v2-footer {
+    margin-top: clamp(4rem, 12vh, 9rem);
+    border-top: 1px solid var(--line);
+    padding: 1.75rem 0;
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--ink-3);
+  }
+</style>

@@ -118,41 +118,19 @@ body {
 :root[data-theme='light'] .theme-toggle .icon-moon { display: none; }
 :root[data-theme='dark'] .theme-toggle .icon-sun { display: none; }
 
-/* ---- hero (foundation placeholder) ---- */
-.v2-hero {
-  min-height: calc(100svh - 70px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: clamp(3rem, 10vh, 8rem) 0 4rem;
-}
+/* ---- shared section primitives (used across all v2 sections) ---- */
 .v2-eyebrow {
   font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-3);
-  margin-bottom: 1.75rem;
 }
-.v2-hero h1 {
+.sec-title {
+  margin-top: 1rem;
   font-weight: 600;
-  font-size: clamp(2.5rem, 8vw, 6rem);
-  line-height: 1.02;
-  letter-spacing: -0.035em;
-  max-width: 15ch;
-}
-.v2-hero h1 .muted { color: var(--ink-3); }
-.v2-hero .v2-sub {
-  margin-top: 2rem;
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
-  color: var(--ink-2);
-  max-width: 46ch;
-  line-height: 1.65;
-}
-.v2-hero .v2-note {
-  margin-top: 3.5rem;
-  font-size: 0.8rem;
-  color: var(--ink-3);
-  border-left: 2px solid var(--line-strong);
-  padding-left: 0.9rem;
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  max-width: 20ch;
 }

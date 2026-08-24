@@ -1,26 +1,21 @@
 ---
 /**
- * /v2 — Portfolio redesign (in progress). Isolated from the live homepage.
- * PHASE 2 foundation: layout + theme system + hero philosophy placeholder.
- * Ship system, Selected Work, Process, About, Contact land in later phases.
+ * /v2 — Portfolio redesign. Isolated from the live homepage.
+ * Phase 7: full page structure (Hero → Work → Process → About → Contact).
+ * Ship deconstruction choreography through Process is Phase 8.
  */
 import V2Layout from '../layouts/V2Layout.astro';
+import V2Hero from '../components/v2/V2Hero.astro';
+import V2Work from '../components/v2/V2Work.astro';
+import V2Process from '../components/v2/V2Process.astro';
+import V2About from '../components/v2/V2About.astro';
+import V2Contact from '../components/v2/V2Contact.astro';
 ---
 
 <V2Layout title="Jitesh Thakker — Product Designer (v2)">
-  <section class="v2-hero">
-    <div class="v2-wrap">
-      <p class="v2-eyebrow">Product Designer · Bengaluru</p>
-      <h1>I design to learn,<br /><span class="muted">not just to ship.</span></h1>
-      <p class="v2-sub">
-        I design digital products — but I'm just as interested in what happens
-        after they leave the file: whether they get used, whether they hold up,
-        and what they teach us next.
-      </p>
-      <p class="v2-note">
-        v2 foundation · theme system live (try the toggle top-right) · ship
-        system + sections coming next.
-      </p>
-    </div>
-  </section>
+  <V2Hero />
+  <V2Work />
+  <V2Process />
+  <V2About />
+  <V2Contact />
 </V2Layout>

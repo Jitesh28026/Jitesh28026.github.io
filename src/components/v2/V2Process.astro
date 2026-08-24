@@ -1,0 +1,107 @@
+---
+/**
+ * Process — how I move through problems. Six stages, flexible not rigid.
+ * (The ship deconstructs and distributes its pieces through this section in
+ * Phase 8; for now the content stands on its own.)
+ */
+const stages = [
+  {
+    n: '01',
+    name: 'Understand',
+    body: "Understand the context and the people before deciding a solution is even needed. What's actually happening? What do we know, and what are we just assuming?",
+  },
+  {
+    n: '02',
+    name: 'Frame',
+    body: 'Decide what problem is actually worth solving. Priorities, constraints, business context, scope, trade-offs — what are we really trying to change?',
+  },
+  {
+    n: '03',
+    name: 'Explore',
+    body: "Explore possibilities before committing too early. The goal isn't endless options — it's not locking onto the first reasonable answer.",
+  },
+  {
+    n: '04',
+    name: 'Design',
+    body: 'Turn the strongest direction into a real product experience — flows, interfaces, states, edge cases — concrete enough to build and evaluate.',
+  },
+  {
+    n: '05',
+    name: 'Validate',
+    body: "A feature isn't done because it shipped. I care whether the built experience actually works — usability, edge cases, and whether what got implemented matches what was designed.",
+  },
+  {
+    n: '06',
+    name: 'Learn',
+    body: 'Watch what happens. What worked, what assumptions were wrong, what should change. Learning feeds the next decision — the process loops, it doesn\'t end at ship.',
+  },
+];
+---
+
+<section class="v2-process" id="process">
+  <div class="v2-wrap">
+    <header class="sec-head">
+      <p class="v2-eyebrow">How I think</p>
+      <h2 class="sec-title">The general way I move through problems.</h2>
+      <p class="sec-note">
+        Not a rigid six steps every project follows — a shape I adapt to the
+        situation. The important part is the last one: it doesn't end at ship.
+      </p>
+    </header>
+
+    <ol class="proc-list">
+      {
+        stages.map((s) => (
+          <li class="proc-item">
+            <span class="proc-n">{s.n}</span>
+            <h3 class="proc-name">{s.name}</h3>
+            <p class="proc-body">{s.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .v2-process { padding: clamp(4rem, 10vh, 8rem) 0; }
+  .sec-note {
+    margin-top: 1.25rem;
+    max-width: 52ch;
+    color: var(--ink-2);
+    line-height: 1.65;
+  }
+  .proc-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem) clamp(2rem, 6vw, 5rem);
+  }
+  .proc-item {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .proc-n {
+    font-size: 0.8rem;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .proc-name {
+    margin-top: 0.5rem;
+    font-weight: 600;
+    font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+    letter-spacing: -0.02em;
+  }
+  .proc-body {
+    margin-top: 0.8rem;
+    color: var(--ink-2);
+    line-height: 1.62;
+    font-size: 0.98rem;
+    max-width: 42ch;
+  }
+  .proc-item:nth-child(5) .proc-name { color: var(--ink); }
+
+  @media (max-width: 720px) {
+    .proc-list { grid-template-columns: 1fr; }
+  }
+</style>

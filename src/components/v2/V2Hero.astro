@@ -1,0 +1,91 @@
+---
+import Ship from './Ship.astro';
+---
+
+<section class="v2-hero" id="top">
+  <div class="v2-wrap hero-grid">
+    <div class="hero-copy">
+      <p class="v2-eyebrow">Product Designer · Bengaluru</p>
+      <h1 class="hero-title">
+        I design to learn,<br /><span class="muted">not just to ship.</span>
+      </h1>
+      <p class="hero-sub">
+        I design digital products — but I'm just as interested in what happens
+        after they leave the file: whether they get used, whether they hold up,
+        and what they teach us next.
+      </p>
+      <a class="hero-cta" href="#work">See the work <span aria-hidden="true">↓</span></a>
+    </div>
+
+    <div class="hero-ship-wrap">
+      <div class="hero-ship"><Ship /></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .v2-hero {
+    min-height: calc(100svh - 70px);
+    display: flex;
+    align-items: center;
+    padding: 3rem 0 4rem;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 5rem);
+  }
+  .hero-title {
+    font-weight: 600;
+    font-size: clamp(2.6rem, 6.5vw, 5.5rem);
+    line-height: 1.01;
+    letter-spacing: -0.04em;
+  }
+  .hero-title .muted { color: var(--ink-3); }
+  .hero-sub {
+    margin-top: 2rem;
+    max-width: 44ch;
+    font-size: clamp(1rem, 1.5vw, 1.18rem);
+    color: var(--ink-2);
+    line-height: 1.65;
+  }
+  .hero-cta {
+    display: inline-block;
+    margin-top: 2.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 0.35rem;
+    transition: border-color 0.2s ease, gap 0.2s ease;
+  }
+  .hero-cta:hover { border-color: var(--ink); }
+  .hero-cta span { display: inline-block; transition: transform 0.2s ease; }
+  .hero-cta:hover span { transform: translateY(2px); }
+
+  .hero-ship-wrap {
+    display: flex;
+    justify-content: center;
+  }
+  .hero-ship {
+    width: min(100%, 520px);
+    /* gentle idle: bob + rock, like the reference animation */
+    animation: shipBob 7s ease-in-out infinite;
+  }
+  @keyframes shipBob {
+    0%, 100% { transform: translateY(0) rotate(-0.7deg); }
+    50% { transform: translateY(-2%) rotate(0.7deg); }
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero-ship-wrap { order: -1; }
+    .hero-ship { width: min(78%, 360px); }
+    .v2-hero { min-height: auto; padding-top: 1.5rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-ship { animation: none; }
+  }
+</style>
