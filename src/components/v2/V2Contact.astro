@@ -2,6 +2,8 @@
 /**
  * Contact — a natural continuation of the conversation. Real links only.
  */
+import V2Kinetic from './V2Kinetic.astro';
+
 const links = [
   { label: 'Email', href: 'mailto:thakker.jitesh04@gmail.com', external: false },
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/jitesh-thakker/', external: true },
@@ -39,6 +41,8 @@ const links = [
       }
     </div>
   </div>
+
+  <V2Kinetic />
 
   <footer class="v2-footer">
     <div class="v2-wrap footer-inner">
@@ -89,7 +93,6 @@ const links = [
   .contact-link:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
   .v2-footer {
-    margin-top: clamp(4rem, 12vh, 9rem);
     border-top: 1px solid var(--line);
     padding: 1.75rem 0;
   }

@@ -1,0 +1,59 @@
+---
+/**
+ * Kinetic footer band — a scroll-velocity-reactive marquee of the mantra.
+ * Base drift + scroll boost + skew, all CSS/JS (no animation library).
+ * Two identical groups so the loop is seamless; respects reduced-motion.
+ */
+const phrase = 'I design to learn — not just to ship —';
+---
+
+<div class="kinetic-band" aria-hidden="true">
+  <div class="kinetic" data-kinetic>
+    <div class="kinetic-track" data-kinetic-track>
+      <span class="kinetic-group">
+        <span class="k-word">{phrase}&nbsp;</span>
+        <span class="k-word is-outline">{phrase}&nbsp;</span>
+      </span>
+      <span class="kinetic-group">
+        <span class="k-word">{phrase}&nbsp;</span>
+        <span class="k-word is-outline">{phrase}&nbsp;</span>
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import '../../scripts/v2/kinetic';
+</script>
+
+<style>
+  .kinetic-band {
+    padding: clamp(2.5rem, 8vh, 5.5rem) 0;
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+  }
+  .kinetic { width: 100%; }
+  .kinetic-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+  }
+  .kinetic-group { display: flex; flex: none; }
+  .k-word {
+    font-weight: 700;
+    font-size: clamp(2.4rem, 9vw, 8rem);
+    letter-spacing: -0.035em;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--ink);
+    padding-right: 0.25em;
+  }
+  .k-word.is-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.4px var(--ink-3);
+    text-stroke: 1.4px var(--ink-3);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kinetic-track { transform: none !important; }
+  }
+</style>

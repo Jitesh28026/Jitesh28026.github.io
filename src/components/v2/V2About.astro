@@ -9,7 +9,7 @@ import Ship from './Ship.astro';
 <section class="v2-about" id="about">
   <div class="v2-wrap about-grid">
     <div class="about-copy">
-      <p class="v2-eyebrow">About</p>
+      <p class="v2-eyebrow">Beyond the work</p>
       <h2 class="sec-title">A designer who thinks <span class="muted">in systems.</span></h2>
 
       <div class="about-body">
@@ -30,6 +30,7 @@ import Ship from './Ship.astro';
           Off the clock: planning trips I won't take, losing ranked matches,
           blaming the matchmaking.
         </p>
+        <a class="about-more" href="/about">Read the full story <span aria-hidden="true">→</span></a>
       </div>
     </div>
 
@@ -57,6 +58,20 @@ import Ship from './Ship.astro';
   }
   .about-body p + p { margin-top: 1.25rem; }
   .about-body .about-aside { color: var(--ink-3); font-size: 0.95rem; }
+  .about-more {
+    display: inline-block;
+    margin-top: 1.75rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 0.3rem;
+    transition: border-color 0.2s ease;
+  }
+  .about-more:hover { border-color: var(--ink); }
+  .about-more span { display: inline-block; transition: transform 0.2s ease; }
+  .about-more:hover span { transform: translateX(3px); }
 
   .about-ship-wrap { text-align: center; }
   .about-ship {
