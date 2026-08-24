@@ -1,0 +1,110 @@
+/* ==========================================================================
+   Scroll-scrub film
+   --------------------------------------------------------------------------
+   Layout model: one fixed full-screen canvas, with six tall transparent
+   sections scrolling over it. The sections exist purely to give ScrollTrigger
+   something to measure — they render nothing themselves.
+   ========================================================================== */
+
+:root {
+  /* Locked palette: warm amber/honey lamplight against deep teal-blue night. */
+  --film-night: #0d1518;
+  --film-amber: #e8a34a;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--film-night);
+  color: #f4ece1;
+}
+
+/*
+ * NOTE: do NOT put `overflow-x: hidden` on html/body here. It turns the body
+ * into a scroll container, and ScrollTrigger — which measures the window
+ * scroller — then never receives a scroll event, so every scene silently
+ * freezes on its first frame. `overflow-x: clip` achieves the same visual
+ * containment without creating a scroll container.
+ */
+body {
+  overflow-x: clip;
+}
+
+/* --- The canvas ---------------------------------------------------------- */
+
+.film-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  z-index: 0;
+  /* Never intercept scroll or future hotspot clicks. */
+  pointer-events: none;
+  background: var(--film-night);
+}
+
+/* --- Scroll sections ----------------------------------------------------- */
+
+.film-scenes {
+  position: relative;
+  z-index: 1;
+}
+
+/*
+ * Height is set per-section from the scene config (BASE_SCROLL_VH *
+ * scrollFactor), which is what controls pacing. Scene 6 is shorter because it
+ * has 96 frames instead of 144 — same scrub density, less scroll.
+ */
+.film-scene {
+  position: relative;
+  width: 100%;
+}
+
+/* --- Reduced motion ------------------------------------------------------ */
+
+/*
+ * No scrubbing: one poster per scene, stacked and full-bleed, so the journey
+ * still reads as a sequence of moments rather than looking broken.
+ */
+.film-posters {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .film-canvas,
+  .film-scenes {
+    display: none;
+  }
+
+  .film-posters {
+    display: block;
+  }
+
+  .film-poster {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+  }
+}
+
+/* --- Crawler / no-JS fallback -------------------------------------------- */
+
+/*
+ * Visible to search engines and screen readers, off-screen for everyone else.
+ * The film itself carries no text, so without this the page has nothing to
+ * index.
+ */
+.film-fallback {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

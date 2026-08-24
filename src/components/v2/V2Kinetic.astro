@@ -4,19 +4,19 @@
  * Base drift + scroll boost + skew, all CSS/JS (no animation library).
  * Two identical groups so the loop is seamless; respects reduced-motion.
  */
-const phrase = 'I design to learn — not just to ship —';
+const phrase = 'I design to learn, not just to ship';
 ---
 
 <div class="kinetic-band" aria-hidden="true">
   <div class="kinetic" data-kinetic>
     <div class="kinetic-track" data-kinetic-track>
       <span class="kinetic-group">
-        <span class="k-word">{phrase}&nbsp;</span>
-        <span class="k-word is-outline">{phrase}&nbsp;</span>
+        <span class="k-word">{phrase}<span class="k-sep">·</span></span>
+        <span class="k-word is-outline">{phrase}<span class="k-sep">·</span></span>
       </span>
       <span class="kinetic-group">
-        <span class="k-word">{phrase}&nbsp;</span>
-        <span class="k-word is-outline">{phrase}&nbsp;</span>
+        <span class="k-word">{phrase}<span class="k-sep">·</span></span>
+        <span class="k-word is-outline">{phrase}<span class="k-sep">·</span></span>
       </span>
     </div>
   </div>
@@ -52,6 +52,11 @@ const phrase = 'I design to learn — not just to ship —';
     color: transparent;
     -webkit-text-stroke: 1.4px var(--ink-3);
     text-stroke: 1.4px var(--ink-3);
+  }
+  .k-sep {
+    color: var(--ink-3);
+    padding: 0 0.35em;
+    -webkit-text-stroke: 0;
   }
   @media (prefers-reduced-motion: reduce) {
     .kinetic-track { transform: none !important; }

@@ -1,0 +1,67 @@
+---
+/**
+ * /flat — the scroll-scrub film.
+ *
+ * Phase 2 skeleton: scroll-scrub across all six scenes only. No hotspots, no
+ * About/Work panels, no loop yet.
+ */
+import FilmLayout from '../layouts/FilmLayout.astro';
+import { SCENES, BASE_SCROLL_VH, posterUrl } from '../scripts/film/config';
+---
+
+<FilmLayout title="A night in the flat — Jitesh Thakker">
+  <!-- Painted by scroll-scrub.ts; sits fixed behind the scroll sections. -->
+  <canvas class="film-canvas" data-film-canvas aria-hidden="true"></canvas>
+
+  <!--
+    Spacer sections. These render nothing — their only job is to give
+    ScrollTrigger a measurable scroll distance per scene. Height comes from the
+    scene config so pacing lives in one place.
+  -->
+  <div class="film-scenes">
+    {
+      SCENES.map((scene) => (
+        <section
+          class="film-scene"
+          data-scene={scene.id}
+          style={`height: ${BASE_SCROLL_VH * scene.scrollFactor}vh;`}
+          aria-hidden="true"
+        />
+      ))
+    }
+  </div>
+
+  <!-- prefers-reduced-motion: one still per scene instead of scrubbing. -->
+  <div class="film-posters">
+    {
+      SCENES.map((scene) => (
+        <img class="film-poster" src={posterUrl(scene)} alt={scene.name} loading="lazy" />
+      ))
+    }
+  </div>
+
+  <!-- The film carries no text, so give crawlers and screen readers the story. -->
+  <div class="film-fallback">
+    <h1>A night in the flat</h1>
+    <p>
+      A scroll-driven cinematic journey through a flat at night, by Jitesh Thakker,
+      product designer.
+    </p>
+    <ol>
+      {SCENES.map((scene) => <li>{scene.name}</li>)}
+    </ol>
+  </div>
+
+  <script>
+    import { initScrollScrub } from '../scripts/film/scroll-scrub';
+
+    // Reduced motion gets the static posters in film.css; never boot the
+    // scrubber, so GSAP and ~34MB of frames are never fetched at all.
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-film-canvas]');
+
+    if (!reduced && canvas) {
+      initScrollScrub(canvas);
+    }
+  </script>
+</FilmLayout>
