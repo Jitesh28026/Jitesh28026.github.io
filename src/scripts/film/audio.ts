@@ -10,7 +10,12 @@
  * missing file can never break the page.
  */
 
-export const TRACK_SRC = '/audio/in-the-moment.mp3';
+/**
+ * Deliberately generic, so swapping the track is a file drop and not a code
+ * change. Whatever lands here plays, as long as it is a format the browser
+ * can decode (mp3 is the safe universal choice).
+ */
+export const TRACK_SRC = '/audio/soundtrack.mp3';
 
 /** Ceiling volume. A soundtrack under a portfolio should sit well back. */
 const TARGET_VOLUME = 0.45;
