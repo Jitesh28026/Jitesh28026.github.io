@@ -230,14 +230,14 @@ body.is-film-loading {
 /* --- Opening title ------------------------------------------------------- */
 
 /*
- * Sits low and centred rather than over the middle of the room, where the two
- * silhouettes are. Never interactive, so it cannot intercept the scroll it is
- * asking for.
+ * Sits high and centred, clear of the two silhouettes and the furniture in the
+ * lower half of the frame. Never interactive, so it cannot intercept the
+ * scroll it is asking for.
  */
 .film-intro {
   position: fixed;
   left: 50%;
-  bottom: 7vh;
+  top: 8vh;
   z-index: 5;
   transform: translateX(-50%);
   display: flex;
@@ -271,37 +271,39 @@ body.is-film-loading {
 }
 
 .film-intro.is-visible .film-intro__name {
-  opacity: 0.8;
+  opacity: 0.5;
   transform: none;
   transition-delay: 0.08s;
 }
 
 .film-intro.is-visible .film-intro__title {
-  opacity: 1;
+  opacity: 0.78;
   transform: none;
   transition-delay: 0.24s;
 }
 
 .film-intro.is-visible .film-intro__cue {
-  opacity: 0.6;
+  opacity: 0.38;
   transform: none;
   transition-delay: 0.5s;
 }
 
 .film-intro__name {
   margin: 0;
-  font-family: 'DM Mono', ui-monospace, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.3em;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--film-amber);
 }
 
 .film-intro__title {
   margin: 0;
-  font-family: 'Manrope', system-ui, sans-serif;
-  font-size: clamp(1.5rem, 4.2vw, 2.5rem);
-  font-weight: 500;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(1.4rem, 4vw, 2.3rem);
+  font-weight: 300;
+  letter-spacing: -0.01em;
   line-height: 1.15;
   color: #f4ece1;
   /* The frame behind is dark but not uniformly so; this keeps it legible. */
@@ -316,9 +318,10 @@ body.is-film-loading {
 }
 
 .film-intro__label {
-  font-family: 'DM Mono', ui-monospace, monospace;
-  font-size: 0.64rem;
-  letter-spacing: 0.22em;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: #f4ece1;
 }

@@ -44,6 +44,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
 
+    <!--
+      Inter, for the opening title.
+
+      This layout previously loaded no fonts at all, so the film fell back to
+      generic system faces while the CSS asked for others.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap"
+    />
+
     <!-- The first frame is the largest contentful paint; fetch it early. -->
     <link rel="preload" as="image" href="/frames/scene1/0001.webp" />
   </head>
