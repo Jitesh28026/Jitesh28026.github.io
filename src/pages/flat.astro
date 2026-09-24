@@ -38,6 +38,43 @@ import { SCENES, BASE_SCROLL_VH, SEAM_SCROLL_VH, posterUrl } from '../scripts/fi
     </div>
   </div>
 
+  <!--
+    Portrait phones.
+
+    The film is framed 16:9 and the composition uses the full width, so filling
+    a 9:16 screen leaves only about a quarter of the frame: the TV is gone and
+    both silhouettes are sliced at the edges. Rather than show a ruined frame,
+    ask for landscape, where the whole width fits.
+
+    Pure CSS, no JS: it keys off orientation and a coarse pointer, so it cannot
+    fire on a narrow desktop window.
+  -->
+  <div class="film-rotate">
+    <div class="film-rotate__inner">
+      <svg
+        class="film-rotate__icon"
+        viewBox="0 0 48 48"
+        width="46"
+        height="46"
+        aria-hidden="true"
+      >
+        <rect
+          x="17"
+          y="5"
+          width="14"
+          height="38"
+          rx="3.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.6"
+        />
+        <line x1="21.5" y1="9.5" x2="26.5" y2="9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+      <p class="film-rotate__title">Tilt your phone</p>
+      <p class="film-rotate__note">This one plays in landscape</p>
+    </div>
+  </div>
+
   <!-- Painted by scroll-scrub.ts; sits fixed behind the scroll sections. -->
   <canvas class="film-canvas" data-film-canvas aria-hidden="true"></canvas>
 
@@ -51,7 +88,6 @@ import { SCENES, BASE_SCROLL_VH, SEAM_SCROLL_VH, posterUrl } from '../scripts/fi
   -->
   <div class="film-intro" data-film-intro hidden>
     <p class="film-intro__name">Jitesh Thakker</p>
-    <h1 class="film-intro__title">A night in the flat</h1>
     <div class="film-intro__cue">
       <span class="film-intro__label">Scroll to walk through</span>
       <span class="film-intro__line" aria-hidden="true"></span>
@@ -104,7 +140,7 @@ import { SCENES, BASE_SCROLL_VH, SEAM_SCROLL_VH, posterUrl } from '../scripts/fi
 
   <!-- The film carries no text, so give crawlers and screen readers the story. -->
   <div class="film-fallback">
-    <p>A night in the flat</p>
+    <h1>A night in the flat</h1>
     <p>
       A scroll driven cinematic journey through a flat at night, by Jitesh Thakker,
       product designer.

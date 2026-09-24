@@ -38,7 +38,18 @@ export class FrameLoader {
   constructor() {
     // Fixed at construction: changing mid-journey would leave resident scenes
     // indexed on a different step than newly loaded ones.
-    this.step = window.innerWidth < MOBILE_BREAKPOINT ? MOBILE_FRAME_STEP : 1;
+    //
+    // Deliberately NOT innerWidth. The film asks portrait phones to turn
+    // landscape, and a phone on its side reports about 812px wide, which is
+    // over the breakpoint. Keying off width alone therefore classed exactly
+    // the devices we send to landscape as desktops and loaded every frame.
+    // The shortest side is orientation independent, and a coarse pointer
+    // catches tablets, which want the smaller footprint just as much.
+    const shortestSide = Math.min(window.innerWidth, window.innerHeight);
+    const coarsePointer = window.matchMedia?.('(pointer: coarse)').matches ?? false;
+    const isHandheld = shortestSide < MOBILE_BREAKPOINT || coarsePointer;
+
+    this.step = isHandheld ? MOBILE_FRAME_STEP : 1;
   }
 
   frameCountFor(scene: SceneConfig): number {
