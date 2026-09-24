@@ -7,31 +7,47 @@
  *
  * No gsap. ScrollTrigger would do the scroll maths for us, but gsap's npm ci
  * install is non-deterministic and has broken this repo's Pages deploy before,
- * so the mapping is done by hand against cached section offsets. It is a few
- * lines either way and it keeps the build dependency free, matching the rAF
- * driven approach used by the v2 scripts.
+ * so the mapping is done by hand. It keeps the build dependency free and
+ * matches the rAF driven approach used by the v2 scripts.
  *
- * Layout model: rather than pinning six sections, a single `position: fixed`
- * canvas sits behind six tall spacer sections plus a seam section.
+ * TIMELINE MODEL. The scrollable range is partitioned into contiguous segments
+ * by the weights in the scene config, one per scene plus the loop seam. The
+ * DOM sections exist only to give the document its height; nothing here reads
+ * their positions.
  *
- * THE LOOP. After scene 6 comes a seam that cross-fades scene 6's last frame
- * into scene 1's first frame. At the end of the seam the canvas shows scene 1
- * frame 0 at full opacity, which is precisely what scroll position 0 shows, so
- * jumping the scroll back to the top swaps in an identical image. The wrap is
- * therefore invisible, in both directions, with no snap or flicker.
+ * That matters. An earlier version derived each scene's progress from its own
+ * element as (scrollY - top) / (height - viewportHeight). Under that mapping a
+ * scene reached progress 1 a full viewport height BEFORE the next section
+ * began, so between every pair of scenes sat a gap where no section matched
+ * and the canvas fell back to scene 1's opening frame. Partitioning a single
+ * range cannot produce a gap by construction.
+ *
+ * THE LOOP. The final segment is a seam that cross-fades scene 6's last frame
+ * into scene 1's first frame, finishing exactly at maximum scroll. At that
+ * point the canvas shows scene 1 frame 0, which is precisely what scroll
+ * position 0 shows, so wrapping to the top swaps in an identical image and is
+ * invisible in both directions.
  */
 
 import { FrameLoader } from './frame-loader';
 import { drawTvGlow } from './tv-glow';
-import { CANVAS_HEIGHT, CANVAS_WIDTH, SCENES, type SceneConfig } from './config';
+import {
+  BASE_SCROLL_VH,
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  SCENES,
+  SEAM_SCROLL_VH,
+  type SceneConfig,
+} from './config';
 
-interface SceneSection {
-  scene: SceneConfig;
-  el: HTMLElement;
-  /** Document-space offset of the section top. Cached; recomputed on resize. */
-  top: number;
-  /** Section height in px. Cached. */
-  height: number;
+/** One contiguous stretch of the scroll range. A scene, or the loop seam. */
+interface Segment {
+  /** undefined marks the seam. */
+  scene?: SceneConfig;
+  /** Relative share of the scrollable range. */
+  weight: number;
+  start: number;
+  end: number;
 }
 
 /** What the canvas should show right now: one frame, or two mid dissolve. */
@@ -57,47 +73,48 @@ export function initScrollScrub(canvas: HTMLCanvasElement): ScrubHandle {
   const ctx = canvas.getContext('2d', { alpha: false });
   const loader = new FrameLoader();
 
+  const firstScene = SCENES[0];
+  const lastScene = SCENES[SCENES.length - 1];
+
   let activeId = 0;
   let started = false;
   /** Guards the frame after a programmatic wrap, so it cannot re-trigger. */
   let justWrapped = false;
 
   // The brief is explicit that a first load always begins at scene 1, so do
-  // not let the browser restore a previous scroll position into the middle of
-  // the journey.
+  // not let the browser restore a previous scroll position mid journey.
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-  // --- Section geometry ---------------------------------------------------
+  // --- Timeline -----------------------------------------------------------
 
-  const sections: SceneSection[] = [];
-  for (const scene of SCENES) {
-    const el = document.querySelector<HTMLElement>(`[data-scene="${scene.id}"]`);
-    if (!el) {
-      console.warn(`[film] no section for scene ${scene.id}`);
-      continue;
-    }
-    sections.push({ scene, el, top: 0, height: 0 });
+  // Weights are in the same units the sections are sized in, so the painted
+  // timeline stays aligned with the scroll height the CSS actually produces.
+  const segments: Segment[] = [
+    ...SCENES.map((scene) => ({
+      scene,
+      weight: BASE_SCROLL_VH * scene.scrollFactor,
+      start: 0,
+      end: 0,
+    })),
+    { weight: SEAM_SCROLL_VH, start: 0, end: 0 },
+  ];
+
+  function maxScroll(): number {
+    return Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
   }
 
-  const seamEl = document.querySelector<HTMLElement>('[data-film-seam]');
-  let seamTop = 0;
-  let seamHeight = 0;
-
-  /**
-   * Cache document offsets once rather than calling getBoundingClientRect for
-   * every section on every frame.
-   */
-  function measure(): void {
-    for (const s of sections) {
-      const rect = s.el.getBoundingClientRect();
-      s.top = rect.top + window.scrollY;
-      s.height = rect.height;
+  /** Lay the segments across the scrollable range. Recomputed on resize. */
+  function layout(): void {
+    const max = maxScroll();
+    const total = segments.reduce((sum, seg) => sum + seg.weight, 0);
+    let cursor = 0;
+    for (const seg of segments) {
+      seg.start = cursor;
+      cursor += (seg.weight / total) * max;
+      seg.end = cursor;
     }
-    if (seamEl) {
-      const rect = seamEl.getBoundingClientRect();
-      seamTop = rect.top + window.scrollY;
-      seamHeight = rect.height;
-    }
+    // Absorb rounding so the seam finishes exactly at the wrap point.
+    segments[segments.length - 1].end = max;
   }
 
   // --- Canvas sizing ------------------------------------------------------
@@ -115,8 +132,7 @@ export function initScrollScrub(canvas: HTMLCanvasElement): ScrubHandle {
 
   /**
    * Cover-fit geometry: fill the viewport, crop the overflowing axis, never
-   * distort. Shared so that overlays can be positioned in the same space as
-   * the frame rather than guessing at it.
+   * distort. Shared so overlays land in the same space as the frame.
    */
   function coverMetrics(): { scale: number; dx: number; dy: number } {
     const scale = Math.max(canvas.width / CANVAS_WIDTH, canvas.height / CANVAS_HEIGHT);
@@ -147,74 +163,55 @@ export function initScrollScrub(canvas: HTMLCanvasElement): ScrubHandle {
     // Driven purely by scroll progress, so it holds still when the viewer does.
     if (shot.sceneId === firstScene.id && shot.progress !== undefined) {
       const { scale, dx, dy } = coverMetrics();
-      drawTvGlow(
-        ctx,
-        shot.progress,
-        (x, y) => [dx + x * scale, dy + y * scale],
-        scale,
-      );
+      drawTvGlow(ctx, shot.progress, (x, y) => [dx + x * scale, dy + y * scale], scale);
     }
   }
 
   // --- Scroll mapping -----------------------------------------------------
 
-  const firstScene = SCENES[0];
-  const lastScene = SCENES[SCENES.length - 1];
-
-  /**
-   * Resolve scroll position to what should be on screen.
-   *
-   * Progress within a scene runs from the moment its top reaches the top of
-   * the viewport until its bottom reaches the bottom, so the travel available
-   * is (height - viewportHeight).
-   */
+  /** Resolve scroll position to what should be on screen. */
   function resolve(): Shot | undefined {
-    const scrollY = window.scrollY;
-    const viewportH = window.innerHeight;
+    const scrollY = clamp(window.scrollY, 0, maxScroll());
 
-    // The seam, cross-fading the end of scene 6 into the start of scene 1.
+    // Walk to the segment containing this position. The ranges tile the whole
+    // scrollable span, so exactly one matches and there is never a gap.
+    let segment = segments[segments.length - 1];
+    for (const seg of segments) {
+      if (scrollY < seg.end) {
+        segment = seg;
+        break;
+      }
+    }
+
+    const span = Math.max(1, segment.end - segment.start);
+    const progress = clamp((scrollY - segment.start) / span, 0, 1);
+
+    // The seam.
     //
     // Both endpoints come from pinned frames rather than resident scenes. The
-    // two scenes are never resident together, and an earlier version resolved
-    // the target through the normal path, where entering the seam released
-    // scene 1 and left the dissolve with nothing to dissolve into.
-    if (seamEl && seamHeight > 0 && scrollY >= seamTop) {
-      // The seam is the last section, so the scroll actually available inside
-      // it is (height - viewportHeight), not its full height. Dividing by the
-      // full height would leave the dissolve unfinished at the wrap point,
-      // which is precisely the jump this seam exists to hide.
-      const seamTravel = Math.max(1, seamHeight - viewportH);
-      const mix = clamp((scrollY - seamTop) / seamTravel, 0, 1);
+    // two scenes are never resident together, and resolving the target through
+    // the normal path meant entering the seam released scene 1 and left the
+    // dissolve with nothing to dissolve into.
+    if (!segment.scene) {
       const from = loader.getPin(lastScene, 1) ?? loader.frameAt(lastScene, 1);
       const to = loader.getPin(firstScene, 0) ?? loader.frameAt(firstScene, 0);
-      if (from) return { from, to, mix };
+      if (from) return { from, to, mix: progress };
       if (to) return { from: to, mix: 0 };
       return undefined;
     }
 
-    for (const s of sections) {
-      const travel = Math.max(1, s.height - viewportH);
-      const raw = (scrollY - s.top) / travel;
-      if (raw >= 0 && raw <= 1) {
-        if (s.scene.id !== activeId) {
-          activeId = s.scene.id;
-          loader.update(activeId);
-        }
-        const frame = loader.frameAt(s.scene, raw);
-        return frame ? { from: frame, mix: 0, sceneId: s.scene.id, progress: raw } : undefined;
-      }
+    if (segment.scene.id !== activeId) {
+      activeId = segment.scene.id;
+      loader.update(activeId);
     }
 
-    // Before the first section: hold the opening frame.
-    const opening = loader.frameAt(firstScene, 0);
-    return opening ? { from: opening, mix: 0, sceneId: firstScene.id, progress: 0 } : undefined;
+    const frame = loader.frameAt(segment.scene, progress);
+    return frame
+      ? { from: frame, mix: 0, sceneId: segment.scene.id, progress }
+      : undefined;
   }
 
   // --- The wrap -----------------------------------------------------------
-
-  function maxScroll(): number {
-    return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-  }
 
   /**
    * Wrap the scroll position when either end is reached.
@@ -230,7 +227,6 @@ export function initScrollScrub(canvas: HTMLCanvasElement): ScrubHandle {
       return;
     }
     const max = maxScroll();
-    if (max <= 0) return;
 
     // Reaching the end of the seam returns to the top of scene 1.
     if (window.scrollY >= max - 1) {
@@ -260,11 +256,11 @@ export function initScrollScrub(canvas: HTMLCanvasElement): ScrubHandle {
 
   // --- Boot ---------------------------------------------------------------
 
-  measure();
+  layout();
   resize();
 
   window.addEventListener('resize', () => {
-    measure();
+    layout();
     resize();
   });
 

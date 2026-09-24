@@ -65,10 +65,9 @@ export const SCENES: SceneConfig[] = [
  * Keep this long enough for the dissolve to read as a dissolve, short enough
  * that it does not feel like a seventh scene.
  *
- * NOTE the first 100vh buys no travel. The seam is the last section on the
- * page, so scrolling inside it stops once the document bottom meets the
- * viewport bottom, leaving (height - 100vh) of actual movement. 200 therefore
- * means roughly one viewport height of dissolve.
+ * This is a weight, not a measurement. The scrubber partitions the scrollable
+ * range by these weights rather than reading element positions, so the seam
+ * gets SEAM_SCROLL_VH / (sum of all weights) of the journey.
  */
 export const SEAM_SCROLL_VH = 200;
 
