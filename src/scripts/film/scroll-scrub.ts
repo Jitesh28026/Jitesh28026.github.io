@@ -22,6 +22,7 @@
  */
 
 import { FrameLoader } from './frame-loader';
+import { drawTvGlow } from './tv-glow';
 import { CANVAS_HEIGHT, CANVAS_WIDTH, SCENES, type SceneConfig } from './config';
 
 interface SceneSection {
@@ -39,6 +40,10 @@ interface Shot {
   to?: HTMLImageElement;
   /** 0 = fully `from`, 1 = fully `to`. */
   mix: number;
+  /** Scene being shown, so scene specific light can be layered on top. */
+  sceneId?: number;
+  /** Progress through that scene, 0..1. */
+  progress?: number;
 }
 
 export interface ScrubHandle {
@@ -108,13 +113,24 @@ export function initScrollScrub(canvas: HTMLCanvasElement): ScrubHandle {
 
   // --- Painting -----------------------------------------------------------
 
-  /** Cover-fit: fill the viewport, crop the overflowing axis, never distort. */
+  /**
+   * Cover-fit geometry: fill the viewport, crop the overflowing axis, never
+   * distort. Shared so that overlays can be positioned in the same space as
+   * the frame rather than guessing at it.
+   */
+  function coverMetrics(): { scale: number; dx: number; dy: number } {
+    const scale = Math.max(canvas.width / CANVAS_WIDTH, canvas.height / CANVAS_HEIGHT);
+    return {
+      scale,
+      dx: (canvas.width - CANVAS_WIDTH * scale) / 2,
+      dy: (canvas.height - CANVAS_HEIGHT * scale) / 2,
+    };
+  }
+
   function drawCover(img: HTMLImageElement): void {
     if (!ctx) return;
-    const scale = Math.max(canvas.width / CANVAS_WIDTH, canvas.height / CANVAS_HEIGHT);
-    const w = CANVAS_WIDTH * scale;
-    const h = CANVAS_HEIGHT * scale;
-    ctx.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
+    const { scale, dx, dy } = coverMetrics();
+    ctx.drawImage(img, dx, dy, CANVAS_WIDTH * scale, CANVAS_HEIGHT * scale);
   }
 
   function render(shot: Shot): void {
@@ -125,6 +141,18 @@ export function initScrollScrub(canvas: HTMLCanvasElement): ScrubHandle {
       ctx.globalAlpha = shot.mix;
       drawCover(shot.to);
       ctx.globalAlpha = 1;
+    }
+
+    // Scene 1 only: the television's light, layered over the painted frame.
+    // Driven purely by scroll progress, so it holds still when the viewer does.
+    if (shot.sceneId === firstScene.id && shot.progress !== undefined) {
+      const { scale, dx, dy } = coverMetrics();
+      drawTvGlow(
+        ctx,
+        shot.progress,
+        (x, y) => [dx + x * scale, dy + y * scale],
+        scale,
+      );
     }
   }
 
@@ -173,13 +201,13 @@ export function initScrollScrub(canvas: HTMLCanvasElement): ScrubHandle {
           loader.update(activeId);
         }
         const frame = loader.frameAt(s.scene, raw);
-        return frame ? { from: frame, mix: 0 } : undefined;
+        return frame ? { from: frame, mix: 0, sceneId: s.scene.id, progress: raw } : undefined;
       }
     }
 
     // Before the first section: hold the opening frame.
     const opening = loader.frameAt(firstScene, 0);
-    return opening ? { from: opening, mix: 0 } : undefined;
+    return opening ? { from: opening, mix: 0, sceneId: firstScene.id, progress: 0 } : undefined;
   }
 
   // --- The wrap -----------------------------------------------------------
