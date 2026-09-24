@@ -2,30 +2,52 @@
 /**
  * /flat, the scroll-scrub film.
  *
- * Phase 2 skeleton: scroll-scrub across all six scenes only. No hotspots, no
- * About or Work panels, no loop yet.
+ * Scroll-scrub across six scenes, looping back to the start through a seam
+ * that dissolves scene 6 into scene 1. No hotspots and no About or Work panels
+ * yet.
  */
 import FilmLayout from '../layouts/FilmLayout.astro';
-import { SCENES, BASE_SCROLL_VH, posterUrl } from '../scripts/film/config';
+import { SCENES, BASE_SCROLL_VH, SEAM_SCROLL_VH, posterUrl } from '../scripts/film/config';
 ---
 
 <FilmLayout title="A night in the flat, by Jitesh Thakker">
   <!--
-    Preloader. The opening scene is roughly 7MB of frames, so without this the
-    viewer would scroll into a half loaded sequence. Scroll stays locked until
-    scene one is fully resident, which is also what keeps the first scrub
-    smooth instead of snapping between whichever frames arrived first.
+    Preloader, framed as arriving at the door.
+
+    The opening scene is roughly 7MB of frames, so without this the viewer
+    would scroll into a half loaded sequence. It ends on a button rather than
+    dissolving by itself, because browsers only allow audio to start from a
+    user gesture: the click that opens the door is what unlocks the music.
   -->
-  <div class="film-loading" data-film-loader>
-    <p class="film-loading__label">Entering the flat</p>
-    <div class="film-loading__track">
-      <div class="film-loading__bar" data-film-loader-bar></div>
+  <div class="film-door" data-film-loader>
+    <div class="film-door__inner">
+      <p class="film-door__label" data-film-door-label>Ringing the doorbell</p>
+
+      <div class="film-door__track">
+        <div class="film-door__bar" data-film-loader-bar></div>
+      </div>
+
+      <p class="film-door__status">
+        <span data-film-door-status>Waiting for someone to answer</span>
+        <span class="film-door__pct" data-film-loader-pct>0%</span>
+      </p>
+
+      <button class="film-door__enter" type="button" data-film-enter hidden>
+        Come in
+      </button>
     </div>
-    <p class="film-loading__pct" data-film-loader-pct>0%</p>
   </div>
 
   <!-- Painted by scroll-scrub.ts; sits fixed behind the scroll sections. -->
   <canvas class="film-canvas" data-film-canvas aria-hidden="true"></canvas>
+
+  <!-- Fades out on first scroll. Tells the viewer the page is theirs to drive. -->
+  <p class="film-hint" data-film-hint aria-hidden="true">Scroll to walk through</p>
+
+  <!-- Only shown once the track is confirmed present. -->
+  <button class="film-sound" type="button" data-film-sound aria-label="Toggle sound" hidden>
+    <span class="film-sound__bars" aria-hidden="true"><i></i><i></i><i></i></span>
+  </button>
 
   <!--
     Spacer sections. These render nothing. Their only job is to give the
@@ -43,6 +65,18 @@ import { SCENES, BASE_SCROLL_VH, posterUrl } from '../scripts/film/config';
         />
       ))
     }
+
+    <!--
+      The loop seam. Scene 6 dissolves into scene 1 across this section, so by
+      its end the canvas already shows what scroll position zero shows and the
+      wrap back to the top is invisible.
+    -->
+    <section
+      class="film-scene"
+      data-film-seam
+      style={`height: ${SEAM_SCROLL_VH}vh;`}
+      aria-hidden="true"
+    />
   </div>
 
   <!-- prefers-reduced-motion: one still per scene instead of scrubbing. -->
@@ -68,38 +102,81 @@ import { SCENES, BASE_SCROLL_VH, posterUrl } from '../scripts/film/config';
 
   <script>
     import { initScrollScrub } from '../scripts/film/scroll-scrub';
+    import { Soundtrack } from '../scripts/film/audio';
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-film-canvas]');
+    const door = document.querySelector<HTMLElement>('[data-film-loader]');
 
     // Reduced motion gets the static posters from film.css. The scrubber never
     // boots, so the frame sequences are never fetched at all.
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const canvas = document.querySelector<HTMLCanvasElement>('[data-film-canvas]');
-    const loaderEl = document.querySelector<HTMLElement>('[data-film-loader]');
-
     if (reduced) {
-      loaderEl?.remove();
+      door?.remove();
       document.body.classList.remove('is-film-loading');
     } else if (canvas) {
       const bar = document.querySelector<HTMLElement>('[data-film-loader-bar]');
       const pct = document.querySelector<HTMLElement>('[data-film-loader-pct]');
+      const label = document.querySelector<HTMLElement>('[data-film-door-label]');
+      const status = document.querySelector<HTMLElement>('[data-film-door-status]');
+      const enter = document.querySelector<HTMLButtonElement>('[data-film-enter]');
+      const hint = document.querySelector<HTMLElement>('[data-film-hint]');
+      const soundBtn = document.querySelector<HTMLButtonElement>('[data-film-sound]');
 
       document.body.classList.add('is-film-loading');
-      const handle = initScrollScrub(canvas);
 
+      const scrub = initScrollScrub(canvas);
+      const soundtrack = new Soundtrack();
+      // Resolves false when the track file is absent, which hides the toggle
+      // rather than offering a control that does nothing.
+      const soundReady = soundtrack.init();
+
+      // --- Preloader progress ---
       const poll = () => {
-        const progress = handle.openingProgress();
+        const progress = scrub.openingProgress();
         if (bar) bar.style.transform = `scaleX(${progress})`;
         if (pct) pct.textContent = `${Math.round(progress * 100)}%`;
 
         if (progress >= 1) {
-          document.body.classList.remove('is-film-loading');
-          loaderEl?.classList.add('is-done');
-          // Remove only after the fade, so it cannot swallow scroll events.
-          window.setTimeout(() => loaderEl?.remove(), 800);
+          if (label) label.textContent = 'Someone is at the door';
+          if (status) status.textContent = 'Come inside and look around';
+          if (pct) pct.hidden = true;
+          enter?.removeAttribute('hidden');
+          enter?.focus();
           return;
         }
         requestAnimationFrame(poll);
       };
       requestAnimationFrame(poll);
+
+      // --- Entering ---
+      enter?.addEventListener('click', () => {
+        // Inside the gesture, so audio is allowed to start here.
+        void soundtrack.play();
+
+        document.body.classList.remove('is-film-loading');
+        door?.classList.add('is-open');
+        scrub.start();
+
+        // Removed only after the fade, so it cannot swallow scroll events.
+        window.setTimeout(() => door?.remove(), 900);
+
+        void soundReady.then((ok) => {
+          if (ok) soundBtn?.removeAttribute('hidden');
+        });
+
+        hint?.classList.add('is-visible');
+        const dismissHint = () => {
+          hint?.classList.remove('is-visible');
+          window.removeEventListener('scroll', dismissHint);
+        };
+        window.addEventListener('scroll', dismissHint, { once: true, passive: true });
+      });
+
+      // --- Sound toggle ---
+      soundBtn?.addEventListener('click', () => {
+        soundtrack.toggle();
+        soundBtn.classList.toggle('is-muted', !soundtrack.isPlaying());
+      });
     }
   </script>
 </FilmLayout>

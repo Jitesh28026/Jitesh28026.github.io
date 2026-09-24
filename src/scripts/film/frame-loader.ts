@@ -118,6 +118,37 @@ export class FrameLoader {
     return img;
   }
 
+  /**
+   * Permanently retain one frame of a scene, outside the release cycle.
+   *
+   * The loop seam dissolves scene 6's last frame into scene 1's first, and
+   * those two scenes are never resident at the same time. Keeping both whole
+   * sequences would cost roughly a gigabyte; pinning the two individual frames
+   * the seam actually needs costs about 7MB.
+   */
+  async pin(scene: SceneConfig, progress: number): Promise<HTMLImageElement | undefined> {
+    const key = pinKey(scene.id, progress);
+    const existing = this.pins.get(key);
+    if (existing) return existing;
+
+    const last = this.frameCountFor(scene) - 1;
+    const index = Math.round(clamp(progress, 0, 1) * last);
+    try {
+      const img = await decodeImage(frameUrl(scene, index * this.step));
+      this.pins.set(key, img);
+      return img;
+    } catch {
+      return undefined;
+    }
+  }
+
+  /** A previously pinned frame, if it has finished decoding. */
+  getPin(scene: SceneConfig, progress: number): HTMLImageElement | undefined {
+    return this.pins.get(pinKey(scene.id, progress));
+  }
+
+  private pins = new Map<string, HTMLImageElement>();
+
   /** Load and retain a scene's frames. Idempotent. */
   load(scene: SceneConfig): Promise<void> {
     if (this.jobs.has(scene.id)) return Promise.resolve();
@@ -202,6 +233,10 @@ function decodeImage(src: string): Promise<HTMLImageElement> {
         img.onerror = reject;
       });
   });
+}
+
+function pinKey(sceneId: number, progress: number): string {
+  return `${sceneId}:${progress}`;
 }
 
 function clamp(value: number, min: number, max: number): number {

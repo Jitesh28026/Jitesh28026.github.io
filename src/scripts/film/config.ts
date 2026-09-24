@@ -54,6 +54,24 @@ export const SCENES: SceneConfig[] = [
   { id: 6, name: 'Working till sunrise', path: '/frames/scene6', frameCount: 96, scrollFactor: 96 / 144 },
 ];
 
+/**
+ * Scroll distance of the loop seam, in viewport heights.
+ *
+ * The seam sits after scene 6 and cross-fades its final frame into scene 1's
+ * opening frame. By the end of the seam the canvas is showing scene 1 frame 0
+ * at full opacity, which is exactly what scroll position 0 shows, so the wrap
+ * back to the top swaps in an identical image and is invisible.
+ *
+ * Keep this long enough for the dissolve to read as a dissolve, short enough
+ * that it does not feel like a seventh scene.
+ *
+ * NOTE the first 100vh buys no travel. The seam is the last section on the
+ * page, so scrolling inside it stops once the document bottom meets the
+ * viewport bottom, leaving (height - 100vh) of actual movement. 200 therefore
+ * means roughly one viewport height of dissolve.
+ */
+export const SEAM_SCROLL_VH = 200;
+
 /** Zero-padded frame URL: /frames/scene3/0042.webp */
 export function frameUrl(scene: SceneConfig, index: number): string {
   return `${scene.path}/${String(index + 1).padStart(4, '0')}.webp`;

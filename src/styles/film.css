@@ -109,7 +109,7 @@ body {
   border: 0;
 }
 
-/* --- Preloader ----------------------------------------------------------- */
+/* --- The door (preloader) ------------------------------------------------ */
 
 /*
  * Scroll is locked while the opening scene loads. Scrubbing into frames that
@@ -120,42 +120,66 @@ body.is-film-loading {
   overflow: hidden;
 }
 
-.film-loading {
+.film-door {
   position: fixed;
   inset: 0;
   z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1.1rem;
+  display: grid;
+  place-items: center;
   background: var(--film-night);
-  transition: opacity 0.7s ease;
+  transition: opacity 0.85s ease;
 }
 
-.film-loading.is-done {
+.film-door.is-open {
   opacity: 0;
   pointer-events: none;
 }
 
-.film-loading__label {
+.film-door__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.05rem;
+  padding: 0 24px;
+  text-align: center;
+}
+
+.film-door__label {
   margin: 0;
   font-family: 'DM Mono', ui-monospace, monospace;
   font-size: 0.78rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--film-amber);
-  opacity: 0.85;
+  /*
+   * Slow pulse while the bell rings. Paused rather than removed once the door
+   * opens, so the text does not visibly jump when the label changes.
+   */
+  animation: film-ring 2.4s ease-in-out infinite;
 }
 
-.film-loading__track {
+.film-door.is-open .film-door__label {
+  animation: none;
+}
+
+@keyframes film-ring {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.film-door__track {
   width: min(280px, 60vw);
   height: 2px;
   background: rgb(244 236 225 / 0.14);
   overflow: hidden;
 }
 
-.film-loading__bar {
+.film-door__bar {
   width: 100%;
   height: 100%;
   background: var(--film-amber);
@@ -165,17 +189,130 @@ body.is-film-loading {
   transition: transform 0.25s linear;
 }
 
-.film-loading__pct {
+.film-door__status {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
   margin: 0;
   font-family: 'DM Mono', ui-monospace, monospace;
   font-size: 0.72rem;
   color: #f4ece1;
   opacity: 0.45;
+}
+
+.film-door__pct {
   font-variant-numeric: tabular-nums;
 }
 
+.film-door__enter {
+  margin-top: 0.4rem;
+  padding: 0.7rem 1.6rem;
+  font-family: 'DM Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--film-night);
+  background: var(--film-amber);
+  border: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.film-door__enter:hover {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+
+.film-door__enter:focus-visible {
+  outline: 2px solid #f4ece1;
+  outline-offset: 3px;
+}
+
+/* --- Scroll hint --------------------------------------------------------- */
+
+.film-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 7vh;
+  z-index: 5;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: 'DM Mono', ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #f4ece1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.film-hint.is-visible {
+  opacity: 0.5;
+}
+
+/* --- Sound toggle -------------------------------------------------------- */
+
+.film-sound {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  background: rgb(13 21 24 / 0.55);
+  border: 1px solid rgb(244 236 225 / 0.18);
+  border-radius: 50%;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+
+.film-sound__bars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 13px;
+}
+
+.film-sound__bars i {
+  width: 2px;
+  height: 100%;
+  background: var(--film-amber);
+  transform-origin: center;
+  animation: film-eq 1.1s ease-in-out infinite;
+}
+
+.film-sound__bars i:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.film-sound__bars i:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+@keyframes film-eq {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+/* Muted: bars freeze flat, so the state reads at a glance. */
+.film-sound.is-muted .film-sound__bars i {
+  animation: none;
+  transform: scaleY(0.2);
+  opacity: 0.5;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .film-loading {
+  .film-door,
+  .film-hint,
+  .film-sound {
     display: none;
   }
 }
