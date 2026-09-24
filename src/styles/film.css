@@ -1,9 +1,9 @@
 /* ==========================================================================
    Scroll-scrub film
    --------------------------------------------------------------------------
-   Layout model: one fixed full-screen canvas, with six tall transparent
-   sections scrolling over it. The sections exist purely to give ScrollTrigger
-   something to measure — they render nothing themselves.
+   Layout model: one fixed full-screen canvas, with six tall transparent scene
+   sections plus a loop seam scrolling over it. The sections exist purely to
+   give the document its height; they render nothing themselves.
    ========================================================================== */
 
 :root {
@@ -22,10 +22,9 @@ body {
 
 /*
  * NOTE: do NOT put `overflow-x: hidden` on html/body here. It turns the body
- * into a scroll container, and ScrollTrigger — which measures the window
- * scroller — then never receives a scroll event, so every scene silently
- * freezes on its first frame. `overflow-x: clip` achieves the same visual
- * containment without creating a scroll container.
+ * into a scroll container, so window.scrollY stops advancing and every scene
+ * silently freezes on its first frame. `overflow-x: clip` gives the same
+ * visual containment without creating a scroll container.
  */
 body {
   overflow-x: clip;
@@ -228,27 +227,135 @@ body.is-film-loading {
   outline-offset: 3px;
 }
 
-/* --- Scroll hint --------------------------------------------------------- */
+/* --- Opening title ------------------------------------------------------- */
 
-.film-hint {
+/*
+ * Sits low and centred rather than over the middle of the room, where the two
+ * silhouettes are. Never interactive, so it cannot intercept the scroll it is
+ * asking for.
+ */
+.film-intro {
   position: fixed;
   left: 50%;
   bottom: 7vh;
   z-index: 5;
   transform: translateX(-50%);
-  margin: 0;
-  font-family: 'DM Mono', ui-monospace, monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #f4ece1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  text-align: center;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.8s ease;
+  transition: opacity 0.7s ease;
 }
 
-.film-hint.is-visible {
-  opacity: 0.5;
+.film-intro.is-visible {
+  opacity: 1;
+}
+
+/*
+ * Each line rises into place slightly after the one above it. The stagger is
+ * what makes this read as a title sequence rather than a caption appearing.
+ */
+.film-intro__name,
+.film-intro__title,
+.film-intro__cue {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.film-intro.is-visible .film-intro__name {
+  opacity: 0.8;
+  transform: none;
+  transition-delay: 0.08s;
+}
+
+.film-intro.is-visible .film-intro__title {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.24s;
+}
+
+.film-intro.is-visible .film-intro__cue {
+  opacity: 0.6;
+  transform: none;
+  transition-delay: 0.5s;
+}
+
+.film-intro__name {
+  margin: 0;
+  font-family: 'DM Mono', ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--film-amber);
+}
+
+.film-intro__title {
+  margin: 0;
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-size: clamp(1.5rem, 4.2vw, 2.5rem);
+  font-weight: 500;
+  line-height: 1.15;
+  color: #f4ece1;
+  /* The frame behind is dark but not uniformly so; this keeps it legible. */
+  text-shadow: 0 2px 18px rgb(13 21 24 / 0.75);
+}
+
+.film-intro__cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.3rem;
+}
+
+.film-intro__label {
+  font-family: 'DM Mono', ui-monospace, monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #f4ece1;
+}
+
+/*
+ * A thin line that draws downward and fades, on a slow repeat.
+ *
+ * Deliberately not a bouncing chevron: bouncing reads as a web page, a slowly
+ * drawn line reads as film. It is also the only moving thing on screen before
+ * the first scroll, since the frame itself stays frozen by design.
+ */
+.film-intro__line {
+  display: block;
+  width: 1px;
+  height: 44px;
+  margin-top: 0.75rem;
+  background: linear-gradient(to bottom, var(--film-amber), transparent);
+  transform-origin: top center;
+  animation: film-draw 2.6s ease-in-out infinite;
+}
+
+@keyframes film-draw {
+  0% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  22% {
+    opacity: 1;
+  }
+  58% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
 }
 
 /* --- Sound toggle -------------------------------------------------------- */
@@ -311,8 +418,14 @@ body.is-film-loading {
 
 @media (prefers-reduced-motion: reduce) {
   .film-door,
-  .film-hint,
+  .film-intro,
   .film-sound {
     display: none;
+  }
+
+  /* Belt and braces: the intro never renders under reduced motion, but make
+     sure nothing here can animate if that ever changes. */
+  .film-intro__line {
+    animation: none;
   }
 }

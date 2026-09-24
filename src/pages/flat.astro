@@ -41,8 +41,22 @@ import { SCENES, BASE_SCROLL_VH, SEAM_SCROLL_VH, posterUrl } from '../scripts/fi
   <!-- Painted by scroll-scrub.ts; sits fixed behind the scroll sections. -->
   <canvas class="film-canvas" data-film-canvas aria-hidden="true"></canvas>
 
-  <!-- Fades out on first scroll. Tells the viewer the page is theirs to drive. -->
-  <p class="film-hint" data-film-hint aria-hidden="true">Scroll to walk through</p>
+  <!--
+    Opening title.
+
+    The only text in the whole film, so it is the one place a visitor learns
+    whose work this is. Revealed after the door is opened, fades on the first
+    scroll and is then removed for good, so the loop coming back around to
+    scene 1 stays uninterrupted.
+  -->
+  <div class="film-intro" data-film-intro hidden>
+    <p class="film-intro__name">Jitesh Thakker</p>
+    <h1 class="film-intro__title">A night in the flat</h1>
+    <div class="film-intro__cue">
+      <span class="film-intro__label">Scroll to walk through</span>
+      <span class="film-intro__line" aria-hidden="true"></span>
+    </div>
+  </div>
 
   <!-- Only shown once the track is confirmed present. -->
   <button class="film-sound" type="button" data-film-sound aria-label="Toggle sound" hidden>
@@ -90,7 +104,7 @@ import { SCENES, BASE_SCROLL_VH, SEAM_SCROLL_VH, posterUrl } from '../scripts/fi
 
   <!-- The film carries no text, so give crawlers and screen readers the story. -->
   <div class="film-fallback">
-    <h1>A night in the flat</h1>
+    <p>A night in the flat</p>
     <p>
       A scroll driven cinematic journey through a flat at night, by Jitesh Thakker,
       product designer.
@@ -119,7 +133,7 @@ import { SCENES, BASE_SCROLL_VH, SEAM_SCROLL_VH, posterUrl } from '../scripts/fi
       const label = document.querySelector<HTMLElement>('[data-film-door-label]');
       const status = document.querySelector<HTMLElement>('[data-film-door-status]');
       const enter = document.querySelector<HTMLButtonElement>('[data-film-enter]');
-      const hint = document.querySelector<HTMLElement>('[data-film-hint]');
+      const intro = document.querySelector<HTMLElement>('[data-film-intro]');
       const soundBtn = document.querySelector<HTMLButtonElement>('[data-film-sound]');
 
       document.body.classList.add('is-film-loading');
@@ -164,12 +178,35 @@ import { SCENES, BASE_SCROLL_VH, SEAM_SCROLL_VH, posterUrl } from '../scripts/fi
           if (ok) soundBtn?.removeAttribute('hidden');
         });
 
-        hint?.classList.add('is-visible');
-        const dismissHint = () => {
-          hint?.classList.remove('is-visible');
-          window.removeEventListener('scroll', dismissHint);
+        // Reveal the title once the door is out of the way, then retire it on
+        // the first scroll. Removed from the DOM rather than hidden, so the
+        // loop returning to scene 1 never brings it back.
+        intro?.removeAttribute('hidden');
+        if (intro) {
+          // Force a reflow so the browser registers the pre-transition state
+          // before the class lands, otherwise it jumps straight to the end.
+          //
+          // Deliberately not requestAnimationFrame: rAF is suspended while the
+          // tab is in the background, which left the title stuck invisible.
+          void intro.offsetHeight;
+          intro.classList.add('is-visible');
+        }
+
+        // Dismiss on a real scroll, not on any scroll event.
+        //
+        // scrub.start() nudges the page to scrollY 1 to arm the backwards loop
+        // wrap, and that fires a scroll event of its own. A plain once:true
+        // listener would catch it and retire the title instantly, before it
+        // had even finished fading in. Requiring a few pixels of genuine
+        // movement ignores the nudge.
+        const DISMISS_AFTER_PX = 12;
+        const onScroll = () => {
+          if (window.scrollY < DISMISS_AFTER_PX) return;
+          window.removeEventListener('scroll', onScroll);
+          intro?.classList.remove('is-visible');
+          window.setTimeout(() => intro?.remove(), 700);
         };
-        window.addEventListener('scroll', dismissHint, { once: true, passive: true });
+        window.addEventListener('scroll', onScroll, { passive: true });
       });
 
       // --- Sound toggle ---
