@@ -1,0 +1,105 @@
+---
+/**
+ * /flat, the scroll-scrub film.
+ *
+ * Phase 2 skeleton: scroll-scrub across all six scenes only. No hotspots, no
+ * About or Work panels, no loop yet.
+ */
+import FilmLayout from '../layouts/FilmLayout.astro';
+import { SCENES, BASE_SCROLL_VH, posterUrl } from '../scripts/film/config';
+---
+
+<FilmLayout title="A night in the flat, by Jitesh Thakker">
+  <!--
+    Preloader. The opening scene is roughly 7MB of frames, so without this the
+    viewer would scroll into a half loaded sequence. Scroll stays locked until
+    scene one is fully resident, which is also what keeps the first scrub
+    smooth instead of snapping between whichever frames arrived first.
+  -->
+  <div class="film-loading" data-film-loader>
+    <p class="film-loading__label">Entering the flat</p>
+    <div class="film-loading__track">
+      <div class="film-loading__bar" data-film-loader-bar></div>
+    </div>
+    <p class="film-loading__pct" data-film-loader-pct>0%</p>
+  </div>
+
+  <!-- Painted by scroll-scrub.ts; sits fixed behind the scroll sections. -->
+  <canvas class="film-canvas" data-film-canvas aria-hidden="true"></canvas>
+
+  <!--
+    Spacer sections. These render nothing. Their only job is to give the
+    scrubber a measurable scroll distance per scene. Height comes from the
+    scene config so pacing lives in one place.
+  -->
+  <div class="film-scenes">
+    {
+      SCENES.map((scene) => (
+        <section
+          class="film-scene"
+          data-scene={scene.id}
+          style={`height: ${BASE_SCROLL_VH * scene.scrollFactor}vh;`}
+          aria-hidden="true"
+        />
+      ))
+    }
+  </div>
+
+  <!-- prefers-reduced-motion: one still per scene instead of scrubbing. -->
+  <div class="film-posters">
+    {
+      SCENES.map((scene) => (
+        <img class="film-poster" src={posterUrl(scene)} alt={scene.name} loading="lazy" />
+      ))
+    }
+  </div>
+
+  <!-- The film carries no text, so give crawlers and screen readers the story. -->
+  <div class="film-fallback">
+    <h1>A night in the flat</h1>
+    <p>
+      A scroll driven cinematic journey through a flat at night, by Jitesh Thakker,
+      product designer.
+    </p>
+    <ol>
+      {SCENES.map((scene) => <li>{scene.name}</li>)}
+    </ol>
+  </div>
+
+  <script>
+    import { initScrollScrub } from '../scripts/film/scroll-scrub';
+
+    // Reduced motion gets the static posters from film.css. The scrubber never
+    // boots, so the frame sequences are never fetched at all.
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-film-canvas]');
+    const loaderEl = document.querySelector<HTMLElement>('[data-film-loader]');
+
+    if (reduced) {
+      loaderEl?.remove();
+      document.body.classList.remove('is-film-loading');
+    } else if (canvas) {
+      const bar = document.querySelector<HTMLElement>('[data-film-loader-bar]');
+      const pct = document.querySelector<HTMLElement>('[data-film-loader-pct]');
+
+      document.body.classList.add('is-film-loading');
+      const handle = initScrollScrub(canvas);
+
+      const poll = () => {
+        const progress = handle.openingProgress();
+        if (bar) bar.style.transform = `scaleX(${progress})`;
+        if (pct) pct.textContent = `${Math.round(progress * 100)}%`;
+
+        if (progress >= 1) {
+          document.body.classList.remove('is-film-loading');
+          loaderEl?.classList.add('is-done');
+          // Remove only after the fade, so it cannot swallow scroll events.
+          window.setTimeout(() => loaderEl?.remove(), 800);
+          return;
+        }
+        requestAnimationFrame(poll);
+      };
+      requestAnimationFrame(poll);
+    }
+  </script>
+</FilmLayout>

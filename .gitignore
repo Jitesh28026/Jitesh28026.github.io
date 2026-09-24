@@ -31,11 +31,7 @@ Thumbs.db
 # Claude Code per-developer overrides (project-level shared settings stay in .claude/settings.json)
 .claude/settings.local.json
 
-# extracted frame sequences (regenerate via scripts/extract-frames.sh; served from CDN)
-public/frames/
+# NOTE: public/frames/ (the /flat film's WebP sequences, ~34MB) is intentionally
+# COMMITTED. GitHub Pages only serves what is in the repo. Regenerate with
+# scripts/extract-frames.sh if the source clips change.
 
-# /flat scroll-film: gsap-dependent, gsap install is flaky in CI — kept local, out of build
-src/pages/flat.astro
-src/layouts/FilmLayout.astro
-src/scripts/film/
-src/styles/film.css
