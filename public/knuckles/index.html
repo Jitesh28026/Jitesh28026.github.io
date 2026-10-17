@@ -81,7 +81,7 @@ img.px{image-rendering:pixelated}
 #lSkip{font-size:8px;color:var(--mute);padding:6px}
 
 /* screens */
-.screen{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;
+.screen{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;display:flex;flex-direction:column;align-items:center;justify-content:center;justify-content:safe center;gap:18px;text-align:center;
   padding:calc(var(--sat) + 14px) max(16px,var(--sar)) calc(var(--sab) + 14px) max(16px,var(--sal));
   background:radial-gradient(ellipse at center,rgba(13,10,26,.25),rgba(13,10,26,.82) 75%)}
 .screen.solid{background:var(--ink)}
@@ -106,7 +106,8 @@ img.px{image-rendering:pixelated}
 #tTap{font-size:clamp(12px,2.2vw,16px);padding:14px 22px}
 #tCorner{position:absolute;right:max(16px,var(--sar));bottom:calc(var(--sab) + 14px)}
 #tLeft{position:absolute;left:max(16px,var(--sal));bottom:calc(var(--sab) + 18px);text-align:left;max-width:40%}
-.chips{display:flex;gap:8px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chips .sep{width:8px}
 .chips button{font-size:8px;padding:8px 10px;color:var(--mute);box-shadow:0 0 0 2px var(--line)}
 .chips button[aria-pressed="true"]{color:var(--ink);background:var(--amber);box-shadow:0 0 0 2px var(--amber)}
 .car{display:flex;align-items:center;gap:14px}
@@ -117,7 +118,6 @@ img.px{image-rendering:pixelated}
 .card .nm{font-size:clamp(12px,2vw,15px)}
 .card .meta{font-size:8px;color:var(--mute);min-height:1.6em}
 .card .meta b{color:var(--amber);font-weight:400}
-.card.locked canvas{filter:grayscale(1) brightness(.45)}
 .row{display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap}
 .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;width:min(640px,100%)}
 .tile{display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--panel);padding:12px 8px;box-shadow:0 0 0 3px var(--line)}
@@ -133,10 +133,10 @@ img.px{image-rendering:pixelated}
 .tg{font-size:9px;padding:8px 12px;box-shadow:0 0 0 2px var(--line);color:var(--mute)}
 .tg[aria-pressed="true"]{background:var(--amber);color:var(--ink);box-shadow:0 0 0 2px var(--amber)}
 input[type=range]{accent-color:#ffb000;width:150px}
-.ini{display:flex;gap:10px;align-items:center}
-.ini .s{display:flex;flex-direction:column;align-items:center;gap:4px}
-.ini .s b{font-weight:400;font-size:18px;color:var(--amber);width:26px}
-.ini .s button{width:34px;height:24px;font-size:9px;background:var(--panel);box-shadow:0 0 0 2px var(--line)}
+.rec{font-size:9px;color:var(--cream);margin:0}
+#result{background:rgba(13,10,26,.8);gap:14px}
+#result .icons{margin-top:4px}
+@media (max-height:480px){.screen{gap:10px}#title .logo{width:min(440px,70vw,85vh)}#title{padding-bottom:calc(var(--sab) + 70px)}.big{font-size:clamp(26px,11vh,48px)}#result{gap:9px}.btn{padding:11px 22px}.ic span.box{width:40px;height:40px}}
 #rCash{font-size:clamp(14px,2.6vw,20px);color:var(--amber);margin:0}
 #rotate{z-index:20;gap:22px}
 #rotate img{width:72px;animation:rot 1.6s steps(1) infinite}
@@ -167,6 +167,7 @@ input[type=range]{accent-color:#ffb000;width:150px}
   <div class="screen" id="title" hidden>
     <canvas class="logo" id="titleLogo"></canvas>
     <button id="tTap" class="blink">TAP TO RIDE</button>
+    <div class="chips" id="tDiff" role="group" aria-label="Difficulty"></div>
     <span class="small" id="tRoad">DUST BOWL · ROOKIE</span>
     <div id="tLeft"><span class="tip" id="tIos" hidden>FOR FULLSCREEN: TAP SHARE, THEN ADD TO HOME SCREEN</span><span class="small" id="tKeys" hidden>ARROWS STEER · Z PUNCH · X KICK · SHIFT NITRO</span></div>
     <div class="icons" id="tCorner">
@@ -214,7 +215,7 @@ input[type=range]{accent-color:#ffb000;width:150px}
     <p class="big" id="rPlace">1ST</p>
     <p class="mid" id="rGap"></p>
     <p id="rCash">+$0</p>
-    <div class="ini" id="rIni" hidden><span class="small">NEW RECORD</span></div>
+    <p class="rec blink" id="rRec" hidden>NEW RECORD</p>
     <button class="btn" id="rMain">RETRY</button>
     <div class="icons">
       <button class="ic" id="rHome" aria-label="Home"><span class="box"><img class="px" alt="" data-icon="home"></span>HOME</button>
@@ -285,6 +286,8 @@ const RIVALS = [
   { name: 'DUSTY',  bike: '#e8c46c', jacket: '#5a4428', helmet: '#5a4428', stripe: '#e8c46c', line: 'I will see you at the finish. From the front.' },
 ];
 const PRIZES = [1000, 650, 420, 200, 150, 120, 90, 70];
+const COP = { name: 'COP', bike: '#e9e4f0', jacket: '#1e2a5a', helmet: '#e9e4f0', stripe: '#2f6bff' };
+const HEAT_AT = [800, 2000, 4000, 7000], BUST_NEED = 2.6, RAMP_LANES = [-0.6, 0, 0.6];
 
 /* ---------- track ---------- */
 let segments = [], N = 0, trackLength = 0, finishDist = 0, stage = null, stageIdx = 0, diff = null, S = null;
@@ -347,10 +350,13 @@ function startRace(si, dk, up, opts = {}) {
     maxHp: 100 + 20 * up.armor, armorMul: 1 - 0.06 * up.armor, nitroFill: 1 + 0.25 * up.nitro, nitroBurn: 0.42 * (1 - 0.1 * up.nitro),
     hp: 0, stam: 100, stamMax: 100 + 10 * up.armor, stamWait: 0, crashT: 0, crashDur: diff.crashDur, crashSlide: 0, invuln: 0, atkCd: 0, swing: 0, swingSide: 1, hurtT: 0, railT: 0,
     nitro: 0.25, boosting: false, weapon: null, swingType: 'punch', combo: 0, comboT: 0, comboBest: 0, kos: 0, close: 0,
-    cash: { ko: 0, close: 0, grudge: 0 }, grudgeDone: false, place: 8, wrecked: false, offroad: false, rivals: [], cars: [], lastPd: playerZ,
+    cash: { ko: 0, close: 0, grudge: 0, stunt: 0 }, grudgeDone: false, place: 8, wrecked: false, offroad: false, rivals: [], cars: [], props: [], lastPd: playerZ,
+    air: 0, airDur: 1, heat: null, busted: false,
   };
   S.hp = S.maxHp; S.stam = S.stamMax;
   if (opts.tutorial) { S.state = 'race'; S.cd = 0; S.tutorial = true; S.speed = MAXS * 0.3; return S; }
+  if (opts.heat) S.heat = { level: 1, bounty: 0, pot: 0, banked: 0, escapes: 0, bust: 0, cool: 0, need: 4.2, quiet: 3.5, spawnT: 0, blockT: 18, nextRamp: playerZ + 26000, nextBreak: playerZ + 42000 };
+  else {
   const order = RIVALS.map(r => r).sort(() => R() - 0.5);
   if (opts.grudge) { const gi = order.findIndex(r => r.name === opts.grudge); if (gi > 0) order.unshift(order.splice(gi, 1)[0]); }
   const roles = ['pack', 'lead', 'lead', 'pack', 'pack', 'tail', 'tail'];
@@ -364,21 +370,25 @@ function startRace(si, dk, up, opts = {}) {
       speed: 0, hp: 60, maxHp: 60, state: 'ride', timer: 0, cd: 1 + R() * 2, swing: 0, side: 1, kick: false, lean: 0, hurt: 0, downDir: 1,
       weapon: armed.has(i) ? (R() < 0.5 ? 'chain' : 'club') : null, grudge: !!opts.grudge && r.name === opts.grudge, dmgToPlayer: 0, finishT: null };
   });
-  const count = Math.round(stage.traffic * diff.traffic);
+  }
+  const count = opts.heat ? Math.max(8, Math.round(stage.traffic * diff.traffic * 0.7)) : Math.round(stage.traffic * diff.traffic);
   const twoWay = stage.oncoming > 0;
   for (let i = 0; i < count; i++) {
     const on = R() < stage.oncoming, truck = R() < stage.trucks;
     const lanes = twoWay ? [0, 0.66] : [-0.66, 0, 0.66];
     const x = on ? -0.66 + (R() - 0.5) * 0.12 : lanes[R() * lanes.length | 0] + (R() - 0.5) * 0.12;
     const speed = on ? -MAXS * (0.25 + R() * 0.15) : MAXS * (0.2 + R() * 0.22);
-    const dist = (on ? 12000 : 5000) + (i + R() * 0.8) / count * (trackLength - 8000);
+    const dist = opts.heat ? 8000 + (i + R() * 0.8) / count * 120000 : (on ? 12000 : 5000) + (i + R() * 0.8) / count * (trackLength - 8000);
     const pal = R() * 6 | 0;
     S.cars.push({ dist, x, speed, truck, on, half: truck ? 0.22 : 0.2, len: truck ? 700 : 450, pal, pdz: dist - playerZ });
   }
+  if (!opts.heat) for (let d = 40000; d < trackLength - 30000; d += 45000 + R() * 35000) addRamp(d, RAMP_LANES[R() * 3 | 0]);
   return S;
 }
 
 /* ---------- helpers ---------- */
+function earn(kind, amt) { if (S.heat) { S.heat.pot += amt; S.heat.bounty += amt; } else S.cash[kind] += amt; }
+function addRamp(dist, x) { S.props.push({ kind: 'ramp', dist, x, half: 0.17, pdz: dist - (S.distance + playerZ) }); }
 function addCombo() {
   S.combo++; S.comboT = 3.2; S.comboBest = Math.max(S.comboBest, S.combo);
   const m = comboMul(); if (S.combo > 1 && S.combo % 2 === 0) emit('combo', { mul: m });
@@ -423,7 +433,7 @@ function attack(a) {
   if (best.hp <= 0) {
     ko = true; best.state = 'down'; best.timer = 3.4; best.downDir = side; S.kos++;
     if (offroad) best.x = clamp(best.x, -1.6, 1.6);
-    const cash = (best.dummy ? 0 : 120) * comboMul(); S.cash.ko += cash; S.nitro = Math.min(1, S.nitro + 0.3 * S.nitroFill);
+    const cash = (best.dummy ? 0 : best.cop ? 100 : 120) * comboMul(); earn('ko', cash); S.nitro = Math.min(1, S.nitro + 0.3 * S.nitroFill);
     let grudge = 0; if (best.grudge && !S.grudgeDone) { S.grudgeDone = true; grudge = 400; S.cash.grudge += 400; }
     let took = null; if (best.weapon) { const w = WEAPONS[best.weapon]; S.weapon = { ...w }; took = w.name; best.weapon = null; }
     emit('ko', { name: best.name, cash, grudge, took, rival: best, offroad });
@@ -459,6 +469,15 @@ function update(dt, inp) {
       if (Math.abs(S.x) > 0.85) S.x = Math.sign(S.x) * 0.4;
       S.invuln = 1.5;
     }
+  } else if (S.air > 0) {
+    // airborne: drifts with the stick, flies over traffic, cops and roadside junk
+    const steer = typeof inp.steer === 'number' ? clamp(inp.steer, -1, 1) : (inp.left ? -1 : 0) + (inp.right ? 1 : 0);
+    S.x += steer * dt * S.steer * 0.45 * Math.max(sp, 0.2); S.lean = lerp(S.lean, steer, Math.min(1, dt * 4));
+    if ((S.air -= dt) <= 0) {
+      const cash = Math.round(S.airDur * 10) * 10; earn('stunt', cash); S.nitro = Math.min(1, S.nitro + 0.2 * S.nitroFill); addCombo();
+      emit('land', { cash, t: S.airDur });
+    }
+    if (inp.attack) attack(typeof inp.attack === 'number' ? { type: inp.attack < 0 ? 'punch' : 'kick', side: inp.attack } : inp.attack);
   } else {
     const steer = typeof inp.steer === 'number' ? clamp(inp.steer, -1, 1) : (inp.left ? -1 : 0) + (inp.right ? 1 : 0);
     S.x += steer * dt * S.steer * Math.max(sp, 0.2);
@@ -489,7 +508,7 @@ function update(dt, inp) {
     for (const c of S.cars) {
       const dz = c.dist - pd;
       if (dz > -120 && dz < c.len * 0.5 + 140 && Math.abs(S.x - c.x) < c.half + 0.065 && S.invuln <= 0) {
-        crash(c.on ? 'Head-on with oncoming ' + (c.truck ? 'truck' : 'car') : 'Rear-ended a ' + (c.truck ? 'truck' : 'car'), c.on ? 22 : 14); break;
+        crash(c.cop ? 'Smashed into the roadblock' : c.on ? 'Head-on with oncoming ' + (c.truck ? 'truck' : 'car') : 'Rear-ended a ' + (c.truck ? 'truck' : 'car'), c.on ? 22 : 14); break;
       }
     }
     if (inp.attack) attack(typeof inp.attack === 'number' ? { type: inp.attack < 0 ? 'punch' : 'kick', side: inp.attack } : inp.attack);
@@ -500,11 +519,19 @@ function update(dt, inp) {
     if (c.pdz > 0 && dz <= 0 && S.crashT <= 0 && sp > 0.5) {
       const gap = Math.abs(S.x - c.x) - c.half - 0.065;
       if (gap >= 0 && gap < 0.17) {
-        S.close++; addCombo(); const cash = 25 * comboMul(); S.cash.close += cash; S.nitro = Math.min(1, S.nitro + 0.14 * S.nitroFill);
+        S.close++; addCombo(); const cash = 25 * comboMul(); earn('close', cash); S.nitro = Math.min(1, S.nitro + 0.14 * S.nitroFill);
         emit('close', { cash, car: c });
       }
     }
     c.pdz = dz;
+  }
+  for (const p of S.props) {
+    const dz = p.dist - pd;
+    if (p.pdz > 0 && dz <= 0 && S.crashT <= 0) {
+      if (p.kind === 'ramp' && S.air <= 0 && sp > 0.3 && Math.abs(S.x - p.x) < p.half) { S.airDur = S.air = 0.45 + 0.8 * sp; emit('jump', {}); }
+      else if (p.kind === 'breaker' && S.heat && !p.used && S.x * p.side > 0.62) breakPursuit(p, pd);
+    }
+    p.pdz = dz;
   }
   S.speed = clamp(S.speed, 0, S.top * 1.25); S.x = clamp(S.x, -2.6, 2.6);
   S.lastPd = pd;
@@ -514,8 +541,65 @@ function update(dt, inp) {
   S.invuln -= dt; S.atkCd -= dt; S.swing -= dt; S.hurtT -= dt; S.railT -= dt;
   updateRivals(dt, S.distance + playerZ);
   const npd = S.distance + playerZ;
+  if (S.heat) { heatUpdate(dt, npd); return; }
   S.place = 1 + S.rivals.filter(r => r.finishT !== null || r.dist > npd).length;
   if (npd >= finishDist && !S.tutorial) finish();
+}
+
+/* ---------- heat: endless pursuit ---------- */
+function spawnCop(pd, far) {
+  const h = S.heat.level, R = Math.random, x = RAMP_LANES[R() * 3 | 0];
+  S.rivals.push({ ...COP, cop: true, role: 'pack', base: 0, t0: 0, t1: 0, dist: pd - (far ? 12000 : 2600) - R() * 1600, x, lane: x, speed: S.speed, hp: 50 + 8 * h, maxHp: 50 + 8 * h,
+    state: 'ride', timer: 0, cd: 1.5, swing: 0, side: 1, kick: false, lean: 0, hurt: 0, downDir: 1, weapon: h >= 3 && R() < 0.4 ? 'club' : null, grudge: false, dmgToPlayer: 0, finishT: null });
+}
+function roadblock(d, pd) {
+  const R = Math.random, gap = R() * 3 | 0;
+  RAMP_LANES.forEach((x, i) => { if (i !== gap) S.cars.push({ dist: d, x, speed: 0, truck: false, on: true, cop: true, half: 0.2, len: 450, pal: 0, pdz: d - pd }); });
+  if (R() < 0.6) addRamp(d - 3000, RAMP_LANES[[0, 1, 2].filter(i => i !== gap)[R() * 2 | 0]]);
+  emit('block', {});
+}
+function breakPursuit(p, pd) {
+  p.used = true; let n = 0;
+  for (const r of S.rivals) if (r.cop && r.state === 'ride' && r.dist - pd > -4500 && r.dist - pd < 500) { r.state = 'down'; r.timer = 3; r.downDir = p.side; r.speed *= 0.2; n++; }
+  const cash = 100 + 100 * n; earn('stunt', cash); emit('breaker', { n, cash, prop: p });
+}
+function heatUpdate(dt, pd) {
+  const H = S.heat, R = Math.random;
+  // keep traffic, ramps and breakers in a window around the rider; the road itself loops forever
+  for (let i = S.cars.length - 1; i >= 0; i--) {
+    const c = S.cars[i], dz = c.dist - pd;
+    if (dz > -4000 && dz < 160000) continue;
+    if (c.cop) { S.cars.splice(i, 1); continue; }
+    c.dist = pd + 90000 + R() * 40000; c.x = (c.on ? -0.66 : RAMP_LANES[R() * 3 | 0] * 1.1) + (R() - 0.5) * 0.12; c.pdz = c.dist - pd;
+  }
+  S.props = S.props.filter(p => p.dist - pd > -6000);
+  if (pd + 34000 > H.nextRamp) { addRamp(H.nextRamp, RAMP_LANES[R() * 3 | 0]); H.nextRamp += 40000 + R() * 30000; }
+  if (pd + 34000 > H.nextBreak) { const side = R() < 0.5 ? -1 : 1; S.props.push({ kind: 'breaker', dist: H.nextBreak, side, x: side * 1.15, half: 0.1, used: false, pdz: H.nextBreak - pd }); H.nextBreak += 100000 + R() * 50000; }
+  for (const r of S.rivals) if (r.cop && r.dist - pd < -14000) r.gone = true;
+  S.rivals = S.rivals.filter(r => !r.gone);
+  const lv = Math.min(5, 1 + HEAT_AT.filter(v => H.bounty >= v).length);
+  if (lv > H.level) { H.level = lv; emit('heatUp', { level: lv }); }
+  H.need = 4 + 1.5 * H.level;
+  const cops = S.rivals.filter(r => r.cop);
+  if (H.quiet > 0) {
+    if ((H.quiet -= dt) <= 0) { spawnCop(pd); H.spawnT = 8.5 - 1.2 * H.level; H.cool = 0; emit('pursuit', {}); }
+  } else {
+    const seen = cops.some(r => r.state === 'ride' && r.dist - pd > -9000 && r.dist - pd < 9000);
+    // backup keeps coming; while you are out of sight it starts further back and has to catch up
+    if ((H.spawnT -= dt * (seen ? 1 : 0.6)) <= 0 && cops.length < H.level + 1 + Math.floor(S.time / 240)) { spawnCop(pd, !seen); H.spawnT = 8.5 - 1.2 * H.level; }
+    if (seen) {
+      H.cool = 0; earn('stunt', 3 * H.level * dt);
+      if (H.level >= 3 && (H.blockT -= dt) <= 0) { roadblock(pd + 32000, pd); H.blockT = 32 - 4 * H.level; }
+    } else if ((H.cool += dt) >= H.need) {
+      const bonus = 100 * H.level; H.pot += bonus; H.bounty += bonus;
+      const cash = Math.round(H.pot); H.banked += cash; H.pot = 0; H.escapes++; H.cool = 0; H.quiet = 6;
+      for (const r of cops) r.gone = true; S.rivals = S.rivals.filter(r => !r.gone); S.cars = S.cars.filter(c => !c.cop);
+      emit('escape', { cash });
+    }
+  }
+  const near = cops.some(r => r.state === 'ride' && Math.abs(r.dist - pd) < 900 && Math.abs(r.x - S.x) < 0.6);
+  if (near && (S.speed < MAXS * 0.25 || S.crashT > 0)) { if ((H.bust += dt) >= BUST_NEED) { S.busted = true; finish(); } }
+  else H.bust = Math.max(0, H.bust - dt);
 }
 function updateRivals(dt, pd) {
   const prog = clamp(S.distance / trackLength, 0, 1);
@@ -525,7 +609,7 @@ function updateRivals(dt, pd) {
     if (r.finishT === null && r.dist >= finishDist) r.finishT = S.time;
     if (r.state === 'down') {
       r.timer -= dt; r.speed = Math.max(0, r.speed - MAXS * 1.8 * dt); r.dist += r.speed * dt;
-      if (r.timer <= 0) { r.state = 'ride'; r.hp = r.maxHp; }
+      if (r.timer <= 0) { if (r.cop) { r.gone = true; continue; } r.state = 'ride'; r.hp = r.maxHp; }
       continue;
     }
     const dz = r.dist - pd;
@@ -534,18 +618,22 @@ function updateRivals(dt, pd) {
       const tx = clamp(S.x + r.dside * 0.28, -0.9, 0.9); r.x += clamp(tx - r.x, -0.8 * dt, 0.8 * dt);
       r.dist += r.speed * dt; continue;
     }
-    const T = lerp(r.t0, r.t1, prog);
-    let target = r.base * MAXS * (1 + clamp((T - dz) / 6000, -diff.capDown * lateCut, diff.capUp * lateCut));
+    let target;
+    if (r.cop && S.speed < MAXS * 0.3 && dz > 250) target = -MAXS * 0.12; // overshot a stopped rider: back up and box them in
+    else if (r.cop) { const h = S.heat.level; target = clamp(S.speed + clamp(-dz * 1.2, -MAXS * 0.35, MAXS * (0.15 + 0.06 * h)), 0, MAXS * (0.98 + 0.06 * h + Math.min(0.15, S.time / 1200))); }
+    else { const T = lerp(r.t0, r.t1, prog); target = r.base * MAXS * (1 + clamp((T - dz) / 6000, -diff.capDown * lateCut, diff.capUp * lateCut)); }
     target *= 1 - 0.012 * Math.abs(findSeg(r.dist).curve);
     if (r.hp < r.maxHp * 0.4) target *= 0.97;
-    r.speed += clamp(target - r.speed, -MAXS * 0.8 * dt, MAXS * 0.2 * dt);
+    r.speed += clamp(target - r.speed, -MAXS * (r.cop ? 1.6 : 0.8) * dt, MAXS * (r.cop ? 0.4 : 0.2) * dt);
     let tx = r.lane;
     if (Math.abs(dz) < 1600 && S.crashT <= 0 && (r.role === 'pack' || r.grudge || Math.abs(dz) < 600)) tx = clamp(S.x + (r.x < S.x ? -0.24 : 0.24), -0.85, 0.85);
+    else if (r.cop && Math.abs(dz) < 4000 && S.crashT > 0) tx = clamp(S.x + (r.x < S.x ? -0.3 : 0.3), -0.92, 0.92);
     for (const c of S.cars) {
       const cdz = c.dist - r.dist;
       if (cdz > -100 && cdz < c.len * 0.5 + 100 && Math.abs(c.x - r.x) < c.half + 0.06) {
         r.state = 'down'; r.timer = 2.6; r.downDir = r.x < c.x ? -1 : 1; r.speed *= 0.3;
-        if (Math.abs(dz) < 5000) emit('rivalCrash', { name: r.name, rival: r });
+        const cash = r.cop ? 75 : 0; if (cash) earn('ko', cash);
+        if (Math.abs(dz) < 5000) emit('rivalCrash', { name: r.name, rival: r, cash });
         break;
       }
       const closing = r.speed - c.speed;
@@ -559,11 +647,11 @@ function updateRivals(dt, pd) {
     const ddx = tx - r.x;
     r.x = clamp(r.x + clamp(ddx, -1.3 * dt, 1.3 * dt), -0.92, 0.92);
     r.lean = lerp(r.lean, clamp(ddx * 4, -1, 1), Math.min(1, dt * 6));
-    if (Math.abs(dz) < 150 && Math.abs(r.x - S.x) < 0.13 && S.crashT <= 0) { const p = r.x < S.x ? -1 : 1; r.x += p * 0.6 * dt; S.x -= p * 0.6 * dt; }
+    if (Math.abs(dz) < 150 && Math.abs(r.x - S.x) < 0.13 && S.crashT <= 0 && S.air <= 0) { const p = r.x < S.x ? -1 : 1; r.x += p * 0.6 * dt; S.x -= p * 0.6 * dt; }
     const reach = r.weapon ? 0.5 : 0.36;
-    if (S.crashT <= 0 && Math.abs(dz) < 300 && Math.abs(r.x - S.x) < reach && r.cd <= 0) {
+    if (S.crashT <= 0 && S.air <= 0 && Math.abs(dz) < 300 && Math.abs(r.x - S.x) < reach && r.cd <= 0) {
       r.cd = lerp(diff.cd[0], diff.cd[1], Math.random());
-      if (Math.random() < diff.aggr + (r.grudge ? 0.2 : 0)) {
+      if (Math.random() < diff.aggr + (r.grudge ? 0.2 : 0) + (r.cop ? 0.08 * S.heat.level : 0)) {
         r.swing = 0.24; r.side = S.x > r.x ? 1 : -1; r.kick = !r.weapon && Math.random() < 0.5;
         if (S.invuln <= 0) {
           const dmg = diff.hit * (r.weapon ? 1.5 : 1) * S.armorMul;
@@ -580,9 +668,10 @@ function finish() {
   S.state = 'done';
   const pd = S.distance + playerZ;
   S.place = 1 + S.rivals.filter(r => r.finishT !== null || r.dist > pd).length;
-  emit(S.wrecked ? 'wreck' : 'finish', { place: S.place });
+  emit(S.busted ? 'busted' : S.wrecked ? 'wreck' : 'finish', { place: S.place });
 }
 function results() {
+  if (S.heat) { const H = S.heat; return { heat: true, busted: S.busted, wrecked: S.wrecked, time: S.time, bounty: Math.round(H.bounty), total: H.banked, lost: Math.round(H.pot), level: H.level, escapes: H.escapes, kos: S.kos, stageIdx, diff: diff.key, qualified: false }; }
   const place = S.place, wrecked = S.wrecked;
   const placePrize = wrecked ? 0 : Math.round(PRIZES[place - 1] * stage.prize * diff.prize / 10) * 10;
   const pd = S.distance + playerZ;
@@ -598,13 +687,13 @@ function results() {
   const g = S.rivals.slice().sort((a, b) => b.dmgToPlayer - a.dmgToPlayer)[0];
   const nextGrudge = g && g.dmgToPlayer >= 30 ? g.name : null;
   return { place, wrecked, time: S.time, kos: S.kos, close: S.close, comboBest: S.comboBest, placePrize,
-    ko: S.cash.ko, closeCash: S.cash.close, grudge: S.cash.grudge, total: placePrize + S.cash.ko + S.cash.close + S.cash.grudge,
+    ko: S.cash.ko, closeCash: S.cash.close, grudge: S.cash.grudge, total: placePrize + S.cash.ko + S.cash.close + S.cash.grudge + S.cash.stunt,
     gap, nextGrudge, qualified: !wrecked && place <= 3, stageIdx, diff: diff.key };
 }
 const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
 
 return {
-  SEG, RUMBLE, ROADW, LANES, CAMH, camDepth, playerZ, MAXS, FINISH_SEG, STAGES, DIFF, UPG, WEAPONS, RIVALS,
+  SEG, RUMBLE, ROADW, LANES, CAMH, camDepth, playerZ, MAXS, FINISH_SEG, STAGES, DIFF, UPG, WEAPONS, RIVALS, COP, BUST_NEED,
   startRace, update, results, findSeg, ordinal, prebuild, addDummy, setEmitter: f => { emit = f; },
   get S() { return S; }, get segments() { return segments; }, get N() { return N; }, get trackLength() { return trackLength; },
   get stage() { return stage; }, get stageIdx() { return stageIdx; }, get diff() { return diff; }, get finishDist() { return finishDist; },
@@ -627,8 +716,8 @@ const CREAM = '#f3ead8', INK = '#0d0a1a', AMBER = '#ffb000', RED = '#ff3d4a', CY
 
 /* ===================== save ===================== */
 const KEY = 'hk2-save';
-const blank = () => ({ cash: 0, up: { engine: 0, tyres: 0, armor: 0, nitro: 0 }, prog: { rookie: { unlocked: 1, best: {} }, rider: { unlocked: 1, best: {} }, outlaw: { unlocked: 1, best: {} } },
-  diff: 'rookie', stage: 0, grudge: null, sound: true, buzz: true, tut: false, races: 0, initials: 'AAA', sens: 100, stick: 116 });
+const blank = () => ({ cash: 0, up: { engine: 0, tyres: 0, armor: 0, nitro: 0 }, prog: { rookie: { best: {}, heat: {} }, rider: { best: {}, heat: {} }, outlaw: { best: {}, heat: {} } },
+  mode: 'race', diff: 'rookie', stage: 0, grudge: null, sound: true, buzz: true, tut: false, races: 0, sens: 100, stick: 116 });
 let save = blank();
 try { const raw = localStorage.getItem(KEY); if (raw) { const o = JSON.parse(raw); save = Object.assign(blank(), o); save.tut = !!o.tut3; } } catch (e) {}
 const persist = () => { try { localStorage.setItem(KEY, JSON.stringify({ ...save, tut3: save.tut })); } catch (e) {} };
@@ -762,6 +851,31 @@ function truckSprite(col, front) {
   P(0, 0, 61, 2, shade(col, 1.25)); P(0, 46, 61, 4, '#2a2333');
   return outline(c);
 }
+const COPBLUE = '#2f6bff';
+function copCarSprite(flip) {
+  const c = carSprite('#e9e4f0', '#c9c4d6', true), x = c.getContext('2d');
+  x.fillStyle = '#1e2a5a'; x.fillRect(1, 24, 58, 3);
+  x.fillStyle = INK; x.fillRect(17, 0, 28, 5);
+  x.fillStyle = flip ? COPBLUE : RED; x.fillRect(18, 1, 13, 3); x.fillStyle = flip ? RED : COPBLUE; x.fillRect(31, 1, 13, 3);
+  return c;
+}
+function rampSprite() {
+  const c = mk(56, 20), x = c.getContext('2d');
+  for (let y = 0; y < 18; y++) {
+    const w = 36 + Math.round(y * 16 / 17), x0 = 28 - Math.round(w / 2);
+    for (let i = 0; i < w; i++) { x.fillStyle = y < 2 ? METAL2 : y > 14 ? '#2a2333' : (Math.floor((i + y) / 5) % 2 ? AMBER : INK); x.fillRect(x0 + i, y + 1, 1, 1); }
+  }
+  return outline(c);
+}
+function towerSprite(lit) {
+  const c = mk(46, 98), x = c.getContext('2d'), P = (a, b, w, h, cl) => { x.fillStyle = cl; x.fillRect(a + 1, b + 1, w, h); };
+  for (let y = 44; y < 96; y++) { const t = (y - 44) / 52; P(Math.round(9 - t * 7), y, 3, 1, '#5a3a2a'); P(Math.round(32 + t * 7), y, 3, 1, '#5a3a2a'); }
+  P(6, 62, 32, 2, '#5a3a2a'); P(4, 80, 37, 2, '#5a3a2a');
+  P(4, 14, 36, 30, '#8a5a3a'); P(4, 14, 36, 2, '#b07a50'); for (const yy of [21, 29, 37]) P(4, yy, 36, 2, '#4a3028'); P(30, 16, 10, 28, '#6e4630');
+  for (let i = 0; i < 12; i++) P(22 - Math.round(i * 1.6), 2 + i, Math.round(i * 3.2) + 2, 1, '#4a3a4a');
+  P(14, 47, 16, 12, lit ? AMBER : '#7a5a10'); P(21, 49, 2, 6, INK); P(21, 56, 2, 2, INK);
+  return outline(c);
+}
 function scenerySprite(type, v, text) {
   let c, x; const P = (a, b, w, h, cl) => { x.fillStyle = cl; x.fillRect(a + 1, b + 1, w, h); };
   const make = (w, h) => { c = mk(w + 2, h + 2); x = c.getContext('2d'); };
@@ -807,7 +921,7 @@ function scenerySprite(type, v, text) {
   return c;
 }
 const mulb = s => { let a = s; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; };
-const SPR = { riders: {}, weapons: null, cars: [], carsF: [], trucks: [], trucksF: [], scen: {}, scenN: {}, signs: {}, signsN: {}, glow: null };
+const SPR = { riders: {}, weapons: null, cars: [], carsF: [], trucks: [], trucksF: [], scen: {}, scenN: {}, signs: {}, signsN: {}, glow: null, cop: [], ramp: null, tower: [], towerDown: null };
 const DUMMY = { name: 'DUMMY', bike: '#9c97a8', jacket: '#5a5470', helmet: '#e8b45c', stripe: '#141018' };
 const PLAYER = { name: 'YOU', bike: '#ff6a3d', jacket: '#f3ead8', helmet: '#ff6a3d', stripe: '#150f24' };
 function scenKey(type, v) { return type + ((type === 'cactus' || type === 'palm' || type === 'building' || type === 'pine') ? (v > 0.5 ? 1 : 0) : ''); }
@@ -973,7 +1087,7 @@ function rowsFor(seg, P) {
     ctx.fillStyle = P.grass[li]; ctx.fillRect(0, y, W, 1);
     if (P.water) { ctx.fillStyle = P.water[(li + (y % 3 === 0 ? 1 : 0)) % 2]; ctx.fillRect(0, y, Math.round(x - w - r * 1.6), 1); }
     ctx.fillStyle = P.rumble[li]; ctx.fillRect(Math.round(x - w - r), y, Math.round(r), 1); ctx.fillRect(Math.round(x + w), y, Math.round(r), 1);
-    if (seg.finish) {
+    if (seg.finish && !HK.S.heat) {
       for (let i = 0; i < 10; i++) { ctx.fillStyle = ((i + (seg.finish === 2 ? 1 : 0)) % 2) ? CREAM : '#1a1424'; const a = x - w + 2 * w * i / 10; ctx.fillRect(Math.round(a), y, Math.round(x - w + 2 * w * (i + 1) / 10) - Math.round(a), 1); }
     } else {
       ctx.fillStyle = P.road[li]; ctx.fillRect(Math.round(x - w), y, Math.round(2 * w), 1);
@@ -1032,7 +1146,7 @@ function render(dt) {
   const playerY = lerp(pseg.p1.world.y, pseg.p2.world.y, pp);
   for (const s of touched) s.cars.length = 0; touched.length = 0;
   const put = v => { const s = HK.findSeg(v.dist); s.cars.push(v); touched.push(s); v.pct = (((v.dist % SEG) + SEG) % SEG) / SEG; };
-  S.rivals.forEach(put); S.cars.forEach(put);
+  S.rivals.forEach(put); S.cars.forEach(put); S.props.forEach(put);
   let x = 0, dx = -(base.curve * bp); const vis = [];
   for (let n = 0; n < DRAW; n++) {
     const seg = segs[(base.index + n) % N], looped = seg.index < base.index, camZ = pos - (looped ? TL : 0);
@@ -1048,7 +1162,7 @@ function render(dt) {
     const sc = seg.p1.screen.scale, k1 = sc * Fs, kx = sc * fx;
     for (const sp of seg.sprites) {
       const sx2 = seg.p1.screen.x + kx * sp.offset * ROADW;
-      if (sp.type === 'banner') { drawBanner(sx2, seg.p1.screen.y, k1, kx); continue; }
+      if (sp.type === 'banner') { if (!S.heat) drawBanner(sx2, seg.p1.screen.y, k1, kx); continue; }
       if (sx2 < -80 || sx2 > W + 80) continue;
       const img = getScen(sp, night), ps = k1 * (U[sp.type] || 14);
       if (ps * img.width < 1) continue;
@@ -1058,24 +1172,27 @@ function render(dt) {
     if (seg.cars.length) {
       seg.cars.sort((a, b) => b.pct - a.pct);
       for (const v of seg.cars) {
-        if (seg === pseg && !drew && v.pct < pp) { drawPlayer(S, pseg, pp, night); drew = true; }
+        if (seg === pseg && !drew && S.air <= 0 && v.pct < pp) { drawPlayer(S, pseg, pp, night); drew = true; }
         const s2 = lerp(seg.p1.screen.scale, seg.p2.screen.scale, v.pct), k = s2 * Fs, ps = k * 14;
         const vx = lerp(seg.p1.screen.x, seg.p2.screen.x, v.pct) + s2 * fx * v.x * ROADW, vy = lerp(seg.p1.screen.y, seg.p2.screen.y, v.pct);
         if (vx < -120 || vx > W + 120) continue;
+        if (v.kind) { drawProp(v, vx, vy, ps); continue; }
         if (v.name) {
           v.sx = vx; v.sy = vy; v.ps = ps;
           if (v.hurt > 0 && Math.floor(clock * 30) % 2) continue;
           const set = SPR.riders[v.name] || SPR.riders.DUMMY;
           drawRider(set, { down: v.state === 'down', downDir: v.downDir, swing: v.swing, side: v.side, kick: v.kick, lean: v.lean, weapon: v.weapon }, vx, vy, ps);
+          if (v.cop && v.state === 'ride') siren(vx, vy - 26 * ps, ps, 10);
           if (v === tagT) drawTag(vx, vy, ps, v);
         } else {
-          const img = v.truck ? (v.on ? SPR.trucksF : SPR.trucks)[v.pal] : (v.on ? SPR.carsF : SPR.cars)[v.pal];
+          const img = v.cop ? SPR.cop[Math.floor(clock * 6) % 2] : v.truck ? (v.on ? SPR.trucksF : SPR.trucks)[v.pal] : (v.on ? SPR.carsF : SPR.cars)[v.pal];
           spr(img, vx, vy, ps);
+          if (v.cop) siren(vx, vy - 41 * ps, ps, 7);
           if (night || v.on) { ctx.globalCompositeOperation = 'lighter'; const gs = 40 * ps; for (const s of [-1, 1]) ctx.drawImage(v.on ? SPR.glow : SPR.glowR, vx + s * 20 * ps - gs / 2, vy - 24 * ps - gs / 2, gs, gs); ctx.globalCompositeOperation = 'source-over'; }
         }
       }
     }
-    if (seg === pseg && !drew) { drawPlayer(S, pseg, pp, night); drew = true; }
+    if (seg === pseg && !drew && S.air <= 0) { drawPlayer(S, pseg, pp, night); drew = true; }
   }
   if (!drew) drawPlayer(S, pseg, pp, night);
   if (night) {
@@ -1096,6 +1213,21 @@ function render(dt) {
   ctx.globalAlpha = 1;
   for (const f of floats) { if (f.t > 0.75 && Math.floor(f.t * 20) % 2) continue; txt(f.text, f.x, f.y - f.t * 22, { a: 'c', c: f.c }); }
 }
+function siren(x, y, ps, sp) {
+  const on = Math.floor(clock * 8) % 2, s = Math.max(1, Math.round(3 * ps)), gs = 34 * ps;
+  ctx.fillStyle = on ? RED : COPBLUE; ctx.fillRect(Math.round(x - sp * ps - s), Math.round(y), s, s);
+  ctx.fillStyle = on ? COPBLUE : RED; ctx.fillRect(Math.round(x + sp * ps), Math.round(y), s, s);
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.drawImage(on ? SPR.glowR : SPR.glowB, x - sp * ps - gs / 2, y - gs / 2, gs, gs); ctx.drawImage(on ? SPR.glowB : SPR.glowR, x + sp * ps - gs / 2, y - gs / 2, gs, gs);
+  ctx.globalCompositeOperation = 'source-over';
+}
+function drawProp(v, x, y, ps) {
+  if (v.kind === 'ramp') { spr(SPR.ramp, x, y, ps); return; }
+  if (v.used) { spr(SPR.towerDown, x + v.side * 30 * ps, y, ps * 1.3); return; }
+  const lit = Math.floor(clock * 4) % 2;
+  spr(SPR.tower[lit ? 0 : 1], x, y, ps * 1.3);
+  if (lit && ps > 0.12) txt('BREAKER', x, y - 130 * ps - 9, { a: 'c', c: AMBER });
+}
 function drawTag(x, y, ps, r) {
   const top = Math.round(y - 47 * ps - 8);
   if (r.grudge) txt('GRUDGE', x, top - 9, { a: 'c', c: RED });
@@ -1115,7 +1247,11 @@ function drawPlayer(S, pseg, pp, night) {
   const k = (camDepth / playerZ) * Fs, ps = k * 14;
   const cy = lerp(pseg.p1.camera.y, pseg.p2.camera.y, pp);
   let y = hz - (camDepth / playerZ) * cy * FY, x = W / 2;
-  if (S.state === 'race' && S.speed > 0 && S.crashT <= 0) y += (Math.floor(clock * 20) % 2) * (S.speed > MAXS * 0.3 ? 1 : 0) + (S.offroad ? Math.round((Math.random() - 0.5) * 2) : 0);
+  if (S.state === 'race' && S.speed > 0 && S.crashT <= 0 && S.air <= 0) y += (Math.floor(clock * 20) % 2) * (S.speed > MAXS * 0.3 ? 1 : 0) + (S.offroad ? Math.round((Math.random() - 0.5) * 2) : 0);
+  if (S.air > 0) {
+    const sw = 28 * ps; ctx.fillStyle = 'rgba(10,8,20,0.4)'; ctx.fillRect(Math.round(x - sw / 2), Math.round(y - 2 * ps), Math.round(sw), Math.max(1, Math.round(2 * ps)));
+    y -= Math.sin((1 - S.air / S.airDur) * Math.PI) * FY * 0.3;
+  }
   pScr = { x, y, ps };
   const set = SPR.riders.YOU;
   if (S.crashT > 0) {
@@ -1138,20 +1274,38 @@ function drawPlayer(S, pseg, pp, night) {
 /* ===================== HUD (canvas) ===================== */
 let toast = { t: 0, text: '', c: CREAM }, banter = null, raceClock = 0;
 function bar(x, y, w, frac, col) { ctx.fillStyle = INK; ctx.fillRect(x - 1, y - 1, w + 2, 5); ctx.fillStyle = '#3a3058'; ctx.fillRect(x, y, w, 3); ctx.fillStyle = col; ctx.fillRect(x, y, Math.round(w * clamp(frac, 0, 1)), 3); }
+function heatBadge(S, L, y) {
+  const H = S.heat, live = H.quiet <= 0, w = txt('HEAT', L, y + 1, { c: live ? RED : MUTE });
+  for (let i = 0; i < 5; i++) {
+    const on = i < H.level, fl = on && live && (Math.floor(clock * 4) + i) % 2, x0 = L + w + 5 + i * 7;
+    ctx.fillStyle = INK; ctx.fillRect(x0 - 1, y - 1, 7, 10); ctx.fillStyle = on ? (fl ? COPBLUE : RED) : '#3a3058'; ctx.fillRect(x0, y, 5, 8);
+  }
+  return y + 14;
+}
+function heatTop(S, T) {
+  const H = S.heat, cx = W / 2; let y = T;
+  txt('$' + Math.floor(H.pot).toLocaleString(), cx, y, { s: 2, a: 'c', c: AMBER }); y += 17;
+  if (H.banked) { txt('BANKED $' + H.banked.toLocaleString(), cx, y, { a: 'c', c: MUTE }); y += 10; }
+  if (H.bust > 0.05) { txt('PULL AWAY!', cx, y, { a: 'c', c: RED }); bar(cx - 30, y + 9, 60, H.bust / HK.BUST_NEED, RED); }
+  else if (H.cool > 0) { txt('EVADING', cx, y, { a: 'c', c: CYAN }); bar(cx - 30, y + 9, 60, H.cool / H.need, CYAN); }
+  else if (H.quiet > 0 && Math.floor(clock * 2) % 2) txt(H.escapes ? 'LYING LOW' : 'COPS INBOUND', cx, y, { a: 'c', c: MUTE });
+}
 function hud(dt) {
   const S = HK.S; if (!S) return;
   raceClock += dt;
   const L = Math.ceil((safe.l + 16) / PX), T = Math.ceil((safe.t + 10) / PX);
   const tutorial = !!S.tutorial;
   let y = T;
-  if (!tutorial) { const w = txt(HK.ordinal(S.place), L, y, { s: 2, c: S.place <= 3 ? AMBER : CREAM }); txt('/' + (S.rivals.length + 1), L + w + 3, y + 7, { c: MUTE }); y += 19; }
+  if (S.heat) y = heatBadge(S, L, y);
+  else if (!tutorial) { const w = txt(HK.ordinal(S.place), L, y, { s: 2, c: S.place <= 3 ? AMBER : CREAM }); txt('/' + (S.rivals.length + 1), L + w + 3, y + 7, { c: MUTE }); y += 19; }
   const labels = raceClock < 9 || tutorial;
   const st = S.stam / S.stamMax, hp = S.hp / S.maxHp;
   bar(L, y, 44, st, st < 0.3 && Math.floor(clock * 4) % 2 ? RED : AMBER); if (labels) txt('YOU', L + 48, y - 2, { c: MUTE });
   y += 7; bar(L, y, 44, hp, hp < 0.3 ? RED : '#ff6a3d'); if (labels) txt('BIKE', L + 48, y - 2, { c: MUTE });
   if (!touch) { y += 7; bar(L, y, 44, S.nitro, S.boosting ? '#ffffff' : CYAN); if (labels) txt('NOS', L + 48, y - 2, { c: MUTE }); }
   if (S.weapon && !touch) txt(S.weapon.name + ' ' + S.weapon.uses, L, y + 8, { c: RED });
-  if (!tutorial) {
+  if (S.heat) heatTop(S, T);
+  else if (!tutorial) {
     const pw = Math.round(Math.min(150, W * 0.3)), px = Math.round(W / 2 - pw / 2), py = T + 4, fd = HK.finishDist - playerZ;
     ctx.fillStyle = INK; ctx.fillRect(px - 1, py - 1, pw + 2, 3); ctx.fillStyle = '#5a4f7a'; ctx.fillRect(px, py, pw, 1);
     for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { ctx.fillStyle = (i + j) % 2 ? CREAM : INK; ctx.fillRect(px + pw + 2 + i, py - 2 + j * 2, 1, 2); }
@@ -1234,6 +1388,16 @@ HK.setEmitter((type, d) => {
     case 'boost': SFX.nitro(); break;
     case 'weaponBroke': nearBike('BROKEN', MUTE); break;
     case 'finish': case 'wreck': endTimer = type === 'wreck' ? 0.7 : 1.5; say(type === 'wreck' ? 'WRECKED' : HK.ordinal(d.place).toUpperCase(), 2.2, type === 'wreck' ? RED : AMBER); buzz(type === 'wreck' ? [90, 60, 90] : 40); break;
+    case 'busted': endTimer = 1.2; say('BUSTED', 2.2, CYAN); buzz([90, 60, 90]); SFX.beep(); break;
+    case 'jump': noise(0.35, 'bandpass', 900, 0.3, 2600); buzz(15); break;
+    case 'land': SFX.kick(); shake = Math.max(shake, 0.3); buzz(30); nearBike('AIR ' + d.t.toFixed(1) + 'S +$' + d.cash, CYAN); burst(ps.x, ps.y, 10, [CREAM, '#7a7488'], 80, 120, 0.4); break;
+    case 'pursuit': say('PURSUIT!', 1.2, RED); SFX.beep(); buzz(40); break;
+    case 'heatUp': say('HEAT ' + d.level, 1.1, RED); SFX.beep(); setTimeout(SFX.beep, 160); buzz(40); break;
+    case 'escape': say('ESCAPED!', 1.4, CYAN); nearBike('+$' + d.cash.toLocaleString() + ' BANKED', AMBER); SFX.coin(); buzz(40); break;
+    case 'block': say('ROADBLOCK!', 1.1, RED); break;
+    case 'breaker': say(d.n ? 'BREAKER X' + d.n : 'BREAKER!', 1.2, AMBER); nearBike('+$' + d.cash, AMBER); SFX.crash(); shake = 0.8; buzz([60, 30, 60]);
+      burst(ps.x + d.prop.side * W * 0.3, ps.y - 40 * ps.ps, 30, ['#8a5a3a', '#5a3a2a', CREAM], 140, 200, 0.9); break;
+    case 'rivalCrash': if (d.cash) nearBike('COP DOWN +$' + d.cash, CYAN); break;
   }
 });
 
@@ -1253,6 +1417,8 @@ addEventListener('keydown', e => {
     if (e.code === 'KeyP' || e.code === 'Escape') pauseGame();
   } else if (mode === 'pause' && (e.code === 'KeyP' || e.code === 'Escape')) resumeGame();
   else if (mode === 'title' && (e.code === 'Enter' || e.code === 'Space')) ride();
+  else if (mode === 'title' && (e.code === 'ArrowLeft' || e.code === 'ArrowRight')) stepDiff(e.code === 'ArrowLeft' ? -1 : 1);
+  else if (mode === 'title' && (e.code === 'ArrowUp' || e.code === 'ArrowDown')) stepMode();
 });
 addEventListener('keyup', e => { if (KEYS[e.code]) kb[KEYS[e.code]] = false; });
 addEventListener('blur', () => { for (const k in kb) kb[k] = false; tp.nitro = false; endStick(); });
@@ -1323,7 +1489,7 @@ const LESSONS = [
   { id: 'punch', t: '<b>PUNCH</b> THE RIDER TWICE', k: '<b>Z</b> TO PUNCH THE RIDER TWICE', hand: 'tap', at: 'punch', locks: { steer: false, brake: false, punch: false, kick: true, nitro: true } },
   { id: 'kick', t: '<b>KICK</b> HIM OFF THE ROAD', k: '<b>X</b> TO KICK HIM OFF THE ROAD', hand: 'tap', at: 'kick', locks: { steer: false, brake: false, punch: false, kick: false, nitro: true } },
   { id: 'nitro', t: 'HOLD <b>NITRO</b>', k: 'HOLD <b>SHIFT</b> FOR NITRO', hand: 'hold', at: 'nitro', locks: ALL_ON },
-  { id: 'done', t: 'TOP 3 OPENS THE <b>NEXT ROAD</b>', k: 'TOP 3 OPENS THE <b>NEXT ROAD</b>', hand: null, at: null, locks: ALL_ON },
+  { id: 'done', t: 'WIN CASH, BUY <b>UPGRADES</b>', k: 'WIN CASH, BUY <b>UPGRADES</b>', hand: null, at: null, locks: ALL_ON },
 ];
 function startSchool(thenRace) {
   audioInit(); goFull(); mode = 'race'; showScreen(null);
@@ -1403,11 +1569,12 @@ function startRace(si) {
   audioInit(); goFull();
   if (!save.tut) { startSchool(true); return; }
   raceStage = si; raceDiff = save.diff; save.stage = si; persist();
-  HK.startRace(si, raceDiff, save.up, { grudge: save.grudge });
+  HK.startRace(si, raceDiff, save.up, { grudge: save.grudge, heat: save.mode === 'heat' });
   mode = 'race'; showScreen(null); $('lesson').hidden = true; $('hand').hidden = true; setLocks(ALL_ON);
   enterRace();
   const S = HK.S, g = S.rivals.find(r => r.grudge), talker = g || S.rivals.find(r => r.role === 'lead') || S.rivals[0];
-  banter = { who: talker.name, col: talker.bike, say: '“' + (g ? 'YOU AGAIN? THIS TIME YOU WALK HOME.' : talker.line) + '”', grudge: g ? 'GRUDGE · DROP HIM FOR +$400' : null };
+  if (S.heat) banter = { who: 'DISPATCH', col: CYAN, say: '“ALL UNITS. RED BIKE HEADING EAST. PULL IT OVER.”', grudge: null };
+  else banter = { who: talker.name, col: talker.bike, say: '“' + (g ? 'YOU AGAIN? THIS TIME YOU WALK HOME.' : talker.line) + '”', grudge: g ? 'GRUDGE · DROP HIM FOR +$400' : null };
 }
 function exitRace() { $('touch').hidden = true; $('bPause').hidden = true; $('lesson').hidden = true; $('hand').hidden = true; $('wpn').hidden = true; banter = null; tut = null; layout(); }
 function pauseGame() { if (!inRace()) return; mode = 'pause'; showScreen('pause'); tp.nitro = false; endStick(); if (AU.engGain) AU.engGain.gain.value = 0; $('touch').hidden = true; $('hand').hidden = true; $('pFull').hidden = !(touch && canFull() && !document.fullscreenElement); }
@@ -1422,41 +1589,42 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) pause
 
 const fmt = t => { const m = Math.floor(t / 60), s = t - m * 60; return m + ':' + (s < 10 ? '0' : '') + s.toFixed(2); };
 let countUp = null;
+function finishHeat(r, prog) {
+  save.cash += r.total; save.races++;
+  const key = STAGES[r.stageIdx].id, hb = prog.heat || (prog.heat = {}), prev = hb[key];
+  const newBest = r.bounty > 0 && (!prev || r.bounty > prev.bounty);
+  if (newBest) hb[key] = { bounty: r.bounty, time: r.time, level: r.level };
+  persist();
+  mode = 'result'; exitRace();
+  $('rPlace').textContent = r.busted ? 'BUSTED' : 'WRECKED';
+  $('rGap').textContent = 'HEAT ' + r.level + ' · ' + fmt(r.time) + (r.lost ? ' · LOST $' + r.lost.toLocaleString() : '');
+  countUp = { t: 0, total: r.total, shown: -1 }; $('rCash').textContent = '+$0';
+  $('rRec').hidden = !newBest;
+  $('rMain').textContent = 'AGAIN'; $('rMain').onclick = () => startRace(r.stageIdx);
+  $('rGarage').classList.toggle('dot', canUpgrade());
+  showScreen('result');
+}
 function finishRace() {
   const r = HK.results(), prog = save.prog[r.diff];
+  if (r.heat) return finishHeat(r, prog);
   save.cash += r.total; save.races++;
   const key = STAGES[r.stageIdx].id, prev = prog.best[key];
   let newBest = false;
-  if (!r.wrecked && (!prev || r.place < prev.place || (r.place === prev.place && r.time < prev.time))) { prog.best[key] = { place: r.place, time: r.time, name: save.initials }; newBest = true; }
-  if (r.qualified && prog.unlocked === r.stageIdx + 1 && r.stageIdx + 1 < STAGES.length) prog.unlocked++;
+  if (!r.wrecked && (!prev || r.place < prev.place || (r.place === prev.place && r.time < prev.time))) { prog.best[key] = { place: r.place, time: r.time }; newBest = true; }
   save.grudge = r.nextGrudge; persist();
   mode = 'result'; exitRace();
   $('rPlace').textContent = r.wrecked ? 'WRECKED' : HK.ordinal(r.place).toUpperCase();
   $('rGap').textContent = r.wrecked ? 'SHAKE IT OFF. ONE MORE?' : r.gap.replace(/\.$/, '').toUpperCase();
   countUp = { t: 0, total: r.total, shown: -1 }; $('rCash').textContent = '+$0';
-  buildInitials(newBest ? prog.best[key] : null);
+  $('rRec').hidden = !newBest;
   const next = STAGES[r.stageIdx + 1];
-  const canNext = r.qualified && next && save.prog[r.diff].unlocked > r.stageIdx + 1;
+  const canNext = r.qualified && next;
   $('rMain').textContent = canNext ? 'NEXT: ' + next.name.toUpperCase() : 'RETRY';
   $('rMain').onclick = () => startRace(canNext ? r.stageIdx + 1 : r.stageIdx);
   $('rGarage').classList.toggle('dot', canUpgrade());
   showScreen('result');
 }
 const canUpgrade = () => UPG.some(u => save.up[u.key] < 4 && u.cost[save.up[u.key]] <= save.cash);
-const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-function buildInitials(entry) {
-  const box = $('rIni'); box.hidden = !entry; for (const s of box.querySelectorAll('.s')) s.remove();
-  if (!entry) return;
-  const cur = (save.initials || 'AAA').split('');
-  for (let i = 0; i < 3; i++) {
-    const slot = document.createElement('div'); slot.className = 's';
-    const up = document.createElement('button'), b = document.createElement('b'), dn = document.createElement('button');
-    up.textContent = '▲'; dn.textContent = '▼'; up.setAttribute('aria-label', 'Next letter'); dn.setAttribute('aria-label', 'Previous letter'); b.textContent = cur[i];
-    const step = d => { cur[i] = LETTERS[(LETTERS.indexOf(cur[i]) + d + LETTERS.length) % LETTERS.length]; b.textContent = cur[i]; save.initials = cur.join(''); entry.name = save.initials; persist(); SFX.click(); };
-    up.onclick = () => step(1); dn.onclick = () => step(-1);
-    slot.append(up, b, dn); box.append(slot);
-  }
-}
 
 
 /* ===================== menus ===================== */
@@ -1466,7 +1634,8 @@ function drawLogo(c) {
   txt('KNUCKLES', 80, 27, { ctx: x, s: 3, a: 'c', c: CREAM, shc: '#4a2244' });
 }
 function renderTitle() {
-  $('tRoad').textContent = (STAGES[save.stage].name + ' · ' + DIFF[save.diff].name).toUpperCase();
+  $('tRoad').textContent = STAGES[save.stage].name.toUpperCase() + (save.mode === 'heat' ? ' · ENDLESS PURSUIT' : '');
+  optChips($('tDiff'), renderTitle);
   $('iGarage').classList.toggle('dot', canUpgrade());
   $('iSchool').classList.toggle('dot', !save.tut);
   $('tKeys').hidden = touch; $('tIos').hidden = !(touch && isIOS && !standalone() && !embedded);
@@ -1492,19 +1661,26 @@ function thumbFor(st, c) {
   x.drawImage(img, w - 30, Math.round(h * 0.66 - img.height * s1 * 0.5), Math.round(img.width * s1 * 0.5), Math.round(img.height * s1 * 0.5));
   const bike = SPR.riders.YOU.frames.idle[2], bs = 0.75; x.drawImage(bike, Math.round(w / 2 - bike.width * bs / 2), Math.round(h - bike.height * bs), Math.round(bike.width * bs), Math.round(bike.height * bs));
 }
+const MODES = [{ key: 'race', name: 'RACE' }, { key: 'heat', name: 'HEAT' }];
+function optChips(chips, rerender) {
+  chips.replaceChildren();
+  const add = (label, on, pick) => { const b = document.createElement('button'); b.textContent = label; b.setAttribute('aria-pressed', String(on)); b.onclick = () => { pick(); persist(); SFX.click(); rerender(); }; chips.append(b); };
+  for (const m of MODES) add(m.name, save.mode === m.key, () => { save.mode = m.key; });
+  const sep = document.createElement('i'); sep.className = 'sep'; chips.append(sep);
+  for (const d of Object.values(DIFF)) add(d.name.toUpperCase(), save.diff === d.key, () => { save.diff = d.key; });
+}
+function stepMode() { save.mode = save.mode === 'heat' ? 'race' : 'heat'; persist(); SFX.click(); renderTitle(); }
+function stepDiff(d) { const ks = Object.keys(DIFF), i = ks.indexOf(save.diff) + d; if (i < 0 || i >= ks.length) return; save.diff = ks[i]; persist(); SFX.click(); renderTitle(); }
 function renderSelect() {
-  const chips = $('diffChips'); chips.replaceChildren();
-  for (const d of Object.values(DIFF)) { const b = document.createElement('button'); b.textContent = d.name.toUpperCase(); b.setAttribute('aria-pressed', String(save.diff === d.key)); b.onclick = () => { save.diff = d.key; persist(); SFX.click(); renderSelect(); }; chips.append(b); }
-  const prog = save.prog[save.diff], st = STAGES[selIdx], locked = selIdx >= prog.unlocked, best = prog.best[st.id];
+  optChips($('diffChips'), renderSelect);
+  const prog = save.prog[save.diff], st = STAGES[selIdx], best = prog.best[st.id];
   thumbFor(st, $('cThumb'));
-  $('card').classList.toggle('locked', locked);
   $('cName').textContent = (selIdx + 1) + ' · ' + st.name.toUpperCase();
   const meta = $('cMeta'); meta.replaceChildren();
-  if (locked) meta.textContent = 'TOP 3 ON ' + STAGES[selIdx - 1].name.toUpperCase() + ' TO UNLOCK';
-  else if (best) { const b = document.createElement('b'); b.textContent = HK.ordinal(best.place).toUpperCase(); meta.append('BEST ', b, ' · ' + fmt(best.time) + ' ' + (best.name || '')); }
+  if (save.mode === 'heat') { const hb = (prog.heat || {})[st.id]; meta.textContent = hb ? 'BEST BOUNTY $' + hb.bounty.toLocaleString() + ' · HEAT ' + hb.level : 'ENDLESS · ESCAPE TO BANK CASH'; }
+  else if (best) { const b = document.createElement('b'); b.textContent = HK.ordinal(best.place).toUpperCase(); meta.append('BEST ', b, ' · ' + fmt(best.time)); }
   else meta.textContent = '1ST PAYS $' + (Math.round(1000 * st.prize * DIFF[save.diff].prize / 10) * 10).toLocaleString();
   $('cPrev').disabled = selIdx === 0; $('cNext').disabled = selIdx === STAGES.length - 1;
-  $('sRide').disabled = locked; $('sRide').style.opacity = locked ? 0.35 : 1;
 }
 const UPG_ICON = { engine: 'bolt', tyres: 'tyre', armor: 'jacket', nitro: 'nitro' };
 function renderGarage() {
@@ -1529,7 +1705,7 @@ function renderSettings() {
 }
 const go = (m, fn) => { SFX.click(); mode = m; fn && fn(); showScreen(m); };
 $('tTap').onclick = () => ride();
-$('iRoads').onclick = () => { selIdx = Math.min(save.stage, save.prog[save.diff].unlocked - 1); go('select', renderSelect); };
+$('iRoads').onclick = () => { selIdx = save.stage; go('select', renderSelect); };
 $('iGarage').onclick = () => go('garage', renderGarage);
 $('iSchool').onclick = () => { SFX.click(); startSchool(false); };
 $('iSettings').onclick = () => go('settings', renderSettings);
@@ -1537,7 +1713,7 @@ $('cPrev').onclick = () => { if (selIdx > 0) { selIdx--; SFX.click(); renderSele
 $('cNext').onclick = () => { if (selIdx < STAGES.length - 1) { selIdx++; SFX.click(); renderSelect(); } };
 (() => { let sx = null; const c = $('card'); c.addEventListener('pointerdown', e => { sx = e.clientX; }); c.addEventListener('pointerup', e => { if (sx === null) return; const d = e.clientX - sx; sx = null; if (d < -40) $('cNext').click(); else if (d > 40) $('cPrev').click(); }); })();
 $('sBack').onclick = () => go('title', renderTitle);
-$('sRide').onclick = () => { if (selIdx < save.prog[save.diff].unlocked) { save.stage = selIdx; persist(); startRace(selIdx); } };
+$('sRide').onclick = () => { save.stage = selIdx; persist(); startRace(selIdx); };
 $('gDone').onclick = () => go('title', renderTitle);
 $('oDone').onclick = () => go('title', renderTitle);
 $('rHome').onclick = () => { SFX.click(); toTitle(); };
@@ -1596,12 +1772,13 @@ async function boot() {
   steps.push(async () => { if (document.fonts && document.fonts.load) await Promise.race([document.fonts.load('12px "Press Start 2P"'), new Promise(r => setTimeout(r, 2000))]); });
   steps.push(() => { SPR.riders.YOU = riderSet(PLAYER); });
   for (const r of RIVALS) steps.push(() => { SPR.riders[r.name] = riderSet(r); });
-  steps.push(() => { SPR.riders.DUMMY = riderSet(DUMMY); SPR.weapons = weaponSprites(); });
+  steps.push(() => { SPR.riders.DUMMY = riderSet(DUMMY); SPR.riders.COP = riderSet(HK.COP); SPR.weapons = weaponSprites(); });
+  steps.push(() => { SPR.cop = [copCarSprite(false), copCarSprite(true)]; SPR.ramp = rampSprite(); SPR.tower = [towerSprite(true), towerSprite(false)]; SPR.towerDown = rot90(towerSprite(false), 1); });
   steps.push(() => { for (const [c, rf] of CARPAL) { SPR.cars.push(carSprite(c, rf, false)); SPR.carsF.push(carSprite(c, rf, true)); SPR.trucks.push(truckSprite(c, false)); SPR.trucksF.push(truckSprite(c, true)); } });
   steps.push(() => {
     for (const t of ['cactus', 'rock', 'saltrock', 'post', 'pole', 'rail', 'palm', 'pine', 'lamp', 'building', 'cone']) for (const v of [0.2, 0.8]) { getScen({ type: t, v }, false); getScen({ type: t, v }, true); }
     const glow = (rgb, a) => { const gl = mk(32, 32), g = gl.getContext('2d'), rg = g.createRadialGradient(16, 16, 1, 16, 16, 16); rg.addColorStop(0, 'rgba(' + rgb + ',' + a + ')'); rg.addColorStop(1, 'rgba(' + rgb + ',0)'); g.fillStyle = rg; g.fillRect(0, 0, 32, 32); return gl; };
-    SPR.glow = glow('255,230,170', 0.75); SPR.glowR = glow('255,60,60', 0.6);
+    SPR.glow = glow('255,230,170', 0.75); SPR.glowR = glow('255,60,60', 0.6); SPR.glowB = glow('70,120,255', 0.7);
     for (const k of Object.keys(ICONMAP)) ICONURL[k] = iconURL(ICONMAP[k]);
     $('icPunch').src = ICONURL.punch; $('icKick').src = ICONURL.kick; $('icNitro').src = ICONURL.nitro; $('hand').src = ICONURL.hand;
     for (const im of document.querySelectorAll('img[data-icon]')) im.src = ICONURL[im.dataset.icon];
@@ -1620,7 +1797,7 @@ let booted = false;
 
 
 /* ===================== loop ===================== */
-let last = performance.now(), acc = 0, ema = 16, slowT = 0;
+let last = performance.now(), acc = 0, ema = 16, slowT = 0, sirenT = 0, sirenHi = false;
 function frame(now) {
   const dt = Math.min(0.1, (now - last) / 1000); last = now; clock += dt;
   if (booted) {
@@ -1654,6 +1831,10 @@ function frame(now) {
       AU.engGain.gain.setTargetAtTime(on ? 0.035 + 0.025 * sp : 0, AU.a.currentTime, 0.05);
       AU.eng[0].frequency.setTargetAtTime(48 + 130 * sp + (S && S.boosting ? 40 : 0), AU.a.currentTime, 0.05);
       AU.eng[1].frequency.setTargetAtTime(24 + 65 * sp, AU.a.currentTime, 0.05);
+      if (on && S && S.heat) {
+        const pd = S.distance + playerZ;
+        if (S.rivals.some(r => r.cop && r.state === 'ride' && Math.abs(r.dist - pd) < 4000) && (sirenT -= dt) <= 0) { sirenT = 0.42; sirenHi = !sirenHi; tone(sirenHi ? 960 : 720, 0.4, 'triangle', 0.035); }
+      }
     }
   }
   requestAnimationFrame(frame);
