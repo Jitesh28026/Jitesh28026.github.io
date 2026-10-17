@@ -105,7 +105,8 @@ img.px{image-rendering:pixelated}
 .ic.dot span.box{box-shadow:0 0 0 3px var(--amber)}
 #tTap{font-size:clamp(12px,2.2vw,16px);padding:14px 22px}
 #tCorner{position:absolute;right:max(16px,var(--sar));bottom:calc(var(--sab) + 14px)}
-#tLeft{position:absolute;left:max(16px,var(--sal));bottom:calc(var(--sab) + 18px);text-align:left;max-width:40%}
+#tCornerL{position:absolute;left:max(16px,var(--sal));bottom:calc(var(--sab) + 14px)}
+#tLeft{position:absolute;left:max(16px,var(--sal));top:calc(var(--sat) + 14px);text-align:left;max-width:min(26vw,220px)}
 .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .chips .sep{width:8px}
 .chips button{font-size:8px;padding:8px 10px;color:var(--mute);box-shadow:0 0 0 2px var(--line)}
@@ -136,7 +137,7 @@ input[type=range]{accent-color:#ffb000;width:150px}
 .rec{font-size:9px;color:var(--cream);margin:0}
 #result{background:rgba(13,10,26,.8);gap:14px}
 #result .icons{margin-top:4px}
-@media (max-height:480px){.screen{gap:10px}#title .logo{width:min(440px,70vw,85vh)}#title{padding-bottom:calc(var(--sab) + 70px)}.big{font-size:clamp(26px,11vh,48px)}#result{gap:9px}.btn{padding:11px 22px}.ic span.box{width:40px;height:40px}}
+@media (max-height:480px){.screen{gap:10px}#title .logo{width:min(440px,70vw,85vh)}.big{font-size:clamp(26px,11vh,48px)}#result{gap:9px}.btn{padding:11px 22px}.ic span.box{width:40px;height:40px}}
 #rCash{font-size:clamp(14px,2.6vw,20px);color:var(--amber);margin:0}
 #rotate{z-index:20;gap:22px}
 #rotate img{width:72px;animation:rot 1.6s steps(1) infinite}
@@ -170,9 +171,11 @@ input[type=range]{accent-color:#ffb000;width:150px}
     <div class="chips" id="tDiff" role="group" aria-label="Difficulty"></div>
     <span class="small" id="tRoad">DUST BOWL · ROOKIE</span>
     <div id="tLeft"><span class="tip" id="tIos" hidden>FOR FULLSCREEN: TAP SHARE, THEN ADD TO HOME SCREEN</span><span class="small" id="tKeys" hidden>ARROWS STEER · Z PUNCH · X KICK · SHIFT NITRO</span></div>
-    <div class="icons" id="tCorner">
+    <div class="icons" id="tCornerL">
       <button class="ic" id="iRoads" aria-label="Roads"><span class="box"><img class="px" alt="" data-icon="road"></span>ROADS</button>
       <button class="ic" id="iGarage" aria-label="Garage"><span class="box"><img class="px" alt="" data-icon="wrench"></span>GARAGE</button>
+    </div>
+    <div class="icons" id="tCorner">
       <button class="ic" id="iSchool" aria-label="Riding school"><span class="box"><img class="px" alt="" data-icon="flag"></span>SCHOOL</button>
       <button class="ic" id="iSettings" aria-label="Settings"><span class="box"><img class="px" alt="" data-icon="gear"></span>SETUP</button>
     </div>
@@ -1312,7 +1315,7 @@ function hud(dt) {
     for (const r of S.rivals) { const q = clamp((r.dist - playerZ) / fd, 0, 1); ctx.fillStyle = r.state === 'down' ? '#5a4f7a' : r.bike; ctx.fillRect(Math.round(px + q * pw) - 1, py - 1, 2, 3); }
     const q = clamp(S.distance / fd, 0, 1); ctx.fillStyle = INK; ctx.fillRect(Math.round(px + q * pw) - 2, py - 4, 5, 9); ctx.fillStyle = CREAM; ctx.fillRect(Math.round(px + q * pw) - 1, py - 3, 3, 7);
   }
-  if (toast.t > 0) { toast.t -= dt; const s = W > 300 ? 4 : 3; const p = 1 - clamp((toast.d - toast.t) / 0.12, 0, 1); txt(toast.text, W / 2, msgY - Math.round(p * 6), { s, a: 'c', c: toast.c, outline: INK }); }
+  if (toast.t > 0) { toast.t -= dt; const s = toast.big ? (W > 300 ? 4 : 3) : (PX >= 2 ? 1 : 2); const p = 1 - clamp((toast.d - toast.t) / 0.12, 0, 1); txt(toast.text, W / 2, msgY - Math.round(p * 6), { s, a: 'c', c: toast.c, outline: INK }); }
   if (banter) {
     const bw = Math.min(W - 40, 220), lines = wrap(banter.say, Math.floor((bw - 12) / 6)), bh = 18 + lines.length * 9 + (banter.grudge ? 10 : 0);
     const bx = Math.round(W / 2 - bw / 2), byy = msgY + 34;
@@ -1366,14 +1369,14 @@ const buzz = p => { if (save.buzz && navigator.vibrate) { try { navigator.vibrat
 /* ===================== events from the core ===================== */
 let mode = 'boot', hitStop = 0, endTimer = -1, raceStage = 0, raceDiff = 'rookie', hurtFlash = 0;
 const inRace = () => mode === 'race';
-const say = (t, d = 0.7, c = CREAM) => { toast = { t: d, d, text: t, c }; };
+const say = (t, d = 0.7, c = CREAM, big = false) => { toast = { t: d, d, text: t, c, big }; };
 const nearBike = (t, c, dy = 0) => floatText(t, pScr.x, pScr.y - (50 + dy) * pScr.ps, c);
 HK.setEmitter((type, d) => {
   if (!inRace()) return;
   const S = HK.S, ps = pScr;
   switch (type) {
-    case 'count': say(String(d.n), 0.8, AMBER); SFX.beep(); break;
-    case 'go': say('GO!', 0.7, AMBER); SFX.go(); setTimeout(() => { banter = null; }, 600); raceClock = 0; break;
+    case 'count': say(String(d.n), 0.8, AMBER, true); SFX.beep(); break;
+    case 'go': say('GO!', 0.7, AMBER, true); SFX.go(); setTimeout(() => { banter = null; }, 600); raceClock = 0; break;
     case 'crash': say('CRASH!', 1, RED); SFX.crash(); shake = 0.7; buzz([70, 40, 110]); burst(ps.x, ps.y - 10 * ps.ps, 26, [CREAM, AMBER, '#7a7488', '#ff6a3d'], 120, 240, 0.9); break;
     case 'rail': SFX.scrape(); shake = Math.max(shake, 0.25); buzz(25); burst(ps.x + (S.x < 0 ? -12 : 12) * ps.ps, ps.y - 6 * ps.ps, 12, ['#ffe9b0', '#ffffff'], 100, 140, 0.4); break;
     case 'hit': { hitStop = d.ko ? 0.12 : 0.055; (d.kick ? SFX.kick : SFX.hit)(); shake = Math.max(shake, d.ko ? 0.45 : 0.22); buzz(d.ko ? 45 : 20);
@@ -1387,8 +1390,8 @@ HK.setEmitter((type, d) => {
     case 'combo': say('COMBO X' + d.mul, 0.6, AMBER); break;
     case 'boost': SFX.nitro(); break;
     case 'weaponBroke': nearBike('BROKEN', MUTE); break;
-    case 'finish': case 'wreck': endTimer = type === 'wreck' ? 0.7 : 1.5; say(type === 'wreck' ? 'WRECKED' : HK.ordinal(d.place).toUpperCase(), 2.2, type === 'wreck' ? RED : AMBER); buzz(type === 'wreck' ? [90, 60, 90] : 40); break;
-    case 'busted': endTimer = 1.2; say('BUSTED', 2.2, CYAN); buzz([90, 60, 90]); SFX.beep(); break;
+    case 'finish': case 'wreck': endTimer = type === 'wreck' ? 0.7 : 1.5; say(type === 'wreck' ? 'WRECKED' : HK.ordinal(d.place).toUpperCase(), 2.2, type === 'wreck' ? RED : AMBER, true); buzz(type === 'wreck' ? [90, 60, 90] : 40); break;
+    case 'busted': endTimer = 1.2; say('BUSTED', 2.2, CYAN, true); buzz([90, 60, 90]); SFX.beep(); break;
     case 'jump': noise(0.35, 'bandpass', 900, 0.3, 2600); buzz(15); break;
     case 'land': SFX.kick(); shake = Math.max(shake, 0.3); buzz(30); nearBike('AIR ' + d.t.toFixed(1) + 'S +$' + d.cash, CYAN); burst(ps.x, ps.y, 10, [CREAM, '#7a7488'], 80, 120, 0.4); break;
     case 'pursuit': say('PURSUIT!', 1.2, RED); SFX.beep(); buzz(40); break;
