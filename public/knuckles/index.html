@@ -1929,11 +1929,9 @@ function iconURL(map) {
   map.forEach((row, y) => [...row].forEach((ch, xx) => { if (col[ch]) { x.fillStyle = col[ch]; x.fillRect(xx, y, 1, 1); } }));
   return c.toDataURL();
 }
-async function boot() {
-  drawLogo($('bootLogo'));
-  layout();
+// every pre-drawn image: bikes, cars, scenery, glows, icons. Rerun when the browser throws the pixels away.
+function artSteps() {
   const steps = [];
-  steps.push(async () => { if (document.fonts && document.fonts.load) await Promise.race([document.fonts.load('12px "Press Start 2P"'), new Promise(r => setTimeout(r, 2000))]); });
   steps.push(() => { SPR.riders.YOU = riderSet(PLAYER); });
   for (const r of RIVALS) steps.push(() => { SPR.riders[r.name] = riderSet(r); });
   steps.push(() => { SPR.riders.DUMMY = riderSet(DUMMY); SPR.riders.COP = riderSet(HK.COP); SPR.weapons = weaponSprites(); });
@@ -1948,6 +1946,30 @@ async function boot() {
     for (const im of document.querySelectorAll('img[data-icon]')) im.src = ICONURL[im.dataset.icon];
     renderMusic();
   });
+  return steps;
+}
+// Android Chrome can discard canvas pixels while the tab sits in the background, which blanks the logo,
+// every bike and car, and the HUD lettering. Check a known sprite now and then and redraw it all if it went blank.
+function artLost() {
+  const f = SPR.riders.YOU && SPR.riders.YOU.frames.idle[2]; if (!f) return false;
+  try { const d = f.getContext('2d').getImageData(0, 0, f.width, f.height).data; for (let i = 3; i < d.length; i += 4) if (d[i]) return false; return true; } catch (e) { return false; }
+}
+function restoreArt() {
+  if (!booted || !artLost()) return;
+  gCache.clear(); caches.key = '';
+  Object.assign(SPR, { riders: {}, cars: [], carsF: [], trucks: [], trucksF: [], scen: {}, scenN: {}, signs: {}, signsN: {} });
+  for (const step of artSteps()) { try { step(); } catch (e) { console.error(e); } }
+  drawLogo($('bootLogo')); drawLogo($('titleLogo'));
+  if (mode === 'select') renderSelect();
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) restoreArt(); });
+addEventListener('pageshow', () => restoreArt());
+async function boot() {
+  drawLogo($('bootLogo'));
+  layout();
+  const steps = [];
+  steps.push(async () => { if (document.fonts && document.fonts.load) await Promise.race([document.fonts.load('12px "Press Start 2P"'), new Promise(r => setTimeout(r, 2000))]); });
+  steps.push(...artSteps());
   STAGES.forEach((st, i) => steps.push(() => { HK.prebuild(i); }));
   steps.push(() => { for (const s of HK.segments) for (const sp of s.sprites) if (sp.type === 'sign') getScen(sp, false); });
   for (let i = 0; i < steps.length; i++) { $('bootBar').style.width = Math.round(i / steps.length * 100) + '%'; await nextFrame(); try { await steps[i](); } catch (e) { console.error(e); } }
@@ -1962,10 +1984,11 @@ let booted = false;
 
 
 /* ===================== loop ===================== */
-let last = performance.now(), acc = 0, ema = 16, slowT = 0, sirenT = 0, sirenHi = false;
+let last = performance.now(), acc = 0, ema = 16, slowT = 0, sirenT = 0, sirenHi = false, artT = 2;
 function frame(now) {
   const dt = Math.min(0.1, (now - last) / 1000); last = now; clock += dt;
   if (booted) {
+    if ((artT -= dt) <= 0) { artT = 2; restoreArt(); }
     if (mode === 'race') {
       if (hitStop > 0) hitStop -= dt;
       else { acc += dt; while (acc >= STEP) { HK.update(STEP, buildInput()); acc -= STEP; if (HK.S.state === 'done') { acc = 0; break; } } }
