@@ -76,7 +76,7 @@ img.px{image-rendering:pixelated}
 
 #bPause{position:absolute;right:max(16px,var(--sar));top:calc(var(--sat) + 10px);width:40px;height:40px;background:rgba(13,10,26,.6);box-shadow:0 0 0 3px var(--cream);font-size:11px}
 #lesson{position:absolute;left:50%;top:calc(var(--sat) + 12px);transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:var(--ink);padding:10px 14px;box-shadow:0 0 0 3px var(--amber);white-space:nowrap;max-width:calc(100% - 140px)}
-#lesson span{font-size:clamp(9px,1.6vw,12px);overflow:hidden;text-overflow:ellipsis}
+#lesson span{font-size:clamp(8px,1.4vw,11px);overflow:hidden;text-overflow:ellipsis}
 #lesson b{font-weight:400;color:var(--amber)}
 #lSkip{font-size:8px;color:var(--mute);padding:6px}
 
@@ -86,14 +86,14 @@ img.px{image-rendering:pixelated}
   background:radial-gradient(ellipse at center,rgba(13,10,26,.25),rgba(13,10,26,.82) 75%)}
 .screen.solid{background:var(--ink)}
 .logo{width:min(440px,70vw);image-rendering:pixelated;display:block}
-.small{font-size:8px;color:var(--mute)}
+.small{font-size:7px;color:var(--mute)}
 .blink{animation:blink 1s steps(2) infinite}
 @keyframes blink{50%{opacity:0}}
 .bar{width:min(240px,50vw);height:8px;box-shadow:0 0 0 3px var(--cream);background:var(--ink);position:relative}
 .bar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--amber)}
-.big{font-size:clamp(28px,7vw,56px);line-height:1;margin:0;color:var(--amber);text-shadow:4px 4px 0 var(--red)}
-.mid{font-size:clamp(11px,2vw,14px);margin:0}
-.btn{font-size:13px;padding:14px 26px;background:var(--amber);color:var(--ink);box-shadow:0 6px 0 #8a5a00,0 0 0 3px var(--ink)}
+.big{font-size:clamp(22px,5.5vw,44px);line-height:1;margin:0;color:var(--amber);text-shadow:4px 4px 0 var(--red)}
+.mid{font-size:clamp(9px,1.6vw,12px);margin:0}
+.btn{font-size:11px;padding:12px 20px;background:var(--amber);color:var(--ink);box-shadow:0 6px 0 #8a5a00,0 0 0 3px var(--ink)}
 .btn:active{transform:translateY(5px);box-shadow:0 1px 0 #8a5a00,0 0 0 3px var(--ink)}
 .btn.ghost{background:var(--panel);color:var(--cream);box-shadow:0 0 0 3px var(--cream)}
 .btn.ghost:active{transform:translateY(2px)}
@@ -103,7 +103,7 @@ img.px{image-rendering:pixelated}
 .ic img{width:26px}
 .ic:active span.box{box-shadow:0 0 0 3px var(--amber)}
 .ic.dot span.box{box-shadow:0 0 0 3px var(--amber)}
-#tTap{font-size:clamp(12px,2.2vw,16px);padding:14px 22px}
+#tTap{font-size:clamp(10px,1.8vw,13px);padding:12px 18px}
 #tCorner{position:absolute;right:max(16px,var(--sar));bottom:calc(var(--sab) + 14px)}
 #tMusic{position:absolute;right:max(16px,var(--sar));top:calc(var(--sat) + 10px);width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(13,10,26,.6);box-shadow:0 0 0 3px var(--cream)}
 #tMusic img{width:24px}
@@ -112,40 +112,41 @@ img.px{image-rendering:pixelated}
 #tLeft{position:absolute;left:max(16px,var(--sal));top:calc(var(--sat) + 14px);text-align:left;max-width:min(26vw,220px)}
 .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .chips .sep{width:8px}
-.chips button{font-size:8px;padding:8px 10px;color:var(--mute);box-shadow:0 0 0 2px var(--line)}
+.chips button{font-size:7px;padding:7px 9px;color:var(--mute);box-shadow:0 0 0 2px var(--line)}
 .chips button[aria-pressed="true"]{color:var(--ink);background:var(--amber);box-shadow:0 0 0 2px var(--amber)}
 .car{display:flex;align-items:center;gap:14px}
-.car>button{font-size:18px;width:44px;height:64px;color:var(--cream)}
+.car>button{font-size:15px;width:44px;height:64px;color:var(--cream)}
 .car>button[disabled]{opacity:.2}
-.card{display:flex;flex-direction:column;align-items:center;gap:10px;width:min(300px,52vw)}
+.card{display:flex;flex-direction:column;align-items:center;gap:10px;width:min(300px,52vw,72vh)}
 .card canvas{width:100%;image-rendering:pixelated;box-shadow:0 0 0 3px var(--cream);display:block}
-.card .nm{font-size:clamp(12px,2vw,15px)}
-.card .meta{font-size:8px;color:var(--mute);min-height:1.6em}
+.card .nm{font-size:clamp(10px,1.7vw,13px)}
+.card .meta{font-size:7px;color:var(--mute);min-height:1.6em}
 .card .meta b{color:var(--amber);font-weight:400}
 .row{display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap}
 .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;width:min(640px,100%)}
 .tile{display:flex;flex-direction:column;align-items:center;gap:8px;background:var(--panel);padding:12px 8px;box-shadow:0 0 0 3px var(--line)}
 .tile img{width:30px}
-.tile .nm{font-size:9px}
+.tile .nm{font-size:8px}
 .pips{display:flex;gap:3px}
 .pips i{width:12px;height:6px;background:var(--line)}
 .pips i.on{background:var(--amber)}
-.tile button{font-size:9px;padding:8px 6px;width:100%;background:var(--amber);color:var(--ink)}
+.tile button{font-size:8px;padding:8px 6px;width:100%;background:var(--amber);color:var(--ink)}
 .tile button[disabled]{background:var(--line);color:var(--mute)}
-.cash{color:var(--amber);font-size:11px}
+.cash{color:var(--amber);font-size:10px}
 .set{display:grid;grid-template-columns:auto auto;gap:14px 24px;align-items:center;text-align:left}
-.tg{font-size:9px;padding:8px 12px;box-shadow:0 0 0 2px var(--line);color:var(--mute)}
+.tg{font-size:8px;padding:8px 12px;box-shadow:0 0 0 2px var(--line);color:var(--mute)}
 .tg[aria-pressed="true"]{background:var(--amber);color:var(--ink);box-shadow:0 0 0 2px var(--amber)}
 input[type=range]{accent-color:#ffb000;width:150px}
-.rec{font-size:9px;color:var(--cream);margin:0}
+.rec{font-size:8px;color:var(--cream);margin:0}
 #result{background:rgba(13,10,26,.8);gap:14px}
-#result .icons{margin-top:4px}
-@media (max-height:480px){.screen{gap:10px}#title .logo{width:min(440px,70vw,85vh)}.big{font-size:clamp(26px,11vh,48px)}#result{gap:9px}.btn{padding:11px 22px}.ic span.box{width:40px;height:40px}}
-#rCash{font-size:clamp(14px,2.6vw,20px);color:var(--amber);margin:0}
+#result .rrow{align-items:center;gap:18px;margin-top:4px}
+@media (max-height:480px){.screen{gap:10px}#title .logo{width:min(440px,70vw,85vh)}.big{font-size:clamp(20px,9vh,40px)}#result{gap:9px}.btn{padding:9px 16px}.ic span.box{width:40px;height:40px}.set{gap:8px 24px}.card{gap:6px}}
+#rCash{font-size:clamp(12px,2.1vw,16px);color:var(--amber);margin:0}
 #rotate{z-index:20;gap:22px}
 #rotate img{width:72px;animation:rot 1.6s steps(1) infinite}
 @keyframes rot{50%{transform:rotate(-90deg)}}
 .tip{font-size:8px;color:var(--cream);background:var(--panel);box-shadow:0 0 0 2px var(--amber);padding:8px 10px;max-width:360px;line-height:1.8}
+@media (max-height:300px){.screen{gap:7px;padding-top:calc(var(--sat) + 8px);padding-bottom:calc(var(--sab) + 8px)}.set{gap:6px 24px}.tg{padding:6px 10px}}
 @media (prefers-reduced-motion:reduce){.blink,#bNitro.ready,#hand,#rotate img{animation:none}}
 </style>
 
@@ -224,9 +225,9 @@ input[type=range]{accent-color:#ffb000;width:150px}
     <p class="mid" id="rGap"></p>
     <p id="rCash">+$0</p>
     <p class="rec blink" id="rRec" hidden>NEW RECORD</p>
-    <button class="btn" id="rMain">RETRY</button>
-    <div class="icons">
+    <div class="icons rrow">
       <button class="ic" id="rHome" aria-label="Home"><span class="box"><img class="px" alt="" data-icon="home"></span>HOME</button>
+      <button class="btn" id="rMain">RETRY</button>
       <button class="ic" id="rGarage" aria-label="Garage"><span class="box"><img class="px" alt="" data-icon="wrench"></span>GARAGE</button>
     </div>
   </div>
