@@ -1611,6 +1611,12 @@ function tap(el, type) {
 }
 hold($('bNitro'), 'nitro'); tap($('bPunch'), 'punch'); tap($('bKick'), 'kick');
 for (const el of document.querySelectorAll('#touch button, #stickZone')) el.addEventListener('contextmenu', e => e.preventDefault());
+// iOS Safari ignores user-scalable=no, so fast taps on punch and kick read as a double tap and zoom the page.
+// The pad listens to pointer events, so cancelling the touch itself costs nothing there.
+for (const el of document.querySelectorAll('#touch button, #stickZone')) el.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+let lastTouchEnd = 0;
+document.addEventListener('touchend', e => { if (e.timeStamp - lastTouchEnd < 350) e.preventDefault(); lastTouchEnd = e.timeStamp; }, { passive: false });
+for (const ev of ['gesturestart', 'gesturechange', 'gestureend', 'dblclick']) document.addEventListener(ev, e => e.preventDefault(), { passive: false });
 addEventListener('touchstart', () => { if (!touch) { touch = true; if (inRace()) { $('touch').hidden = false; } layout(); } }, { passive: true });
 const locks = { steer: false, brake: false, punch: false, kick: false, nitro: false };
 let lastInput = {};
